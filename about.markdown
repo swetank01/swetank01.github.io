@@ -46,7 +46,8 @@ I'm currently deepening my expertise in:
 ## 📚 Certifications & Learning Path
 - Working on AZ-104: Microsoft Azure Administrator
 - Pursuing HashiCorp Certified: Terraform Associate
-- [Other relevant certifications you have]
+- CKAD
+- MLOps
 
 ## 🌱 Philosophy
 

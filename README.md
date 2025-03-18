@@ -70,7 +70,6 @@ Hey there! 👋 Welcome to my digital space. I'm a passionate technologist focus
 - `_posts/` - Blog posts
 - `docs/` - Documentation
 - `about.markdown` - About page
-- `todo.markdown` - Development roadmap
 - `_config.yml` - Site configuration
 
 ## 🔄 Updates and Maintenance
