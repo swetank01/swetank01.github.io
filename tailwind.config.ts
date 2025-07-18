@@ -17,8 +17,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['"Space Grotesk"', 'sans-serif'],
-        headline: ['"Space Grotesk"', 'sans-serif'],
+        body: ['"Share Tech Mono"', 'monospace'],
+        headline: ['"Share Tech Mono"', 'monospace'],
         code: ['monospace'],
       },
       colors: {
