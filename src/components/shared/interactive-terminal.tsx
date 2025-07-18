@@ -5,19 +5,19 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Circle } from 'lucide-react';
 
 const commands = [
-  { cmd: 'booting system...', delay: 50 },
+  { cmd: 'system.boot()', delay: 50, typed: true, prompt: true },
   { cmd: '...', delay: 100 },
-  { cmd: '...', delay: 100 },
-  { cmd: 'System online. Welcome, user.', delay: 200, prompt: true },
+  { cmd: 'Loading kernel modules...', delay: 100 },
+  { cmd: 'System online. Welcome, user.', delay: 200 },
   { cmd: 'whoami', delay: 800, typed: true, prompt: true },
   { cmd: 'root', delay: 200 },
-  { cmd: './connect -a devops_engineer', delay: 1000, typed: true, prompt: true },
-  { cmd: 'Connecting...', delay: 100 },
-  { cmd: 'Fetching profile...', delay: 200 },
+  { cmd: './connect -u Sw3t@nK', delay: 1000, typed: true, prompt: true },
+  { cmd: 'Authenticating with public key...', delay: 100 },
+  { cmd: 'Access Granted. Fetching profile...', delay: 200 },
   { cmd: 'PROFILE:', delay: 50 },
   { cmd: 'NAME: Sw3t@nK', delay: 50 },
-  { cmd: 'ROLE: DevOps Engineer', delay: 50 },
-  { cmd: 'STATUS: Ready to build.', delay: 50 },
+  { cmd: 'ROLE: Creative DevOps Engineer', delay: 50 },
+  { cmd: 'STATUS: Ready to build the future.', delay: 50 },
 ];
 
 export function InteractiveTerminal() {
