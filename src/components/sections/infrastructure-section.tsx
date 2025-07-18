@@ -5,8 +5,9 @@ import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Server, Share2, Database } from 'lucide-react';
+import { Server, Share2, Database, X } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
 
 const infraItems = [
   {
@@ -18,6 +19,8 @@ const infraItems = [
     details: "This project involved deploying a Kubernetes cluster across AWS and GCP using Terraform for infrastructure-as-code. We utilized Istio for service mesh management and implemented robust CI/CD pipelines with Jenkins, resulting in a 70% reduction in deployment time and 99.99% uptime.",
     tech: ["Kubernetes", "AWS", "GCP", "Terraform", "Istio", "Jenkins"],
     icon: Server,
+    blueprintImage: "https://placehold.co/800x600.png",
+    blueprintAiHint: "blueprint architecture schematic",
   },
   {
     id: "network",
@@ -28,6 +31,8 @@ const infraItems = [
     details: "Architected a Virtual Private Cloud (VPC) with public and private subnets, NAT Gateways, and strict security group rules. All traffic is monitored using VPC Flow Logs and GuardDuty for threat detection, ensuring a highly secure environment for sensitive data.",
     tech: ["AWS VPC", "Security Groups", "GuardDuty", "Network ACLs"],
     icon: Share2,
+    blueprintImage: "https://placehold.co/800x600.png",
+    blueprintAiHint: "network blueprint schematic",
   },
   {
     id: "database",
@@ -38,6 +43,8 @@ const infraItems = [
     details: "Deployed a PostgreSQL cluster using Patroni on a set of virtual machines managed by Ansible. The setup includes automated failover, point-in-time recovery, and read replicas to distribute load, ensuring data integrity and constant availability.",
     tech: ["PostgreSQL", "Patroni", "Ansible", "HAProxy", "Replication"],
     icon: Database,
+    blueprintImage: "https://placehold.co/800x600.png",
+    blueprintAiHint: "database architecture schematic",
   },
 ];
 
@@ -112,17 +119,44 @@ export function InfrastructureSection() {
                     </CardContent>
                   </Card>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[625px]">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl text-primary font-headline">{item.title}</DialogTitle>
-                    <DialogDescription>{item.details}</DialogDescription>
+                <DialogContent className="sm:max-w-4xl bg-[#1a1a1a] border-primary/20 font-code text-lime-300/80 p-0">
+                  <DialogHeader className="p-4 border-b border-primary/20 flex-row justify-between items-center">
+                    <DialogTitle className="text-xl text-primary font-headline flex items-center gap-2">
+                      <item.icon className="w-6 h-6" /> {item.title}
+                    </DialogTitle>
+                    <DialogTrigger>
+                        <X className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors" />
+                        <span className="sr-only">Close</span>
+                    </DialogTrigger>
                   </DialogHeader>
-                  <div className="py-4">
-                    <h4 className="font-semibold mb-2">Technologies Used:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {item.tech.map((tech) => (
-                        <Badge key={tech} variant="secondary">{tech}</Badge>
-                      ))}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                    <div className="p-6 pr-3">
+                        <h3 className="font-headline text-primary text-lg mb-2">SYSTEM DETAILS</h3>
+                        <DialogDescription className="text-foreground/70 mb-4">{item.details}</DialogDescription>
+                        
+                        <Separator className="my-4 bg-primary/20"/>
+
+                        <h4 className="font-headline text-primary mb-2">TECHNOLOGIES USED:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {item.tech.map((tech) => (
+                            <Badge key={tech} variant="secondary" className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">{tech}</Badge>
+                          ))}
+                        </div>
+                    </div>
+                    <div className="p-6 pl-3 border-l border-primary/20 bg-black/20">
+                        <h3 className="font-headline text-primary text-lg mb-2">ARCHITECTURE BLUEPRINT</h3>
+                        <div className="aspect-video relative overflow-hidden rounded-md border-2 border-primary/30 p-2 bg-black/30">
+                           <Image 
+                                src={item.blueprintImage}
+                                alt={`${item.title} blueprint`}
+                                layout="fill"
+                                objectFit="cover"
+                                data-ai-hint={item.blueprintAiHint}
+                                className="opacity-70"
+                           />
+                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                           <p className="absolute bottom-2 right-2 text-xs text-primary/50">CLASSIFIED: LEVEL 7</p>
+                        </div>
                     </div>
                   </div>
                 </DialogContent>
