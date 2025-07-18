@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const navLinks = [
+  { href: '#about', label: 'About' },
   { href: '#skills', label: 'Skills' },
   { href: '#infra', label: 'Infrastructure' },
   { href: '#experience', label: 'Experience' },
