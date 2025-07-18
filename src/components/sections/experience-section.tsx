@@ -47,7 +47,7 @@ export function ExperienceSection() {
             </div>
             <div className={`flex ${index % 2 === 0 ? "justify-start" : "justify-end"} `}>
               <div className={`w-full md:w-5/12 ${index % 2 === 0 ? "md:pr-8" : "md:pl-8"}`}>
-                <Card className="hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1">
+                <Card className="hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 fade-in-up" style={{ animationDelay: `${index * 150}ms`, opacity: 0 }}>
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>

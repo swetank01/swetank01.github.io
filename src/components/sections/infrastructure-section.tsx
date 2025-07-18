@@ -59,10 +59,10 @@ export function InfrastructureSection() {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-          {infraItems.map((item) => (
+          {infraItems.map((item, index) => (
             <Dialog key={item.id}>
               <DialogTrigger asChild>
-                <Card className="overflow-hidden cursor-pointer group transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+                <Card className="overflow-hidden cursor-pointer group transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 fade-in-up" style={{ animationDelay: `${index * 150}ms`, opacity: 0 }}>
                   <CardHeader className="flex-row items-center gap-4">
                     <item.icon className="w-8 h-8 text-primary" />
                     <div>
@@ -84,7 +84,7 @@ export function InfrastructureSection() {
                   </CardContent>
                 </Card>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-4xl bg-[#1a1a1a] border-primary/20 font-code text-lime-300/80 p-0">
+              <DialogContent className="sm:max-w-4xl bg-background/95 border-primary/20 font-code text-primary/80 p-0 backdrop-blur-sm">
                 <DialogHeader className="p-4 border-b border-primary/20 flex-row justify-between items-center">
                   <DialogTitle className="text-xl text-primary font-headline flex items-center gap-2">
                     <item.icon className="w-6 h-6" /> {item.title}
