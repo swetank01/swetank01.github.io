@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DigitalRain } from '@/components/shared/digital-rain';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const skills = [
   { name: 'Kubernetes', level: 95 },
@@ -20,7 +21,8 @@ function SkillBar({ name, level }: { name: string; level: number }) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setProgress(level), 200);
+    // Animate progress bar on mount
+    const timer = setTimeout(() => setProgress(level), 100);
     return () => clearTimeout(timer);
   }, [level]);
 
@@ -35,7 +37,38 @@ function SkillBar({ name, level }: { name: string; level: number }) {
   );
 }
 
+function SkillsSkeleton() {
+  return (
+    <Card className="bg-background/80 backdrop-blur-sm">
+      <CardHeader>
+        <Skeleton className="h-7 w-48" />
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i}>
+            <div className="flex justify-between items-center mb-1">
+              <Skeleton className="h-5 w-32" />
+              <Skeleton className="h-5 w-10" />
+            </div>
+            <Skeleton className="h-2 w-full" />
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
+
 export function SkillsSection() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500); 
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section id="skills" className="w-full py-12 md:py-24 lg:py-32 relative overflow-hidden">
       <DigitalRain />
@@ -47,16 +80,20 @@ export function SkillsSection() {
               My expertise lies in building robust, scalable, and automated cloud-native solutions. I thrive on orchestrating complex systems and streamlining development lifecycles.
             </p>
           </div>
-          <Card className="bg-background/80 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle>Skills & Proficiencies</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {skills.map((skill) => (
-                <SkillBar key={skill.name} name={skill.name} level={skill.level} />
-              ))}
-            </CardContent>
-          </Card>
+          {isLoading ? (
+            <SkillsSkeleton />
+          ) : (
+            <Card className="bg-background/80 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle>Skills & Proficiencies</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {skills.map((skill) => (
+                  <SkillBar key={skill.name} name={skill.name} level={skill.level} />
+                ))}
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </section>

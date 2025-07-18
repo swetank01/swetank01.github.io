@@ -1,9 +1,12 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Server, Share2, Database } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const infraItems = [
   {
@@ -38,7 +41,33 @@ const infraItems = [
   },
 ];
 
+function InfraCardSkeleton() {
+  return (
+    <Card className="overflow-hidden">
+      <CardHeader className="flex-row items-center gap-4">
+        <Skeleton className="w-8 h-8 rounded-sm" />
+        <div className="w-full space-y-2">
+          <Skeleton className="h-5 w-3/4" />
+          <Skeleton className="h-4 w-full" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <Skeleton className="aspect-video w-full" />
+      </CardContent>
+    </Card>
+  );
+}
+
 export function InfrastructureSection() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section id="infra" className="w-full py-12 md:py-24 lg:py-32 bg-muted/30">
       <div className="container px-4 md:px-6">
@@ -51,47 +80,55 @@ export function InfrastructureSection() {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-          {infraItems.map((item) => (
-            <Dialog key={item.id}>
-              <DialogTrigger asChild>
-                <Card className="overflow-hidden cursor-pointer group transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
-                  <CardHeader className="flex-row items-center gap-4">
-                    <item.icon className="w-8 h-8 text-primary" />
-                    <div>
-                      <CardTitle>{item.title}</CardTitle>
-                      <CardDescription>{item.description}</CardDescription>
+          {isLoading ? (
+            <>
+              <InfraCardSkeleton />
+              <InfraCardSkeleton />
+              <InfraCardSkeleton />
+            </>
+          ) : (
+            infraItems.map((item) => (
+              <Dialog key={item.id}>
+                <DialogTrigger asChild>
+                  <Card className="overflow-hidden cursor-pointer group transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+                    <CardHeader className="flex-row items-center gap-4">
+                      <item.icon className="w-8 h-8 text-primary" />
+                      <div>
+                        <CardTitle>{item.title}</CardTitle>
+                        <CardDescription>{item.description}</CardDescription>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="aspect-video overflow-hidden">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          width={600}
+                          height={400}
+                          data-ai-hint={item.aiHint}
+                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[625px]">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl text-primary font-headline">{item.title}</DialogTitle>
+                    <DialogDescription>{item.details}</DialogDescription>
+                  </DialogHeader>
+                  <div className="py-4">
+                    <h4 className="font-semibold mb-2">Technologies Used:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {item.tech.map((tech) => (
+                        <Badge key={tech} variant="secondary">{tech}</Badge>
+                      ))}
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="aspect-video overflow-hidden">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        width={600}
-                        height={400}
-                        data-ai-hint={item.aiHint}
-                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[625px]">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl text-primary font-headline">{item.title}</DialogTitle>
-                  <DialogDescription>{item.details}</DialogDescription>
-                </DialogHeader>
-                <div className="py-4">
-                  <h4 className="font-semibold mb-2">Technologies Used:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {item.tech.map((tech) => (
-                      <Badge key={tech} variant="secondary">{tech}</Badge>
-                    ))}
                   </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-          ))}
+                </DialogContent>
+              </Dialog>
+            ))
+          )}
         </div>
       </div>
     </section>
