@@ -1,5 +1,6 @@
 import { InteractiveTerminal } from '@/components/shared/interactive-terminal';
 import Image from 'next/image';
+import { NeuralNetwork } from '@/components/shared/neural-network';
 
 export function HeroSection() {
   return (
@@ -10,14 +11,9 @@ export function HeroSection() {
             <InteractiveTerminal />
           </div>
           <div className="flex flex-col justify-center items-center">
-            <Image
-                src="https://placehold.co/600x400.png"
-                alt="Isometric Infrastructure"
-                width={600}
-                height={400}
-                className="rounded-lg shadow-2xl shadow-primary/20"
-                data-ai-hint="isometric infrastructure dark"
-            />
+            <div className="w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] relative">
+              <NeuralNetwork />
+            </div>
           </div>
         </div>
       </div>
