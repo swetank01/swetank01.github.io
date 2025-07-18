@@ -1,63 +1,56 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Progress } from '@/components/ui/progress';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { DigitalRain } from '@/components/shared/digital-rain';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Cpu, Dna, Bot, Database, GitBranch, Terminal } from 'lucide-react';
 
 const skills = [
-  { name: 'Kubernetes', level: 95 },
-  { name: 'AWS', level: 90 },
-  { name: 'Terraform', level: 90 },
-  { name: 'Docker', level: 98 },
-  { name: 'Jenkins/CI-CD', level: 85 },
-  { name: 'Python', level: 80 },
-  { name: 'Ansible', level: 75 },
-  { name: 'Prometheus & Grafana', level: 88 },
+  { 
+    name: 'Kubernetes', 
+    icon: Cpu, 
+    log: '> kubectl get pods --all-namespaces\n> All systems operational.' 
+  },
+  { 
+    name: 'AWS', 
+    icon: Dna, 
+    log: '> aws ec2 describe-instances --region us-east-1\n> All instances running.' 
+  },
+  { 
+    name: 'Terraform', 
+    icon: Bot, 
+    log: '> terraform apply -auto-approve\n> Apply complete! Resources: 3 added, 0 changed, 0 destroyed.' 
+  },
+  { 
+    name: 'Docker', 
+    icon: Database, 
+    log: '> docker ps\n> CONTAINER ID   IMAGE          COMMAND\n> c3f279d17e0a   nginx:latest   "nginx -g \'daemon of…"' 
+  },
+  { 
+    name: 'CI/CD', 
+    icon: GitBranch, 
+    log: '> pipeline status: SUCCESS\n> Deployment to production complete.' 
+  },
+  { 
+    name: 'Python', 
+    icon: Terminal,
+    log: 'import automation_script\nautomation_script.run()' 
+  },
 ];
 
-function SkillBar({ name, level }: { name: string; level: number }) {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    // Animate progress bar on mount
-    const timer = setTimeout(() => setProgress(level), 100);
-    return () => clearTimeout(timer);
-  }, [level]);
-
+function SkillCardSkeleton() {
   return (
-    <div>
-      <div className="flex justify-between items-center mb-1">
-        <span className="text-sm font-medium text-foreground/80">{name}</span>
-        <span className="text-sm font-mono text-primary">{progress}%</span>
-      </div>
-      <Progress value={progress} className="h-2 [&>div]:bg-primary" />
+    <div className="p-4 border rounded-lg bg-muted/30">
+        <div className="flex items-center gap-4">
+            <Skeleton className="h-8 w-8 rounded-md" />
+            <Skeleton className="h-5 w-32" />
+        </div>
     </div>
   );
 }
-
-function SkillsSkeleton() {
-  return (
-    <Card className="bg-background/80 backdrop-blur-sm">
-      <CardHeader>
-        <Skeleton className="h-7 w-48" />
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i}>
-            <div className="flex justify-between items-center mb-1">
-              <Skeleton className="h-5 w-32" />
-              <Skeleton className="h-5 w-10" />
-            </div>
-            <Skeleton className="h-2 w-full" />
-          </div>
-        ))}
-      </CardContent>
-    </Card>
-  );
-}
-
 
 export function SkillsSection() {
   const [isLoading, setIsLoading] = useState(true);
@@ -80,20 +73,38 @@ export function SkillsSection() {
               My expertise lies in building robust, scalable, and automated cloud-native solutions. I thrive on orchestrating complex systems and streamlining development lifecycles.
             </p>
           </div>
-          {isLoading ? (
-            <SkillsSkeleton />
-          ) : (
-            <Card className="bg-background/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle>Skills & Proficiencies</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {skills.map((skill) => (
-                  <SkillBar key={skill.name} name={skill.name} level={skill.level} />
-                ))}
-              </CardContent>
-            </Card>
-          )}
+          
+          <Card className="bg-background/80 backdrop-blur-sm p-6">
+            <CardContent className="p-0">
+              {isLoading ? (
+                 <div className="grid grid-cols-2 gap-4">
+                    {Array.from({ length: 6 }).map((_, i) => <SkillCardSkeleton key={i} />)}
+                 </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  {skills.map((skill) => (
+                    <Popover key={skill.name}>
+                      <PopoverTrigger asChild>
+                        <div className="group flex items-center gap-4 p-4 rounded-lg border border-primary/20 bg-muted/30 hover:bg-primary/10 hover:border-primary/50 cursor-pointer transition-all">
+                          <skill.icon className="w-8 h-8 text-primary/70 group-hover:text-primary transition-colors" />
+                          <h3 className="font-headline text-lg text-foreground/80 group-hover:text-foreground transition-colors">{skill.name}</h3>
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-80 bg-black/80 border-primary/30 text-primary font-code backdrop-blur-sm">
+                        <div className="flex items-center gap-2 mb-2">
+                            <Terminal className="w-4 h-4" />
+                            <p className="text-sm font-semibold">Log Output</p>
+                        </div>
+                        <div className="p-2 rounded-sm bg-black/50 text-xs whitespace-pre-wrap">
+                            {skill.log}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>
