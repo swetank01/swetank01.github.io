@@ -57,15 +57,16 @@ export function AboutSection() {
   useEffect(() => {
     if (isLoading) return;
 
-    let logIndex = 0;
     const intervalId = setInterval(() => {
-      if (logIndex < loginSequence.length) {
-        setLog(prev => [...prev, { text: loginSequence[logIndex].text, id: logIndex }]);
-        logIndex++;
-      } else {
-        clearInterval(intervalId);
-        setIsTyping(true);
-      }
+      setLog(prevLog => {
+        if (prevLog.length < loginSequence.length) {
+          return [...prevLog, { text: loginSequence[prevLog.length].text, id: prevLog.length }];
+        } else {
+          clearInterval(intervalId);
+          setIsTyping(true);
+          return prevLog;
+        }
+      });
     }, 300);
 
     return () => clearInterval(intervalId);
