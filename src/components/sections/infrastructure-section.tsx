@@ -1,12 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Server, Share2, Database, X } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 
 const infraItems = [
@@ -48,33 +46,7 @@ const infraItems = [
   },
 ];
 
-function InfraCardSkeleton() {
-  return (
-    <Card className="overflow-hidden">
-      <CardHeader className="flex-row items-center gap-4">
-        <Skeleton className="w-8 h-8 rounded-sm" />
-        <div className="w-full space-y-2">
-          <Skeleton className="h-5 w-3/4" />
-          <Skeleton className="h-4 w-full" />
-        </div>
-      </CardHeader>
-      <CardContent>
-        <Skeleton className="aspect-video w-full" />
-      </CardContent>
-    </Card>
-  );
-}
-
 export function InfrastructureSection() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <section id="infra" className="w-full py-12 md:py-24 lg:py-32 bg-muted/30">
       <div className="container px-4 md:px-6">
@@ -87,82 +59,74 @@ export function InfrastructureSection() {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-          {isLoading ? (
-            <>
-              <InfraCardSkeleton />
-              <InfraCardSkeleton />
-              <InfraCardSkeleton />
-            </>
-          ) : (
-            infraItems.map((item) => (
-              <Dialog key={item.id}>
-                <DialogTrigger asChild>
-                  <Card className="overflow-hidden cursor-pointer group transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
-                    <CardHeader className="flex-row items-center gap-4">
-                      <item.icon className="w-8 h-8 text-primary" />
-                      <div>
-                        <CardTitle>{item.title}</CardTitle>
-                        <CardDescription>{item.description}</CardDescription>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="aspect-video overflow-hidden">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          width={600}
-                          height={400}
-                          data-ai-hint={item.aiHint}
-                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-4xl bg-[#1a1a1a] border-primary/20 font-code text-lime-300/80 p-0">
-                  <DialogHeader className="p-4 border-b border-primary/20 flex-row justify-between items-center">
-                    <DialogTitle className="text-xl text-primary font-headline flex items-center gap-2">
-                      <item.icon className="w-6 h-6" /> {item.title}
-                    </DialogTitle>
-                    <DialogTrigger>
-                        <X className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors" />
-                        <span className="sr-only">Close</span>
-                    </DialogTrigger>
-                  </DialogHeader>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                    <div className="p-6 pr-3">
-                        <h3 className="font-headline text-primary text-lg mb-2">SYSTEM DETAILS</h3>
-                        <DialogDescription className="text-foreground/70 mb-4">{item.details}</DialogDescription>
-                        
-                        <Separator className="my-4 bg-primary/20"/>
+          {infraItems.map((item) => (
+            <Dialog key={item.id}>
+              <DialogTrigger asChild>
+                <Card className="overflow-hidden cursor-pointer group transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+                  <CardHeader className="flex-row items-center gap-4">
+                    <item.icon className="w-8 h-8 text-primary" />
+                    <div>
+                      <CardTitle>{item.title}</CardTitle>
+                      <CardDescription>{item.description}</CardDescription>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="aspect-video overflow-hidden">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        width={600}
+                        height={400}
+                        data-ai-hint={item.aiHint}
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-4xl bg-[#1a1a1a] border-primary/20 font-code text-lime-300/80 p-0">
+                <DialogHeader className="p-4 border-b border-primary/20 flex-row justify-between items-center">
+                  <DialogTitle className="text-xl text-primary font-headline flex items-center gap-2">
+                    <item.icon className="w-6 h-6" /> {item.title}
+                  </DialogTitle>
+                  <DialogTrigger>
+                      <X className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors" />
+                      <span className="sr-only">Close</span>
+                  </DialogTrigger>
+                </DialogHeader>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                  <div className="p-6 pr-3">
+                      <h3 className="font-headline text-primary text-lg mb-2">SYSTEM DETAILS</h3>
+                      <DialogDescription className="text-foreground/70 mb-4">{item.details}</DialogDescription>
+                      
+                      <Separator className="my-4 bg-primary/20"/>
 
-                        <h4 className="font-headline text-primary mb-2">TECHNOLOGIES USED:</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {item.tech.map((tech) => (
-                            <Badge key={tech} variant="secondary" className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">{tech}</Badge>
-                          ))}
-                        </div>
-                    </div>
-                    <div className="p-6 pl-3 border-l border-primary/20 bg-black/20">
-                        <h3 className="font-headline text-primary text-lg mb-2">ARCHITECTURE BLUEPRINT</h3>
-                        <div className="aspect-video relative overflow-hidden rounded-md border-2 border-primary/30 p-2 bg-black/30">
-                           <Image 
-                                src={item.blueprintImage}
-                                alt={`${item.title} blueprint`}
-                                layout="fill"
-                                objectFit="cover"
-                                data-ai-hint={item.blueprintAiHint}
-                                className="opacity-70"
-                           />
-                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                           <p className="absolute bottom-2 right-2 text-xs text-primary/50">CLASSIFIED: LEVEL 7</p>
-                        </div>
-                    </div>
+                      <h4 className="font-headline text-primary mb-2">TECHNOLOGIES USED:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {item.tech.map((tech) => (
+                          <Badge key={tech} variant="secondary" className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">{tech}</Badge>
+                        ))}
+                      </div>
                   </div>
-                </DialogContent>
-              </Dialog>
-            ))
-          )}
+                  <div className="p-6 pl-3 border-l border-primary/20 bg-black/20">
+                      <h3 className="font-headline text-primary text-lg mb-2">ARCHITECTURE BLUEPRINT</h3>
+                      <div className="aspect-video relative overflow-hidden rounded-md border-2 border-primary/30 p-2 bg-black/30">
+                         <Image 
+                              src={item.blueprintImage}
+                              alt={`${item.title} blueprint`}
+                              layout="fill"
+                              objectFit="cover"
+                              data-ai-hint={item.blueprintAiHint}
+                              className="opacity-70"
+                         />
+                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                         <p className="absolute bottom-2 right-2 text-xs text-primary/50">CLASSIFIED: LEVEL 7</p>
+                      </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          ))}
         </div>
       </div>
     </section>
