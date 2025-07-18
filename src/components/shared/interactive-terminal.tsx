@@ -15,7 +15,7 @@ const commands = [
   { cmd: 'Connecting...', delay: 100 },
   { cmd: 'Fetching profile...', delay: 200 },
   { cmd: 'PROFILE:', delay: 50 },
-  { cmd: 'NAME: Code Stream', delay: 50 },
+  { cmd: 'NAME: Sw3t@nK', delay: 50 },
   { cmd: 'ROLE: DevOps Engineer', delay: 50 },
   { cmd: 'STATUS: Ready to build.', delay: 50 },
 ];

@@ -26,7 +26,7 @@ export function Header() {
         <div className="container flex h-14 items-center justify-between">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg">
             <TerminalSquare className="h-6 w-6 text-primary" />
-            <span className="font-headline">Code Stream</span>
+            <span className="font-headline">Sw3t@nK</span>
           </Link>
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
@@ -60,7 +60,7 @@ export function Header() {
       <div className="container flex h-14 items-center">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg mr-6">
           <TerminalSquare className="h-6 w-6 text-primary" />
-          <span className="font-headline">Code Stream</span>
+          <span className="font-headline">Sw3t@nK</span>
         </Link>
         <nav className="flex items-center gap-6 text-sm">
           {navLinks.map((link) => (
