@@ -8,8 +8,9 @@ import { DigitalRain } from './digital-rain';
 import { HeroSection } from '../sections/hero-section';
 import { GlitchText } from './glitch-text';
 import { YinYangIcon } from './yin-yang-icon';
+import { cn } from '@/lib/utils';
 
-type SequenceStep = 'BOOTING' | 'CHOICE' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'YIN_YANG';
+type SequenceStep = 'BOOTING' | 'CHOICE' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'YIN_YANG' | 'EXITING_TO_CORPORATE';
 
 const bootMessages = [
   'Powering On...',
@@ -29,6 +30,7 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
   const [bootLog, setBootLog] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
+  const [isExitingToCorp, setIsExitingToCorp] = useState(false);
 
   const meetInputRef = useRef<HTMLInputElement>(null);
 
@@ -73,7 +75,16 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
     if (step === 'MEET_WHO') {
       meetInputRef.current?.focus();
     }
-  }, [step]);
+    
+    if (step === 'EXITING_TO_CORPORATE') {
+      setIsExitingToCorp(true);
+      const timer = setTimeout(() => {
+        onRestart();
+      }, 1500); // Match animation duration
+      return () => clearTimeout(timer);
+    }
+
+  }, [step, onRestart]);
 
   const handleMeetSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,8 +103,7 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
   };
 
   const handleBluePillClick = () => {
-    // This now restarts the entire experience, taking user back to corporate page
-    onRestart();
+    setStep('EXITING_TO_CORPORATE');
   };
 
   const handleExit = () => {
@@ -146,7 +156,13 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
         </CardContent>
     </Card>
   );
-  
+
+  const renderExitingToCorporate = () => (
+    <div className="w-full max-w-md p-4 text-primary font-code text-center">
+        <GlitchText text="Returning to assigned reality..." />
+    </div>
+  );
+
   const renderYinYang = () => (
     <div className="w-full h-full flex items-center justify-center fade-in cursor-pointer" onClick={onRestart}>
       <YinYangIcon className="w-24 h-24 text-primary hover:text-white hover:rotate-180 transition-all duration-1000" />
@@ -200,6 +216,9 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
       case 'YIN_YANG':
         content = renderYinYang();
         break;
+      case 'EXITING_TO_CORPORATE':
+        content = renderExitingToCorporate();
+        break;
       default:
         content = null;
     }
@@ -212,7 +231,9 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
   }
 
   return (
-    <div className="w-full h-screen bg-black font-code">
+    <div className={cn("w-full h-screen bg-black font-code", {
+      'animate-glitch-screen-to-white': isExitingToCorp
+    })}>
       {showRain && <DigitalRain isMatrix a11y={false} />}
       <div className="relative z-10 w-full h-full flex items-center justify-center">
         {renderContent()}
