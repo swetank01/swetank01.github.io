@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Circle, Volume2, VolumeX } from 'lucide-react';
 import { useSound } from '@/hooks/use-sound';
 import { GlitchText } from '@/components/shared/glitch-text';
+import { DigitalRain } from '@/components/shared/digital-rain';
 
 const asciiArt = `
   .d8888b. d88888b d888888b .d8888b.  .d88b.  d8b   db d88888D 
