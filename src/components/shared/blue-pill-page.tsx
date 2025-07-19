@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { Linkedin, Github, Download, CheckCircle, Briefcase, Mail, Phone } from 'lucide-react';
+import { Linkedin, Github, Download, CheckCircle, Mail, Phone } from 'lucide-react';
 
 const skills = [
     "Cloud Architecture (AWS, Azure)",
@@ -32,36 +32,43 @@ const projects = [
 
 const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
     const [name, setName] = useState('Swetank');
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const glitchIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    const startGlitch = () => {
-        if (intervalRef.current) return;
-        intervalRef.current = setInterval(() => {
-            setName(prev => prev === 'Swetank' ? 'Sw3t@nK' : 'Swetank');
+    const startGlitching = () => {
+        let count = 0;
+        glitchIntervalRef.current = setInterval(() => {
+            setName(prev => (prev === 'Swetank' ? 'Sw3t@nK' : 'Swetank'));
+            count++;
+            if (count > 8) { // Glitch for about a second
+                stopGlitching();
+            }
         }, 100);
     };
 
-    const stopGlitch = () => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
+    const stopGlitching = () => {
+        if (glitchIntervalRef.current) {
+            clearInterval(glitchIntervalRef.current);
+            glitchIntervalRef.current = null;
         }
         setName('Swetank');
+        // Schedule the next glitch
+        timeoutRef.current = setTimeout(startGlitching, 3000 + Math.random() * 2000);
     };
 
     useEffect(() => {
+        // Start the first glitch after a delay
+        timeoutRef.current = setTimeout(startGlitching, 2000);
+
         return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
+            if (glitchIntervalRef.current) clearInterval(glitchIntervalRef.current);
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
         };
     }, []);
 
     return (
         <span
             className="glitch-wrapper"
-            onMouseEnter={startGlitch}
-            onMouseLeave={stopGlitch}
             onClick={onRestart}
         >
             <span className="glitch-text" data-text="Sw3t@nK">
@@ -105,7 +112,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                             </CardHeader>
                             <CardContent>
                                 <p>
-                                    Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices.
+                                    Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices. 
                                 </p>
                             </CardContent>
                         </Card>
