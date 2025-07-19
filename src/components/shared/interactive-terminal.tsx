@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Circle } from 'lucide-react';
+import { Circle, Volume2, VolumeX } from 'lucide-react';
 import { useSound } from '@/hooks/use-sound';
 
 const initialCommands = [
@@ -21,13 +21,33 @@ const projects = [
   'high-availability-database.md',
 ];
 
+const skills = [
+    'Kubernetes',
+    'AWS',
+    'Terraform',
+    'Docker',
+    'CI/CD (Jenkins, GitHub Actions)',
+    'Python',
+    'Ansible',
+    'Prometheus & Grafana',
+    'Linux System Administration',
+    'Network Security'
+];
+
+const experience = [
+    { title: 'Senior DevOps Engineer', company: 'Cyberdyne Systems', duration: '2021-Present'},
+    { title: 'DevOps Engineer', company: 'Stark Industries', duration: '2018-2021'},
+    { title: 'Junior System Administrator', company: 'Wayne Enterprises', duration: '2016-2018'},
+];
+
+
 export function InteractiveTerminal() {
   const [lines, setLines] = useState<{ text: string; prompt?: boolean }[]>([]);
   const [isAnimating, setIsAnimating] = useState(true);
   const [inputValue, setInputValue] = useState('');
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { playKeypressSound } = useSound();
+  const { isSoundEnabled, toggleSound, playKeypressSound } = useSound();
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -93,25 +113,42 @@ export function InteractiveTerminal() {
     if (!inputValue.trim()) return;
 
     const command = inputValue.trim();
-    const newLines = [...lines, { text: command, prompt: true }];
+    let newLines = [...lines, { text: command, prompt: true }];
     
     const [cmd, ...args] = command.split(' ');
 
     switch(cmd) {
       case 'help':
         newLines.push({ text: 'Available commands:'});
-        newLines.push({ text: '  whoami    - Display user information'});
-        newLines.push({ text: '  ls        - List files in the current directory'});
-        newLines.push({ text: '  cat <file> - Display file contents'});
-        newLines.push({ text: '  clear     - Clear the terminal screen'});
+        newLines.push({ text: '  whoami       - Display user information'});
+        newLines.push({ text: '  skills       - List core competencies'});
+        newLines.push({ text: '  experience   - Show professional experience'});
+        newLines.push({ text: '  projects     - List featured projects'});
+        newLines.push({ text: '  contact      - Display contact information'});
+        newLines.push({ text: '  clear        - Clear the terminal screen'});
         break;
       case 'whoami':
         newLines.push({ text: 'user: Sw3t@nK' });
         newLines.push({ text: 'role: Creative DevOps Engineer' });
         newLines.push({ text: 'status: Ready to build the future.' });
         break;
-      case 'ls':
-        projects.forEach(p => newLines.push({ text: p }));
+      case 'skills':
+        newLines.push({ text: 'Core Competencies:' });
+        skills.forEach(s => newLines.push({ text: `  - ${s}`}));
+        break;
+      case 'experience':
+        newLines.push({ text: 'Professional Experience:' });
+        experience.forEach(e => newLines.push({ text: `  - ${e.title} @ ${e.company} (${e.duration})`}));
+        break;
+      case 'projects':
+        newLines.push({ text: 'Featured Projects:' });
+        projects.forEach(p => newLines.push({ text: `  - ${p}` }));
+        break;
+      case 'contact':
+        newLines.push({ text: 'Get in touch:' });
+        newLines.push({ text: '  - Email: [REDACTED] - Please use the form on the full site.' });
+        newLines.push({ text: '  - LinkedIn: linkedin.com/in/[REDACTED]' });
+        newLines.push({ text: '  - GitHub: github.com/[REDACTED]' });
         break;
       case 'cat':
         const filename = args[0];
@@ -145,16 +182,20 @@ export function InteractiveTerminal() {
   }
 
   return (
-    <Card className="w-full font-mono text-sm shadow-2xl shadow-primary/10">
-      <CardHeader className="flex flex-row items-center justify-between p-2 border-b">
+    <Card className="w-full h-full font-mono text-sm shadow-2xl shadow-primary/10 bg-black/70 backdrop-blur-sm border-primary/20 flex flex-col">
+      <CardHeader className="flex flex-row items-center justify-between p-2 border-b border-primary/20 flex-shrink-0">
         <div className="flex gap-1.5">
           <Circle className="w-3 h-3 text-red-500 fill-current" />
           <Circle className="w-3 h-3 text-yellow-500 fill-current" />
           <Circle className="w-3 h-3 text-green-500 fill-current" />
         </div>
         <p className="text-xs text-muted-foreground">/bin/bash</p>
+        <button onClick={toggleSound} className="text-muted-foreground hover:text-primary">
+            {isSoundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            <span className="sr-only">Toggle Sound</span>
+        </button>
       </CardHeader>
-      <CardContent className="p-4 h-80 overflow-y-auto" ref={terminalRef} onClick={handleClick}>
+      <CardContent className="p-4 overflow-y-auto flex-grow" ref={terminalRef} onClick={handleClick}>
         {lines.map((line, index) => (
           <div key={index} className="flex">
             {line.prompt && <span className="text-primary mr-2 flex-shrink-0">$</span>}

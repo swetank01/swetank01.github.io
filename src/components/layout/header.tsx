@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useSound } from '@/hooks/use-sound';
 
+// This component is no longer rendered on the main page but is kept for potential future use.
 const navLinks = [
   { href: '#skills', label: 'Skills' },
   { href: '#projects', label: 'Projects' },
@@ -62,7 +63,7 @@ export function Header() {
                   </Link>
                 ))}
               </nav>
-              <div className="mt-8">
+              <div className="absolute bottom-4 right-4">
                 <SoundToggle />
               </div>
             </SheetContent>
@@ -79,17 +80,6 @@ export function Header() {
           <TerminalSquare className="h-6 w-6 text-primary" />
           <span className="font-headline">Sw3t@nK</span>
         </Link>
-        <nav className="flex items-center gap-6 text-sm">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
         <div className="ml-auto">
           <SoundToggle />
         </div>
