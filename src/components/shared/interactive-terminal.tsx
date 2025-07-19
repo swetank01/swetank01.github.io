@@ -16,9 +16,9 @@ const initialCommands = [
 ];
 
 const projects = [
-  'scalable-kubernetes-cluster.md',
-  'secure-vpc-networking.md',
-  'high-availability-database.md',
+  'Project Cerberus - A multi-headed security scanner for cloud environments.',
+  'Nexus Pipeline - Dynamic CI/CD pipeline generator for microservices.',
+  'Automated GitOps - ArgoCD-based framework for managing Kubernetes clusters.',
 ];
 
 const skills = [
@@ -27,11 +27,11 @@ const skills = [
     'Terraform',
     'Docker',
     'CI/CD (Jenkins, GitHub Actions)',
-    'Python',
+    'Python & Go',
     'Ansible',
     'Prometheus & Grafana',
-    'Linux System Administration',
-    'Network Security'
+    'Linux & Networking',
+    'Security Engineering'
 ];
 
 const experience = [
@@ -40,10 +40,12 @@ const experience = [
     { title: 'Junior System Administrator', company: 'Wayne Enterprises', duration: '2016-2018'},
 ];
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export function InteractiveTerminal() {
   const [lines, setLines] = useState<{ text: string; prompt?: boolean }[]>([]);
   const [isAnimating, setIsAnimating] = useState(true);
+  const [isCommandRunning, setIsCommandRunning] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -108,14 +110,51 @@ export function InteractiveTerminal() {
     setInputValue(e.target.value);
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!inputValue.trim()) return;
-
-    const command = inputValue.trim();
+  const runCommand = async (command: string) => {
+    setIsCommandRunning(true);
     let newLines = [...lines, { text: command, prompt: true }];
+    setLines(newLines);
+
+    const [cmd] = command.split(' ');
+
+    const commandProcess = async (title: string, data: any[]) => {
+        newLines.push({ text: `> Running script for '${cmd}'...` });
+        newLines.push({ text: `> Connecting to secure datastore...` });
+        setLines([...newLines]);
+        await sleep(300);
+
+        newLines.push({ text: `> Decrypting records...` });
+        setLines([...newLines]);
+
+        // Progress bar simulation
+        const progressLineIndex = newLines.length;
+        newLines.push({ text: `[${' '.repeat(20)}] 0%`});
+        for (let i = 0; i <= 20; i++) {
+            await sleep(40);
+            const progress = `[${'█'.repeat(i)}${' '.repeat(20-i)}] ${i*5}%`;
+            newLines[progressLineIndex] = { text: progress };
+            setLines([...newLines]);
+        }
+        await sleep(200);
+
+        newLines[progressLineIndex] = { text: `> Records decrypted successfully.` };
+        newLines.push({ text: `> Rendering output...` });
+        newLines.push({ text: `\n--- ${title} ---` });
+        data.forEach(item => newLines.push({ text: `  - ${item}`}));
+        newLines.push({ text: `--- END ---` });
+        setLines([...newLines]);
+    }
     
-    const [cmd, ...args] = command.split(' ');
+    const experienceProcess = async (title: string, data: typeof experience) => {
+        await commandProcess('Professional Experience', []); // Run intro sequence without data
+        
+        let experienceLines: { text: string; prompt?: boolean }[] = [];
+        experience.forEach(e => experienceLines.push({ text: `  - ${e.title} @ ${e.company} (${e.duration})`}));
+        
+        // Replace empty data with formatted data
+        newLines.splice(newLines.length - 2, 1, ...experienceLines);
+        setLines([...newLines]);
+    }
 
     switch(cmd) {
       case 'help':
@@ -126,59 +165,55 @@ export function InteractiveTerminal() {
         newLines.push({ text: '  projects     - List featured projects'});
         newLines.push({ text: '  contact      - Display contact information'});
         newLines.push({ text: '  clear        - Clear the terminal screen'});
+        setLines(newLines);
         break;
       case 'whoami':
         newLines.push({ text: 'user: Sw3t@nK' });
         newLines.push({ text: 'role: Creative DevOps Engineer' });
         newLines.push({ text: 'status: Ready to build the future.' });
+        setLines(newLines);
         break;
       case 'skills':
-        newLines.push({ text: 'Core Competencies:' });
-        skills.forEach(s => newLines.push({ text: `  - ${s}`}));
+        await commandProcess('Core Competencies', skills);
         break;
       case 'experience':
-        newLines.push({ text: 'Professional Experience:' });
-        experience.forEach(e => newLines.push({ text: `  - ${e.title} @ ${e.company} (${e.duration})`}));
+        await experienceProcess('Professional Experience', experience);
         break;
       case 'projects':
-        newLines.push({ text: 'Featured Projects:' });
-        projects.forEach(p => newLines.push({ text: `  - ${p}` }));
+        await commandProcess('Featured Projects', projects);
         break;
       case 'contact':
         newLines.push({ text: 'Get in touch:' });
         newLines.push({ text: '  - Email: [REDACTED] - Please use the form on the full site.' });
         newLines.push({ text: '  - LinkedIn: linkedin.com/in/[REDACTED]' });
         newLines.push({ text: '  - GitHub: github.com/[REDACTED]' });
-        break;
-      case 'cat':
-        const filename = args[0];
-        if (projects.includes(filename)) {
-           newLines.push({ text: `Reading ${filename}:` });
-           if (filename === 'scalable-kubernetes-cluster.md') {
-             newLines.push({ text: 'A multi-cloud, auto-scaling Kubernetes setup for high-traffic applications using Terraform, Istio, and Jenkins.' });
-           } else if (filename === 'secure-vpc-networking.md') {
-             newLines.push({ text: 'Secure AWS VPC with public/private subnets, NAT Gateways, and monitoring via Flow Logs and GuardDuty.' });
-           } else if (filename === 'high-availability-database.md') {
-             newLines.push({ text: 'Fault-tolerant PostgreSQL cluster with Patroni, Ansible for automated failover and replication.' });
-           }
-        } else {
-          newLines.push({ text: `cat: ${filename}: No such file or directory` });
-        }
+        setLines(newLines);
         break;
       case 'clear':
         setLines([]);
         setInputValue('');
+        setIsCommandRunning(false);
         return; 
       default:
         newLines.push({ text: `command not found: ${command}` });
+        setLines(newLines);
     }
-
-    setLines(newLines);
+    
     setInputValue('');
+    setIsCommandRunning(false);
+    setTimeout(() => inputRef.current?.focus(), 100);
+  }
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!inputValue.trim() || isCommandRunning) return;
+    runCommand(inputValue.trim());
   };
 
   const handleClick = () => {
-    inputRef.current?.focus();
+    if (!isCommandRunning) {
+      inputRef.current?.focus();
+    }
   }
 
   return (
@@ -215,6 +250,7 @@ export function InteractiveTerminal() {
               autoCapitalize="off"
               autoCorrect="off"
               className="bg-transparent border-none outline-none text-foreground w-full p-0"
+              disabled={isCommandRunning}
             />
           </form>
         )}
