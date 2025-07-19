@@ -59,7 +59,7 @@ const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
 
     return (
         <span
-            className="glitch-wrapper mx-1"
+            className="glitch-wrapper"
             onMouseEnter={startGlitch}
             onMouseLeave={stopGlitch}
             onClick={onRestart}
@@ -78,7 +78,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
             <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
                 <div className="container mx-auto px-6 py-3 flex justify-between items-center">
                     <div>
-                        <h1 className="text-xl font-bold text-gray-900">Swetank Kumar</h1>
+                        <h1 className="text-xl font-bold text-gray-900"><GlitchName onRestart={onRestart} /> Kumar</h1>
                         <p className="text-sm text-gray-500">Senior DevOps Engineer</p>
                     </div>
                     <nav className="flex items-center gap-2">
@@ -106,7 +106,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                             <CardContent>
                                 <p>
                                     Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices. My professional identity is
-                                    <GlitchName onRestart={onRestart} />.
+                                    <span className="mx-1"><GlitchName onRestart={onRestart} /></span>.
                                 </p>
                             </CardContent>
                         </Card>
@@ -167,7 +167,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
             </main>
             
             <footer className="text-center p-6 text-sm text-gray-500 border-t bg-gray-100 mt-12">
-                © {new Date().getFullYear()} Swetank Kumar. All rights reserved.
+                © {new Date().getFullYear()} <GlitchName onRestart={onRestart} /> Kumar. All rights reserved.
             </footer>
         </div>
     );
