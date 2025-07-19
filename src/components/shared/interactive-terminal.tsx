@@ -7,6 +7,15 @@ import { Circle, Volume2, VolumeX } from 'lucide-react';
 import { useSound } from '@/hooks/use-sound';
 import { generateMissionLog } from '@/ai/flows/generate-log-flow';
 
+const asciiArt = `
+  .d8888b. d88888b d888888b .d8888b.  .d88b.  d8b   db d88888D 
+ 88'  \`YP 88'       \`88'   88'  \`YP .8P  Y8. 888o  88 YP  88'  
+ \`8bo.   88ooooo    88    \`8bo.   88    88 88V8o 88    88    
+   \`Y8b. 88~~~~~    88      \`Y8b. 88    88 88 V8o88    88    
+ db   8D 88.       .88.   db   8D \`8b  d8' 88  V888    88    
+ \`8888Y' Y88888P Y888888P \`8888Y'  \`Y88P'  VP   V8P    YP    
+`;
+
 const initialCommands = [
   { cmd: 'system.boot()', delay: 50, typed: true, prompt: true },
   { cmd: '...', delay: 100 },
@@ -14,7 +23,9 @@ const initialCommands = [
   { cmd: 'System online. Welcome, user.', delay: 200 },
   { cmd: './connect -u Sw3t@nK', delay: 1000, typed: true, prompt: true },
   { cmd: 'Authenticating with public key...', delay: 100 },
-  { cmd: 'Access Granted. Type `help` to see available commands.', delay: 200 },
+  { cmd: 'Access Granted.', delay: 200 },
+  { cmd: asciiArt, delay: 100, color: 'text-primary' },
+  { cmd: 'Type `help` to see available commands.', delay: 200 },
 ];
 
 const projects = [
@@ -44,8 +55,16 @@ const experience = [
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+const createBox = (title: string, contentLines: string[]): string[] => {
+    const maxWidth = Math.max(title.length + 4, ...contentLines.map(l => l.length)) + 4;
+    const top = `┌─${title}─${'─'.repeat(maxWidth - title.length - 4)}┐`;
+    const middle = contentLines.map(line => `│ ${line.padEnd(maxWidth - 4)} │`);
+    const bottom = `└${'─'.repeat(maxWidth - 2)}┘`;
+    return [top, ...middle, bottom];
+}
+
 export function InteractiveTerminal() {
-  const [lines, setLines] = useState<{ text: string; prompt?: boolean }[]>([]);
+  const [lines, setLines] = useState<{ text: string; prompt?: boolean, color?: string }[]>([]);
   const [isAnimating, setIsAnimating] = useState(true);
   const [isCommandRunning, setIsCommandRunning] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -90,7 +109,7 @@ export function InteractiveTerminal() {
         typeChar();
 
       } else {
-        setLines(prev => [...prev, { text: current.cmd, prompt: current.prompt }]);
+        setLines(prev => [...prev, { text: current.cmd, prompt: current.prompt, color: (current as any).color }]);
         lineIndex++;
         timeoutId = setTimeout(processCommand, current.delay);
       }
@@ -119,7 +138,7 @@ export function InteractiveTerminal() {
 
     const [cmd] = command.split(' ');
 
-    const commandProcess = async (title: string, data: string[]) => {
+    const commandProcess = async (title: string, data: string[], color?: string) => {
         newLines.push({ text: `> Running script for '${cmd}'...` });
         newLines.push({ text: `> Connecting to secure datastore...` });
         setLines([...newLines]);
@@ -139,21 +158,23 @@ export function InteractiveTerminal() {
         await sleep(200);
 
         newLines[progressLineIndex] = { text: `> Records decrypted successfully.` };
-        newLines.push({ text: `> Rendering output...` });
-        newLines.push({ text: `\n--- ${title} ---` });
-        data.forEach(item => newLines.push({ text: `  - ${item}`}));
-        newLines.push({ text: `--- END ---` });
+        newLines.push({ text: "" }); // Spacer
+        setLines([...newLines]);
+        
+        const box = createBox(title, data);
+        box.forEach(line => newLines.push({ text: line, color }));
+
+        newLines.push({ text: "" }); // Spacer
         setLines([...newLines]);
     }
     
     const experienceProcess = async () => {
         const title = 'Professional Experience';
-        let formattedExperience = experience.map(e => `${e.title} @ ${e.company} (${e.duration})`);
-        await commandProcess(title, formattedExperience);
+        let formattedExperience = experience.map(e => `${e.title.padEnd(30)} | ${e.company.padEnd(20)} | ${e.duration}`);
+        await commandProcess(title, formattedExperience, 'text-purple-400');
     }
     
     const projectsProcess = async () => {
-        const title = 'Featured Projects';
         newLines.push({ text: `> Running script for 'projects'...` });
         newLines.push({ text: `> Initializing AI log generation subroutine...` });
         setLines([...newLines]);
@@ -161,6 +182,8 @@ export function InteractiveTerminal() {
 
         newLines.push({ text: `> Generating mission logs:` });
         setLines([...newLines]);
+
+        const projectLogs: string[] = [];
 
         for (const project of projects) {
           await sleep(150);
@@ -170,10 +193,14 @@ export function InteractiveTerminal() {
           try {
             const result = await generateMissionLog(project);
             await sleep(100);
+            const logLine = `${project.title}: ${result.log}`;
+            projectLogs.push(logLine);
             newLines.push({ text: `    LOG: ${result.log}` });
             setLines([...newLines]);
           } catch(e) {
-            newLines.push({ text: `    ERROR: Could not generate log for ${project.title}` });
+            const errorLine = `ERROR: Could not generate log for ${project.title}`;
+            projectLogs.push(errorLine);
+            newLines.push({ text: `    ${errorLine}` });
             setLines([...newLines]);
           }
         }
@@ -181,27 +208,37 @@ export function InteractiveTerminal() {
         await sleep(200);
         newLines.push({ text: `> Log generation complete.` });
         setLines([...newLines]);
+        
+        const box = createBox("AI-Generated Mission Logs", projectLogs);
+        box.forEach(line => newLines.push({ text: line, color: 'text-green-400' }));
+        newLines.push({ text: "" }); // Spacer
+        setLines([...newLines]);
     }
 
     switch(cmd.toLowerCase()) {
       case 'help':
-        newLines.push({ text: 'Available commands:'});
-        newLines.push({ text: '  whoami       - Display user information'});
-        newLines.push({ text: '  skills       - List core competencies'});
-        newLines.push({ text: '  experience   - Show professional experience'});
-        newLines.push({ text: '  projects     - Generate AI mission logs for projects'});
-        newLines.push({ text: '  contact      - Display contact information'});
-        newLines.push({ text: '  clear        - Clear the terminal screen'});
+        const helpBox = createBox("Help", [
+            "whoami       - Display user information",
+            "skills       - List core competencies",
+            "experience   - Show professional experience",
+            "projects     - Generate AI mission logs for projects",
+            "contact      - Display contact information",
+            "clear        - Clear the terminal screen",
+        ]);
+        helpBox.forEach(line => newLines.push({ text: line, color: 'text-cyan-400' }));
         setLines(newLines);
         break;
       case 'whoami':
-        newLines.push({ text: 'user: Sw3t@nK' });
-        newLines.push({ text: 'role: Creative DevOps Engineer' });
-        newLines.push({ text: 'status: Ready to build the future.' });
+        const whoamiBox = createBox("whoami", [
+            "user: Sw3t@nK",
+            "role: Creative DevOps Engineer",
+            "status: Ready to build the future.",
+        ]);
+        whoamiBox.forEach(line => newLines.push({ text: line, color: 'text-yellow-400'}));
         setLines(newLines);
         break;
       case 'skills':
-        await commandProcess('Core Competencies', skills);
+        await commandProcess('Core Competencies', skills, 'text-blue-400');
         break;
       case 'experience':
         await experienceProcess();
@@ -210,10 +247,12 @@ export function InteractiveTerminal() {
         await projectsProcess();
         break;
       case 'contact':
-        newLines.push({ text: 'Get in touch:' });
-        newLines.push({ text: '  - Email: [REDACTED] - Please use the form on the full site.' });
-        newLines.push({ text: '  - LinkedIn: linkedin.com/in/[REDACTED]' });
-        newLines.push({ text: '  - GitHub: github.com/[REDACTED]' });
+        const contactBox = createBox("Contact", [
+          'Email: [REDACTED] - Please use the form on the full site.',
+          'LinkedIn: linkedin.com/in/[REDACTED]',
+          'GitHub: github.com/[REDACTED]'
+        ]);
+        contactBox.forEach(line => newLines.push({ text: line, color: 'text-orange-400' }));
         setLines(newLines);
         break;
       case 'clear':
@@ -222,7 +261,7 @@ export function InteractiveTerminal() {
         setIsCommandRunning(false);
         return; 
       default:
-        newLines.push({ text: `command not found: ${command}` });
+        newLines.push({ text: `command not found: ${command}`, color: 'text-red-500' });
         setLines(newLines);
     }
     
@@ -261,7 +300,7 @@ export function InteractiveTerminal() {
         {lines.map((line, index) => (
           <div key={index} className="flex">
             {line.prompt && <span className="text-primary mr-2 flex-shrink-0">$</span>}
-            <p className="whitespace-pre-wrap break-words">{line.text}</p>
+            <p className={`whitespace-pre-wrap break-words ${line.color || ''}`}>{line.text}</p>
           </div>
         ))}
         {!isAnimating && (
