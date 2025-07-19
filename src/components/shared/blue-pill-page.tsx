@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { Briefcase, Users, CheckCircle, Mail, Phone, Download, Building } from 'lucide-react';
+import { Briefcase, Users, CheckCircle, Mail, Phone, Download, Building, Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -32,11 +32,11 @@ const projects = [
     },
 ];
 
-const team = [
-    { name: 'John Doe', role: 'Chief Visionary Officer', avatar: 'https://placehold.co/100x100.png', hint: 'man face' },
-    { name: 'Jane Smith', role: 'VP of Synergistic Solutions', avatar: 'https://placehold.co/100x100.png', hint: 'woman face' },
+const agents = [
+    { name: 'Agent Kube', role: 'Orchestration Specialist', avatar: 'https://placehold.co/100x100.png', hint: 'robot face' },
+    { name: 'Agent Terra', role: 'Infrastructure Architect', avatar: 'https://placehold.co/100x100.png', hint: 'robot face' },
     { name: 'Swetank Soni', role: 'Lead DevOps Architect', avatar: 'https://placehold.co/100x100.png', hint: 'man glasses face' },
-    { name: 'Emily White', role: 'Director of Innovation', avatar: 'https://placehold.co/100x100.png', hint: 'woman smiling face' },
+    { name: 'Agent CI', role: 'Deployment Coordinator', avatar: 'https://placehold.co/100x100.png', hint: 'robot face' },
 ]
 
 const GlitchName = ({ onRestart, isGlitching }: { onRestart: () => void, isGlitching: boolean }) => {
@@ -153,23 +153,23 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
 
                 {/* Team Section */}
                 <section id="team" className="text-center mb-24">
-                    <h2 className="text-3xl font-bold text-slate-900 mb-4">Meet the Innovators</h2>
-                    <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-12">Our team is a synergistic blend of strategic thinkers and tactical executors, driving the future of technology.</p>
+                    <h2 className="text-3xl font-bold text-slate-900 mb-4">Meet My AI Agents</h2>
+                    <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-12">My team of specialized AI agents who assist in automating and managing complex cloud infrastructure, orchestrated by a human architect.</p>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        {team.map((member, i) => (
+                        {agents.map((agent, i) => (
                             <div key={i} className="flex flex-col items-center">
                                 <Image
-                                    src={member.avatar}
-                                    alt={member.name}
+                                    src={agent.avatar}
+                                    alt={agent.name}
                                     width={100}
                                     height={100}
-                                    data-ai-hint={member.hint}
+                                    data-ai-hint={agent.hint}
                                     className="rounded-full mb-4 shadow-md"
                                 />
                                  <h3 className="font-semibold text-slate-800">
-                                    {member.name === 'Swetank Soni' ? <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> : member.name.split(' ')[0]} {member.name.split(' ')[1]}
+                                    {agent.name === 'Swetank Soni' ? <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> : agent.name.split(' ')[0]} {agent.name.split(' ')[1]}
                                  </h3>
-                                <p className="text-sm text-slate-500">{member.role}</p>
+                                <p className="text-sm text-slate-500">{agent.role}</p>
                             </div>
                         ))}
                     </div>
@@ -203,4 +203,3 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
         </div>
     );
 }
-
