@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { DigitalRain } from '@/components/shared/digital-rain';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Cpu, Dna, Bot, Database, GitBranch, Terminal } from 'lucide-react';
+import { useSound } from '@/hooks/use-sound';
 
 const skills = [
   { 
@@ -41,6 +42,8 @@ const skills = [
 ];
 
 export function SkillsSection() {
+  const { playHoverSound } = useSound();
+
   return (
     <section id="skills" className="w-full py-12 md:py-24 lg:py-32 relative overflow-hidden">
       <DigitalRain />
@@ -59,7 +62,9 @@ export function SkillsSection() {
                 {skills.map((skill) => (
                   <Popover key={skill.name}>
                     <PopoverTrigger asChild>
-                      <div className="group flex items-center gap-4 p-4 rounded-lg border border-primary/20 bg-muted/30 hover:bg-primary/10 hover:border-primary/50 cursor-pointer transition-all">
+                      <div 
+                        onMouseEnter={playHoverSound}
+                        className="group flex items-center gap-4 p-4 rounded-lg border border-primary/20 bg-muted/30 hover:bg-primary/10 hover:border-primary/50 cursor-pointer transition-all">
                         <skill.icon className="w-8 h-8 text-primary/70 group-hover:text-primary transition-colors" />
                         <h3 className="font-headline text-lg text-foreground/80 group-hover:text-foreground transition-colors">{skill.name}</h3>
                       </div>

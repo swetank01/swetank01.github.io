@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Circle } from 'lucide-react';
+import { useSound } from '@/hooks/use-sound';
 
 const initialCommands = [
   { cmd: 'system.boot()', delay: 50, typed: true, prompt: true },
@@ -26,6 +27,7 @@ export function InteractiveTerminal() {
   const [inputValue, setInputValue] = useState('');
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { playKeypressSound } = useSound();
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -48,6 +50,7 @@ export function InteractiveTerminal() {
 
         const typeChar = () => {
           if (charIndex < lineText.length) {
+            playKeypressSound();
             setLines(prev => {
               const newLines = [...prev];
               newLines[newLines.length - 1].text += lineText[charIndex];
@@ -72,7 +75,7 @@ export function InteractiveTerminal() {
     timeoutId = setTimeout(processCommand, 500);
 
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [playKeypressSound]);
 
   useEffect(() => {
     if (terminalRef.current) {
@@ -81,6 +84,7 @@ export function InteractiveTerminal() {
   }, [lines]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    playKeypressSound();
     setInputValue(e.target.value);
   };
 

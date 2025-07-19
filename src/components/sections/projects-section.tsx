@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Github, ExternalLink } from "lucide-react";
 import Link from 'next/link';
+import { useSound } from "@/hooks/use-sound";
 
 const projects = [
   {
@@ -30,6 +31,8 @@ const projects = [
 ];
 
 export function ProjectsSection() {
+  const { playHoverSound } = useSound();
+
   return (
     <section id="projects" className="w-full py-12 md:py-24 lg:py-32">
       <div className="space-y-4 text-center">
@@ -44,6 +47,7 @@ export function ProjectsSection() {
         {projects.map((project, index) => (
           <Card 
             key={project.title} 
+            onMouseEnter={playHoverSound}
             className="group bg-background/50 border-border/30 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-2 fade-in-up flex flex-col"
             style={{ animationDelay: `${index * 150}ms`, opacity: 0 }}
           >

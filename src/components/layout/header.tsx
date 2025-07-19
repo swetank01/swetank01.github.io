@@ -2,10 +2,13 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, TerminalSquare } from 'lucide-react';
+import { Menu, TerminalSquare, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { useSound } from '@/hooks/use-sound';
 
 const navLinks = [
   { href: '#skills', label: 'Skills' },
@@ -18,8 +21,18 @@ const navLinks = [
 export function Header() {
   const isMobile = useIsMobile();
   const [isSheetOpen, setSheetOpen] = useState(false);
+  const { isSoundEnabled, toggleSound } = useSound();
 
   const closeSheet = () => setSheetOpen(false);
+
+  const SoundToggle = () => (
+    <div className="flex items-center gap-2">
+      <Label htmlFor="sound-toggle" className="text-muted-foreground">
+        {isSoundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+      </Label>
+      <Switch id="sound-toggle" checked={isSoundEnabled} onCheckedChange={toggleSound} />
+    </div>
+  );
 
   if (isMobile) {
     return (
@@ -49,6 +62,9 @@ export function Header() {
                   </Link>
                 ))}
               </nav>
+              <div className="mt-8">
+                <SoundToggle />
+              </div>
             </SheetContent>
           </Sheet>
         </div>
@@ -74,6 +90,9 @@ export function Header() {
             </Link>
           ))}
         </nav>
+        <div className="ml-auto">
+          <SoundToggle />
+        </div>
       </div>
     </header>
   );
