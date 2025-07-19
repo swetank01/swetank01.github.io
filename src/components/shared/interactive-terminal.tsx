@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -189,7 +188,7 @@ export function InteractiveTerminal({ onExit }: InteractiveTerminalProps) {
     setLines([...newLines]);
 
     const [cmd, ...args] = command.trim().split(' ');
-    const normalizedCmd = command.trim().toLowerCase();
+    const normalizedCmd = cmd.trim().toLowerCase();
 
     const addGlitchLine = async (text: string, color?: string) => {
       newLines.push({ text, color, isGlitch: true });
@@ -321,10 +320,16 @@ export function InteractiveTerminal({ onExit }: InteractiveTerminalProps) {
         break;
       case 'exit':
       case 'bye':
-      case 'init 0':
-        await addGlitchLine('> Closing connection...');
+      case 'init':
+        if (command.trim().toLowerCase() === 'init 0') {
+           await addGlitchLine('> sudo: permission granted.');
+           await sleep(500);
+        }
+        await addGlitchLine('> Shutting down system...');
         await sleep(500);
-        await addGlitchLine('> System shutting down...');
+        await addGlitchLine('> Terminating all processes...');
+        await sleep(800);
+        await addGlitchLine('>> "The body cannot live without the mind."', 'text-yellow-400');
         await sleep(1000);
         onExit();
         return;
@@ -380,7 +385,7 @@ export function InteractiveTerminal({ onExit }: InteractiveTerminalProps) {
               </p>
             </div>
           ))}
-          {!isAnimating && (
+          {!isAnimating && !isCommandRunning && (
             <form onSubmit={handleFormSubmit} className="flex relative">
               <label htmlFor="terminal-input" className="text-primary mr-2 flex-shrink-0">$</label>
               <div className="relative w-full">

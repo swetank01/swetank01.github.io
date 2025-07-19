@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -9,7 +8,7 @@ import { DigitalRain } from './digital-rain';
 import { HeroSection } from '../sections/hero-section';
 import { GlitchText } from './glitch-text';
 
-type SequenceStep = 'BOOTING' | 'CHOICE' | 'BLUE_PILL_OUTCOME' | 'MEET_WHO' | 'ACCESS_GRANTED';
+type SequenceStep = 'BOOTING' | 'CHOICE' | 'BLUE_PILL_OUTCOME' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'EXITING';
 
 const bootMessages = [
   'Powering On...',
@@ -96,7 +95,11 @@ export function IntroSequence() {
   };
 
   const handleExit = () => {
-    setStep('BOOTING');
+    setStep('EXITING');
+    // After animation, reset to boot.
+    setTimeout(() => {
+      setStep('BOOTING');
+    }, 2000);
   }
 
   const renderBooting = () => (
@@ -153,48 +156,69 @@ export function IntroSequence() {
     </div>
   );
 
+  const renderExiting = () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="black-hole-circle" />
+    </div>
+  );
+
   const renderContent = () => {
-    switch(step) {
-      case 'BOOTING':
-        return renderBooting();
-      case 'CHOICE':
-        return renderChoice();
-      case 'BLUE_PILL_OUTCOME':
-        return renderBluePillOutcome();
-      case 'MEET_WHO':
-        return (
-          <Card className="w-full max-w-md bg-black/50 border-primary/20 p-4 text-primary animate-fade-in-up">
-            <CardContent className="p-2">
-              <form onSubmit={handleMeetSubmit}>
-                <label htmlFor="meet" className="block text-lg mb-4">
-                  <GlitchText text="How deep does the rabbit-hole go? Who do you want to meet?" />
-                </label>
-                <Input
-                  ref={meetInputRef}
-                  id="meet"
-                  type="text"
-                  value={meetName}
-                  onChange={(e) => setMeetName(e.target.value)}
-                  className="bg-transparent border-primary/50 text-primary text-lg"
-                  autoComplete="off"
-                />
-                <Button type="submit" variant="ghost" className="mt-4 w-full text-primary hover:bg-primary/10 hover:text-primary">
-                  Authenticate
-                </Button>
-                {error && (
-                  <p className="mt-4 text-red-500 text-center">
-                    <GlitchText text={error} />
-                  </p>
-                )}
-              </form>
-            </CardContent>
-          </Card>
-        );
-      case 'ACCESS_GRANTED':
-        return <HeroSection onExit={handleExit} />;
-      default:
-        return null;
+    const mainContent = (() => {
+      switch(step) {
+        case 'BOOTING':
+          return renderBooting();
+        case 'CHOICE':
+          return renderChoice();
+        case 'BLUE_PILL_OUTCOME':
+          return renderBluePillOutcome();
+        case 'MEET_WHO':
+          return (
+            <Card className="w-full max-w-md bg-black/50 border-primary/20 p-4 text-primary animate-fade-in-up">
+              <CardContent className="p-2">
+                <form onSubmit={handleMeetSubmit}>
+                  <label htmlFor="meet" className="block text-lg mb-4">
+                    <GlitchText text="How deep does the rabbit-hole go? Who do you want to meet?" />
+                  </label>
+                  <Input
+                    ref={meetInputRef}
+                    id="meet"
+                    type="text"
+                    value={meetName}
+                    onChange={(e) => setMeetName(e.target.value)}
+                    className="bg-transparent border-primary/50 text-primary text-lg"
+                    autoComplete="off"
+                  />
+                  <Button type="submit" variant="ghost" className="mt-4 w-full text-primary hover:bg-primary/10 hover:text-primary">
+                    Authenticate
+                  </Button>
+                  {error && (
+                    <p className="mt-4 text-red-500 text-center">
+                      <GlitchText text={error} />
+                    </p>
+                  )}
+                </form>
+              </CardContent>
+            </Card>
+          );
+        case 'ACCESS_GRANTED':
+          return <HeroSection onExit={handleExit} />;
+        default:
+          return null;
+      }
+    })();
+    
+    if (step === 'EXITING') {
+      return (
+        <>
+          <div className="w-full h-full black-hole-zoom-out">
+            {mainContent}
+          </div>
+          {renderExiting()}
+        </>
+      );
     }
+
+    return mainContent;
   }
 
   return (

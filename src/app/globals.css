@@ -141,4 +141,46 @@ html {
     vertical-align: middle;
     margin-left: 2px;
   }
+
+  /* Blackhole Animation */
+  @keyframes black-hole-zoom-out {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    80% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0);
+      opacity: 0;
+    }
+  }
+  .black-hole-zoom-out {
+      animation: black-hole-zoom-out 1.5s ease-in forwards;
+  }
+
+  @keyframes black-hole-circle-fade {
+    0% {
+      opacity: 0;
+      transform: scale(2);
+    }
+    20%, 80% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0);
+    }
+  }
+  .black-hole-circle {
+      width: 50vw;
+      height: 50vh;
+      border-radius: 50%;
+      border: 2px solid hsl(var(--primary));
+      box-shadow: 0 0 20px hsl(var(--primary));
+      animation: black-hole-circle-fade 2s ease-out forwards;
+  }
 }
