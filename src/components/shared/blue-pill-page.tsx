@@ -10,26 +10,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const skills = [
-    "Cloud Architecture (AWS, Azure)",
-    "Infrastructure as Code (Terraform, Ansible)",
-    "Containerization & Orchestration (Docker, Kubernetes)",
-    "CI/CD Pipelines (Jenkins, GitHub Actions)",
-    "Monitoring & Observability (Prometheus, Grafana)",
-    "Scripting & Automation (Python, Go, Bash)"
+    "Strategic Cloud Solutions (AWS, GCP, Azure)",
+    "Declarative Infrastructure (Terraform, Ansible)",
+    "Container Ecosystems (Docker, Kubernetes)",
+    "Automated Delivery Pipelines (CI/CD)",
+    "Proactive Observability & Monitoring",
+    "Automation & Scripting (Python, Go)"
 ];
 
 const projects = [
     { 
-        title: 'Cloud Security Automation Framework', 
-        description: 'Developed a Python-based serverless framework on AWS Lambda to automate vulnerability scanning and compliance checks, reducing manual audit time by 80%.'
+        title: 'Enterprise Security Framework', 
+        description: 'Architected a serverless security framework on AWS, automating vulnerability scanning and compliance checks to reduce manual audit time by 80%.'
     },
     { 
-        title: 'Dynamic CI/CD Pipeline Generator', 
-        description: 'Architected a Go-based tool that dynamically generates complex Jenkinsfiles from a simplified YAML configuration, improving developer onboarding and pipeline consistency.' 
+        title: 'Unified Pipeline Platform', 
+        description: 'Developed a dynamic CI/CD pipeline generator using Go, enabling teams to self-serve complex Jenkins workflows from a simple YAML configuration, boosting developer velocity.' 
     },
     { 
-        title: 'GitOps Implementation for Kubernetes', 
-        description: 'Led the adoption of ArgoCD to establish a GitOps workflow, ensuring environment parity between staging and production and enabling fully automated, auditable deployments.' 
+        title: 'GitOps-Driven Environment Management', 
+        description: 'Pioneered the adoption of ArgoCD for a fully automated GitOps workflow, achieving verifiable environment parity and enabling high-frequency, low-risk deployments.' 
     },
 ];
 
@@ -39,13 +39,14 @@ const agents = [
     { name: 'Agent CI', role: 'Deployment Coordinator', avatar: 'https://placehold.co/100x100.png', hint: 'robot face' },
 ]
 
-const GlitchName = ({ onRestart, isGlitching }: { onRestart: () => void, isGlitching: boolean }) => {
+const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestart: () => void }) => {
     const text = isGlitching ? '$w3t@nK' : 'Swetank';
 
     return (
         <span
             className={cn('glitch-wrapper', { 'glitching': isGlitching })}
             onClick={onRestart}
+            style={{ color: 'inherit', background: 'transparent', padding: 0 }}
         >
             <span className="glitch-text" data-text="$w3t@nK">
                 {text}
@@ -86,7 +87,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
 
     return (
         <div 
-            className="w-full h-screen bg-slate-50 text-slate-700 font-sans-corporate animate-fade-in-up overflow-y-auto"
+            className="w-full h-screen bg-white text-slate-700 font-sans-corporate animate-fade-in-up overflow-y-auto"
             onMouseMove={handleMouseMove}
         >
             <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
@@ -120,6 +121,14 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 
                 {/* About Me Section */}
                 <section id="about" className="text-center max-w-3xl mx-auto mb-24">
+                     <Image
+                        src="https://placehold.co/128x128.png"
+                        alt="Profile Picture"
+                        width={128}
+                        height={128}
+                        data-ai-hint="professional portrait"
+                        className="rounded-full mx-auto mb-6 shadow-lg"
+                    />
                     <h2 className="text-3xl font-bold text-slate-900 mb-4">Pioneering Efficient and Scalable Cloud Solutions</h2>
                     <p className="text-lg text-slate-600">
                         Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices.
@@ -130,7 +139,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-24">
                     {/* Core Competencies Section */}
                     <div className="lg:col-span-2">
-                         <Card className="shadow-lg border-slate-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                         <Card className="shadow-lg border-slate-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-slate-50/50">
                             <CardHeader>
                                 <CardTitle className="flex items-center text-slate-800 text-xl"><Users className="mr-3 h-6 w-6 text-blue-500" /> Core Competencies</CardTitle>
                             </CardHeader>
@@ -151,7 +160,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                         <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center"><Briefcase className="mr-3 h-6 w-6 text-blue-500" /> Key Initiatives</h2>
                         <div className="space-y-6">
                            {projects.map((project, i) => (
-                                <Card key={i} className="shadow-lg border-slate-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                                <Card key={i} className="shadow-lg border-slate-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-slate-50/50">
                                     <CardHeader>
                                         <h3 className="font-semibold text-slate-800">{project.title}</h3>
                                         <p className="text-sm text-slate-600">{project.description}</p>
@@ -163,7 +172,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 </div>
 
                 {/* Team Section */}
-                <section id="team" className="text-center mb-24">
+                <section id="team" className="text-center mb-24 bg-slate-100/70 py-16 rounded-2xl">
                     <h2 className="text-3xl font-bold text-slate-900 mb-4">Meet My AI Agents</h2>
                     <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-12">My team of specialized AI agents who assist in automating and managing complex cloud infrastructure, orchestrated by a human architect.</p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -187,19 +196,19 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 </section>
 
                 {/* Contact Section */}
-                <section id="contact" className="bg-slate-100 rounded-2xl p-12">
+                <section id="contact" className="bg-slate-800 text-white rounded-2xl p-12">
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div className="text-center md:text-left">
-                           <h2 className="text-3xl font-bold text-slate-900 mb-2">Ready to Innovate?</h2>
-                           <p className="text-slate-600">Let's connect and discuss how we can build the future, together.</p>
+                           <h2 className="text-3xl font-bold mb-2">Ready to Innovate?</h2>
+                           <p className="text-slate-300">Let's connect and discuss how we can build the future, together.</p>
                         </div>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-end">
+                        <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-end">
                              <div className="flex items-center text-sm justify-center">
-                                <Mail className="w-4 h-4 mr-2 text-slate-500" />
+                                <Mail className="w-4 h-4 mr-2 text-slate-400" />
                                 <span>s.soni.devops@email.com</span>
                             </div>
                             <div className="flex items-center text-sm justify-center">
-                                <Phone className="w-4 h-4 mr-2 text-slate-500" />
+                                <Phone className="w-4 h-4 mr-2 text-slate-400" />
                                 <span>(555) 123-4567</span>
                             </div>
                         </div>
