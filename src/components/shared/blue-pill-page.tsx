@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { Linkedin, Github, Download, CheckCircle, Mail, Phone } from 'lucide-react';
+import { Briefcase, Users, CheckCircle, Mail, Phone, Download } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const skills = [
@@ -31,44 +31,8 @@ const projects = [
     },
 ];
 
-const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
-    const [name, setName] = useState('Swetank');
-    const [isGlitching, setIsGlitching] = useState(false);
-    const glitchIntervalRef = useRef<NodeJS.Timeout | null>(null);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-    const startGlitching = () => {
-        setIsGlitching(true);
-        let count = 0;
-        glitchIntervalRef.current = setInterval(() => {
-            setName(prev => (prev === 'Swetank' ? '$w3t@nK' : 'Swetank'));
-            count++;
-            if (count > 8) { // Glitch for about a second
-                stopGlitching();
-            }
-        }, 100);
-    };
-
-    const stopGlitching = () => {
-        if (glitchIntervalRef.current) {
-            clearInterval(glitchIntervalRef.current);
-            glitchIntervalRef.current = null;
-        }
-        setIsGlitching(false);
-        setName('Swetank');
-        // Schedule the next glitch
-        timeoutRef.current = setTimeout(startGlitching, 3000 + Math.random() * 2000);
-    };
-
-    useEffect(() => {
-        // Start the first glitch after a delay
-        timeoutRef.current = setTimeout(startGlitching, 2000);
-
-        return () => {
-            if (glitchIntervalRef.current) clearInterval(glitchIntervalRef.current);
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        };
-    }, []);
+const GlitchName = ({ onRestart, isGlitching }: { onRestart: () => void, isGlitching: boolean }) => {
+    const text = isGlitching ? '$w3t@nK' : 'Swetank';
 
     return (
         <span
@@ -76,7 +40,7 @@ const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
             onClick={onRestart}
         >
             <span className="glitch-text" data-text="$w3t@nK">
-                {name}
+                {text}
             </span>
         </span>
     );
@@ -84,24 +48,58 @@ const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
 
 
 export function BluePillPage({ onRestart }: { onRestart: () => void }) {
+    const [isGlitching, setIsGlitching] = useState(false);
+    const glitchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    const triggerGlitch = () => {
+        // If a glitch is happening, don't start another one.
+        if (isGlitching) return;
+        
+        setIsGlitching(true);
+
+        // Reset the glitch after a short period (e.g., 1 second)
+        if (glitchTimeoutRef.current) clearTimeout(glitchTimeoutRef.current);
+        glitchTimeoutRef.current = setTimeout(() => {
+            setIsGlitching(false);
+        }, 1000);
+    };
+
+    const handleMouseMove = () => {
+        // Clear the previous debounce timer
+        if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current);
+
+        // Set a new random timer to trigger the glitch
+        const randomDelay = Math.random() * 400 + 100; // between 100ms and 500ms
+        debounceTimeoutRef.current = setTimeout(triggerGlitch, randomDelay);
+    };
+
+
+    useEffect(() => {
+        // Cleanup timeouts on component unmount
+        return () => {
+            if (glitchTimeoutRef.current) clearTimeout(glitchTimeoutRef.current);
+            if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current);
+        };
+    }, []);
+
     return (
-        <div className="w-full h-screen bg-gray-50 text-gray-700 font-sans-corporate animate-fade-in-up overflow-y-auto">
+        <div 
+            className="w-full h-screen bg-gray-50 text-gray-700 font-sans-corporate animate-fade-in-up overflow-y-auto"
+            onMouseMove={handleMouseMove}
+        >
             <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
                 <div className="container mx-auto px-6 py-3 flex justify-between items-center">
                     <div>
-                        <h1 className="text-xl font-bold text-gray-900"><GlitchName onRestart={onRestart} /> Soni</h1>
+                        <h1 className="text-xl font-bold text-gray-900">
+                           <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> Soni
+                        </h1>
                         <p className="text-sm text-gray-500">Senior DevOps Engineer</p>
                     </div>
                     <nav className="flex items-center gap-2">
                         <Button variant="outline" size="sm" className="border-gray-300 hover:bg-gray-100">
                             <Download className="mr-2 h-4 w-4" /> Download Resume
                         </Button>
-                        <a href="#" className="text-gray-500 hover:text-gray-900 p-2">
-                            <Linkedin className="h-5 w-5" />
-                        </a>
-                        <a href="#" className="text-gray-500 hover:text-gray-900 p-2">
-                            <Github className="h-5 w-5" />
-                        </a>
                     </nav>
                 </div>
             </header>
@@ -116,7 +114,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                             </CardHeader>
                             <CardContent>
                                 <p>
-                                    Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices. 
+                                    Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices.
                                 </p>
                             </CardContent>
                         </Card>
@@ -124,7 +122,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                         {/* Projects Section */}
                         <Card className="shadow-sm">
                             <CardHeader>
-                                <CardTitle>Key Initiatives</CardTitle>
+                                <CardTitle className="flex items-center"><Briefcase className="mr-2 h-5 w-5 text-gray-400" /> Key Initiatives</CardTitle>
                                 <CardDescription>Selected projects demonstrating my expertise in automation and cloud infrastructure.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
@@ -142,13 +140,13 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                         {/* Core Competencies Section */}
                         <Card className="mb-8 shadow-sm">
                             <CardHeader>
-                                <CardTitle>Core Competencies</CardTitle>
+                                <CardTitle className="flex items-center"><Users className="mr-2 h-5 w-5 text-gray-400" /> Core Competencies</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <ul className="space-y-2">
                                     {skills.map((skill, i) => (
                                         <li key={i} className="flex items-center text-sm">
-                                            <CheckCircle className="w-4 h-4 mr-2 text-green-600" />
+                                            <CheckCircle className="w-4 h-4 mr-2 text-green-600 flex-shrink-0" />
                                             {skill}
                                         </li>
                                     ))}
@@ -177,7 +175,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
             </main>
             
             <footer className="text-center p-6 text-sm text-gray-500 border-t bg-gray-100 mt-12">
-                © {new Date().getFullYear()} <GlitchName onRestart={onRestart} /> Soni. All rights reserved.
+                © {new Date().getFullYear()} <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> Soni. All rights reserved.
             </footer>
         </div>
     );
