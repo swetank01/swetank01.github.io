@@ -20,6 +20,7 @@ export default {
         body: ['"Space Grotesk"', 'sans-serif'],
         headline: ['"Space Grotesk"', 'sans-serif'],
         code: ['"Share Tech Mono"', 'monospace'],
+        'sans-corporate': ['Inter', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',

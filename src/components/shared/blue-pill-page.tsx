@@ -1,86 +1,142 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { Briefcase, Mail, Phone, Users } from 'lucide-react';
+import { ArrowRight, CheckCircle, BarChart, ShieldCheck, Cpu, Users } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { cn } from '@/lib/utils';
 
-const corporateProjects = [
-    { title: 'Q3 Synergy Dashboard', description: 'Leveraged agile frameworks to provide a robust synopsis for high-level overviews.' },
-    { title: 'Enterprise Resource Planning Portal', description: 'Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.' },
-    { title: 'Cloud-Native Integration Platform', description: 'Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.' },
+const features = [
+    { 
+        icon: BarChart, 
+        title: 'AI-Powered Insights', 
+        description: 'Leverage machine learning to unlock actionable data points and drive business growth.' 
+    },
+    { 
+        icon: Cpu, 
+        title: 'Streamlined Scalability', 
+        description: 'Our elastic infrastructure grows with you, ensuring seamless performance at any scale.' 
+    },
+    { 
+        icon: ShieldCheck, 
+        title: 'Enterprise-Grade Security', 
+        description: 'Robust, multi-layered security protocols to protect your most valuable assets.' 
+    },
+];
+
+const team = [
+    { name: 'Jennifer Hale', role: 'Chief Executive Officer', avatar: 'https://placehold.co/100x100.png', hint: 'woman portrait' },
+    { name: 'Mark Meer', role: 'Chief Financial Officer', avatar: 'https://placehold.co/100x100.png', hint: 'man portrait' },
+    { name: 'Sw3t@nK', role: 'Chief Visionary Officer', avatar: 'https://placehold.co/100x100.png', hint: 'person portrait glitch', isGlitched: true },
+    { name: 'Ali Hillis', role: 'Head of People', avatar: 'https://placehold.co/100x100.png', hint: 'woman portrait' },
 ];
 
 export function BluePillPage({ onRestart }: { onRestart: () => void }) {
-    const [showGlitch, setShowGlitch] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => setShowGlitch(true), 5000); // Glitch appears after 5 seconds
-        return () => clearTimeout(timer);
-    }, []);
+    const [hoveredGlitch, setHoveredGlitch] = useState(false);
 
     return (
-        <div className="w-full h-screen bg-gray-100 text-gray-800 font-sans animate-fade-in-up">
-            <nav className="bg-white border-b shadow-sm">
-                <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-                    <h1 className="text-2xl font-bold text-blue-700">Swetank Kumar</h1>
-                    <div className="flex gap-4 items-center">
-                        <a href="#about" className="text-gray-600 hover:text-blue-700">About</a>
-                        <a href="#projects" className="text-gray-600 hover:text-blue-700">Projects</a>
-                        <a href="#contact" className="text-gray-600 hover:text-blue-700">Contact</a>
-                    </div>
+        <div className="w-full h-screen bg-white text-gray-800 font-sans-corporate animate-fade-in-up overflow-y-auto">
+            <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+                <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+                    <h1 className="text-2xl font-bold text-gray-900">InnovateX</h1>
+                    <nav className="hidden md:flex items-center gap-6">
+                        <a href="#" className="text-gray-600 hover:text-gray-900">Solutions</a>
+                        <a href="#" className="text-gray-600 hover:text-gray-900">Platform</a>
+                        <a href="#" className="text-gray-600 hover:text-gray-900">About Us</a>
+                    </nav>
+                    <Button className="bg-gray-900 text-white hover:bg-gray-700">
+                        Request a Demo <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
                 </div>
-            </nav>
+            </header>
 
-            <main className="container mx-auto p-8">
-                <section id="about" className="text-center py-16">
-                    <h2 className="text-4xl font-semibold mb-4">Solutions-Oriented DevOps Professional</h2>
-                    <p className="max-w-3xl mx-auto text-lg text-gray-600">
-                        Passionate about optimizing workflows and enhancing team productivity through innovative and streamlined solutions.
+            <main className="container mx-auto px-6 py-16">
+                <section className="text-center py-20">
+                    <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-4 leading-tight">
+                        Pioneering Synergistic Futures
+                    </h2>
+                    <p className="max-w-2xl mx-auto text-lg text-gray-600 mb-8">
+                        We empower enterprises to seamlessly integrate next-generation paradigms, fostering a new era of digital transformation.
                     </p>
+                    <div className="flex justify-center gap-4">
+                        <Button size="lg" className="bg-gray-900 text-white hover:bg-gray-700 shadow-lg">Get Started</Button>
+                        <Button size="lg" variant="outline" className="border-gray-300 hover:bg-gray-100">Contact Sales</Button>
+                    </div>
                 </section>
 
-                <section id="projects" className="py-16 bg-white rounded-lg shadow-md">
-                    <h2 className="text-3xl font-semibold text-center mb-8">Key Initiatives</h2>
-                    <div className="grid md:grid-cols-3 gap-8 px-8">
-                        {corporateProjects.map((proj, i) => (
-                            <Card key={i} className="bg-gray-50">
+                <section className="py-16">
+                    <p className="text-center text-sm font-semibold text-gray-500 uppercase tracking-wider">Trusted by the world's most innovative companies</p>
+                    <div className="mt-8 flex justify-center flex-wrap gap-x-12 gap-y-4 text-gray-400 font-bold text-xl">
+                        <span>GlobalTrans</span>
+                        <span>QuantumLeap</span>
+                        <span>EcoSolutions</span>
+                        <span>NexusData</span>
+                        <span>ApexIndustries</span>
+                    </div>
+                </section>
+
+                <section id="features" className="py-20 bg-gray-50 rounded-xl">
+                    <div className="text-center mb-12">
+                         <h3 className="text-4xl font-bold text-gray-900">A Platform Built for Tomorrow</h3>
+                         <p className="text-lg text-gray-600 mt-2">Everything you need to stay ahead of the curve.</p>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {features.map((feature, i) => (
+                            <Card key={i} className="bg-white border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
                                 <CardHeader>
-                                    <div className="flex items-center gap-3">
-                                        <Briefcase className="w-6 h-6 text-blue-600" />
-                                        <CardTitle className="text-xl text-gray-800">{proj.title}</CardTitle>
+                                    <div className="bg-gray-100 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                                        <feature.icon className="w-6 h-6 text-gray-700" />
                                     </div>
+                                    <CardTitle className="text-xl font-semibold text-gray-900">{feature.title}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <CardDescription>{proj.description}</CardDescription>
+                                    <p className="text-gray-600">{feature.description}</p>
                                 </CardContent>
                             </Card>
                         ))}
                     </div>
                 </section>
 
-                <section id="contact" className="text-center py-16">
-                     <h2 className="text-3xl font-semibold mb-8">Get In Touch</h2>
-                     <div className="flex justify-center gap-8 text-gray-700">
-                        <div className="flex items-center gap-2"><Mail className="w-5 h-5" /> s.kumar@corporate.net</div>
-                        <div className="flex items-center gap-2"><Phone className="w-5 h-5" /> (555) 123-4567</div>
-                        <div className="flex items-center gap-2"><Users className="w-5 h-5" /> Team-Player</div>
-                     </div>
+                <section id="team" className="py-20">
+                     <div className="text-center mb-12">
+                         <h3 className="text-4xl font-bold text-gray-900">Meet Our Leadership</h3>
+                         <p className="text-lg text-gray-600 mt-2">The visionaries behind our success.</p>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        {team.map((member) => (
+                            <div 
+                                key={member.name} 
+                                className={cn(
+                                    "text-center cursor-pointer group", 
+                                    member.isGlitched && "relative"
+                                )}
+                                onClick={member.isGlitched ? onRestart : undefined}
+                                onMouseEnter={member.isGlitched ? () => setHoveredGlitch(true) : undefined}
+                                onMouseLeave={member.isGlitched ? () => setHoveredGlitch(false) : undefined}
+                            >
+                                <Avatar className="w-24 h-24 mx-auto mb-4 border-4 border-transparent group-hover:border-gray-300 transition-colors">
+                                    <AvatarImage src={member.avatar} alt={member.name} data-ai-hint={member.hint} />
+                                    <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <h4 className="font-semibold text-lg text-gray-900">{member.name}</h4>
+                                <p className="text-gray-500">{member.role}</p>
+                                {member.isGlitched && hoveredGlitch && (
+                                    <span 
+                                        className="absolute inset-0 flex items-center justify-center text-red-500 font-mono text-xs animate-pulse bg-black/20"
+                                    >
+                                        [ WAKE UP ]
+                                    </span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </section>
             </main>
             
-            <footer className="text-center p-4 text-sm text-gray-500 border-t">
-                © {new Date().getFullYear()} Swetank Kumar. All rights reserved.
-                {showGlitch && (
-                    <span 
-                        onClick={onRestart}
-                        className="absolute bottom-4 right-4 text-red-500 font-mono cursor-pointer animate-pulse"
-                        style={{ animation: 'blink-cursor 1s infinite' }}
-                    >
-                        _
-                    </span>
-                )}
+            <footer className="text-center p-6 text-sm text-gray-500 border-t bg-gray-50">
+                © {new Date().getFullYear()} InnovateX Corporation. All rights reserved.
             </footer>
         </div>
     );
