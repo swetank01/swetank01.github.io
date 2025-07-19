@@ -27,35 +27,42 @@ export function IntroSequence() {
 
   const meetInputRef = useRef<HTMLInputElement>(null);
 
+  const startBootSequence = () => {
+    setStep('BOOTING');
+    setShowRain(false);
+    setBootLog([]);
+    setProgress(0);
+    let messageIndex = 0;
+    const bootInterval = setInterval(() => {
+      if (messageIndex < bootMessages.length) {
+        setBootLog(prev => [...prev, bootMessages[messageIndex]]);
+        messageIndex++;
+      } else {
+        clearInterval(bootInterval);
+        setTimeout(() => setStep('CHOICE'), 500);
+      }
+    }, 700);
+
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          return 100;
+        }
+        return prev + Math.random() * 10;
+      });
+    }, 150);
+
+    return () => {
+      clearInterval(bootInterval);
+      clearInterval(progressInterval);
+    };
+  };
+  
   useEffect(() => {
     if (step === 'BOOTING') {
-      setBootLog([]);
-      setProgress(0);
-      let messageIndex = 0;
-      const bootInterval = setInterval(() => {
-        if (messageIndex < bootMessages.length) {
-          setBootLog(prev => [...prev, bootMessages[messageIndex]]);
-          messageIndex++;
-        } else {
-          clearInterval(bootInterval);
-          setTimeout(() => setStep('CHOICE'), 500);
-        }
-      }, 700);
-
-      const progressInterval = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= 100) {
-            clearInterval(progressInterval);
-            return 100;
-          }
-          return prev + Math.random() * 10;
-        });
-      }, 150);
-
-      return () => {
-        clearInterval(bootInterval);
-        clearInterval(progressInterval);
-      };
+      const cleanup = startBootSequence();
+      return cleanup;
     }
   }, [step]);
 
@@ -87,6 +94,10 @@ export function IntroSequence() {
         setStep('BOOTING');
     }, 4000)
   };
+
+  const handleExit = () => {
+    setStep('BOOTING');
+  }
 
   const renderBooting = () => (
     <div className="w-full max-w-md p-4 text-primary font-code">
@@ -142,18 +153,16 @@ export function IntroSequence() {
     </div>
   );
 
-  return (
-    <div className="w-full h-screen bg-black font-code">
-      {showRain && <DigitalRain isMatrix a11y={false} />}
-      
-      <div className="relative z-10 w-full h-full flex items-center justify-center">
-        {step === 'BOOTING' && renderBooting()}
-
-        {step === 'CHOICE' && renderChoice()}
-
-        {step === 'BLUE_PILL_OUTCOME' && renderBluePillOutcome()}
-
-        {step === 'MEET_WHO' && (
+  const renderContent = () => {
+    switch(step) {
+      case 'BOOTING':
+        return renderBooting();
+      case 'CHOICE':
+        return renderChoice();
+      case 'BLUE_PILL_OUTCOME':
+        return renderBluePillOutcome();
+      case 'MEET_WHO':
+        return (
           <Card className="w-full max-w-md bg-black/50 border-primary/20 p-4 text-primary animate-fade-in-up">
             <CardContent className="p-2">
               <form onSubmit={handleMeetSubmit}>
@@ -180,9 +189,19 @@ export function IntroSequence() {
               </form>
             </CardContent>
           </Card>
-        )}
+        );
+      case 'ACCESS_GRANTED':
+        return <HeroSection onExit={handleExit} />;
+      default:
+        return null;
+    }
+  }
 
-        {step === 'ACCESS_GRANTED' && <HeroSection />}
+  return (
+    <div className="w-full h-screen bg-black font-code">
+      {showRain && <DigitalRain isMatrix a11y={false} />}
+      <div className="relative z-10 w-full h-full flex items-center justify-center">
+        {renderContent()}
       </div>
     </div>
   );

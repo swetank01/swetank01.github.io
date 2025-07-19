@@ -47,7 +47,7 @@ const experience = [
     { title: 'Junior System Administrator', company: 'Wayne Enterprises', duration: '2016-2018'},
 ];
 
-const availableCommands = ['help', 'whoami', 'skills', 'experience', 'projects', 'contact', 'clear', 'matrix', 'open'];
+const availableCommands = ['help', 'whoami', 'skills', 'experience', 'projects', 'contact', 'clear', 'matrix', 'open', 'exit', 'bye', 'init 0'];
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -59,7 +59,11 @@ const createBox = (title: string, contentLines: string[]): string[] => {
     return [top, ...middle, bottom];
 }
 
-export function InteractiveTerminal() {
+interface InteractiveTerminalProps {
+  onExit: () => void;
+}
+
+export function InteractiveTerminal({ onExit }: InteractiveTerminalProps) {
   const [lines, setLines] = useState<{ text: string; prompt?: boolean; color?: string; isGlitch?: boolean }[]>([]);
   const [isAnimating, setIsAnimating] = useState(true);
   const [isCommandRunning, setIsCommandRunning] = useState(false);
@@ -184,7 +188,8 @@ export function InteractiveTerminal() {
     let newLines = [...lines, { text: command, prompt: true }];
     setLines([...newLines]);
 
-    const [cmd, ...args] = command.split(' ');
+    const [cmd, ...args] = command.trim().split(' ');
+    const normalizedCmd = command.trim().toLowerCase();
 
     const addGlitchLine = async (text: string, color?: string) => {
       newLines.push({ text, color, isGlitch: true });
@@ -242,7 +247,7 @@ export function InteractiveTerminal() {
         await commandProcess(title, formattedProjects, 'text-green-400');
     }
 
-    switch(cmd.toLowerCase()) {
+    switch(normalizedCmd) {
       case 'help':
         const helpBox = createBox("Help", [
             "whoami       - Display user information",
@@ -253,6 +258,7 @@ export function InteractiveTerminal() {
             "contact      - Display contact information",
             "matrix       - ???",
             "clear        - Clear the terminal screen",
+            "exit         - Log out and restart sequence",
         ]);
         for (const line of helpBox) {
             await addGlitchLine(line, 'text-cyan-400');
@@ -288,7 +294,7 @@ export function InteractiveTerminal() {
               await addGlitchLine(line, 'text-green-400');
           }
         } else {
-            await addGlitchLine(`Error: Project with ID "${projectId}" not found.`, 'text-red-500');
+            await addGlitchLine(`Error: Project with ID "${projectId || ''}" not found.`, 'text-red-500');
         }
         break;
       case 'contact':
@@ -313,6 +319,15 @@ export function InteractiveTerminal() {
         setLines([]);
         setShowMatrix(false);
         break;
+      case 'exit':
+      case 'bye':
+      case 'init 0':
+        await addGlitchLine('> Closing connection...');
+        await sleep(500);
+        await addGlitchLine('> System shutting down...');
+        await sleep(1000);
+        onExit();
+        return;
       default:
         await addGlitchLine(`[ ACCESS DENIED ]`, 'text-red-500');
         await addGlitchLine(`> Command not found: ${command}`, 'text-red-500');
