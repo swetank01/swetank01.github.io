@@ -85,19 +85,19 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
 
     return (
         <div 
-            className="w-full h-screen bg-gray-50 text-gray-700 font-sans-corporate animate-fade-in-up overflow-y-auto"
+            className="w-full h-screen bg-slate-50 text-slate-700 font-sans-corporate animate-fade-in-up overflow-y-auto"
             onMouseMove={handleMouseMove}
         >
-            <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+            <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
                 <div className="container mx-auto px-6 py-3 flex justify-between items-center">
                     <div>
-                        <h1 className="text-xl font-bold text-gray-900">
+                        <h1 className="text-xl font-bold text-slate-900">
                            <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> Soni
                         </h1>
-                        <p className="text-sm text-gray-500">Senior DevOps Engineer</p>
+                        <p className="text-sm text-slate-500">Senior DevOps Engineer</p>
                     </div>
                     <nav className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" className="border-gray-300 hover:bg-gray-100">
+                        <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
                             <Download className="mr-2 h-4 w-4" /> Download Resume
                         </Button>
                     </nav>
@@ -108,9 +108,9 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2">
                         {/* About Me Section */}
-                        <Card className="mb-8 shadow-sm">
+                        <Card className="mb-8 shadow-sm border-slate-200">
                             <CardHeader>
-                                <CardTitle>About Me</CardTitle>
+                                <CardTitle className="text-slate-800">About Me</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <p>
@@ -120,16 +120,16 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                         </Card>
                         
                         {/* Projects Section */}
-                        <Card className="shadow-sm">
+                        <Card className="shadow-sm border-slate-200">
                             <CardHeader>
-                                <CardTitle className="flex items-center"><Briefcase className="mr-2 h-5 w-5 text-gray-400" /> Key Initiatives</CardTitle>
+                                <CardTitle className="flex items-center text-slate-800"><Briefcase className="mr-2 h-5 w-5 text-blue-500" /> Key Initiatives</CardTitle>
                                 <CardDescription>Selected projects demonstrating my expertise in automation and cloud infrastructure.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
                                 {projects.map((project, i) => (
                                     <div key={i}>
-                                        <h3 className="font-semibold text-gray-800">{project.title}</h3>
-                                        <p className="text-sm text-gray-600">{project.description}</p>
+                                        <h3 className="font-semibold text-slate-800">{project.title}</h3>
+                                        <p className="text-sm text-slate-600">{project.description}</p>
                                     </div>
                                 ))}
                             </CardContent>
@@ -138,15 +138,15 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                     
                     <div>
                         {/* Core Competencies Section */}
-                        <Card className="mb-8 shadow-sm">
+                        <Card className="mb-8 shadow-sm border-slate-200">
                             <CardHeader>
-                                <CardTitle className="flex items-center"><Users className="mr-2 h-5 w-5 text-gray-400" /> Core Competencies</CardTitle>
+                                <CardTitle className="flex items-center text-slate-800"><Users className="mr-2 h-5 w-5 text-blue-500" /> Core Competencies</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <ul className="space-y-2">
                                     {skills.map((skill, i) => (
                                         <li key={i} className="flex items-center text-sm">
-                                            <CheckCircle className="w-4 h-4 mr-2 text-green-600 flex-shrink-0" />
+                                            <CheckCircle className="w-4 h-4 mr-2 text-green-500 flex-shrink-0" />
                                             {skill}
                                         </li>
                                     ))}
@@ -155,17 +155,17 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                         </Card>
 
                          {/* Contact Info Section */}
-                        <Card className="shadow-sm">
+                        <Card className="shadow-sm border-slate-200">
                             <CardHeader>
-                                <CardTitle>Contact Information</CardTitle>
+                                <CardTitle className="text-slate-800">Contact Information</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-3">
                                 <div className="flex items-center text-sm">
-                                    <Mail className="w-4 h-4 mr-2 text-gray-500" />
+                                    <Mail className="w-4 h-4 mr-2 text-slate-500" />
                                     <span>s.soni.devops@email.com</span>
                                 </div>
                                 <div className="flex items-center text-sm">
-                                    <Phone className="w-4 h-4 mr-2 text-gray-500" />
+                                    <Phone className="w-4 h-4 mr-2 text-slate-500" />
                                     <span>(555) 123-4567</span>
                                 </div>
                             </CardContent>
@@ -174,7 +174,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 </div>
             </main>
             
-            <footer className="text-center p-6 text-sm text-gray-500 border-t bg-gray-100 mt-12">
+            <footer className="text-center p-6 text-sm text-slate-500 border-t bg-slate-100 mt-12">
                 © {new Date().getFullYear()} <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> Soni. All rights reserved.
             </footer>
         </div>
