@@ -4,9 +4,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { Briefcase, Users, CheckCircle, Mail, Phone, Download, Building, Bot } from 'lucide-react';
+import { Briefcase, Users, CheckCircle, Mail, Phone, Download, Building, Bot, Github, Linkedin, Twitter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const skills = [
     "Cloud Architecture (AWS, Azure)",
@@ -97,10 +98,21 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                         </h1>
                         <p className="text-sm text-slate-500">Senior DevOps Engineer</p>
                     </div>
-                    <nav className="flex items-center gap-2">
+                    <nav className="flex items-center gap-4">
                         <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5">
                             <Download className="mr-2 h-4 w-4" /> Download Resume
                         </Button>
+                        <div className="hidden md:flex items-center gap-4">
+                            <Link href="#" aria-label="Github">
+                                <Github className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                            </Link>
+                            <Link href="#" aria-label="LinkedIn">
+                                <Linkedin className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                            </Link>
+                            <Link href="#" aria-label="Twitter">
+                                <Twitter className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                            </Link>
+                        </div>
                     </nav>
                 </div>
             </header>
@@ -197,8 +209,23 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 
             </main>
             
-            <footer className="text-center p-8 text-sm text-slate-500 border-t bg-white mt-12">
-                © {new Date().getFullYear()} <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> Soni. All rights reserved.
+            <footer className="bg-white border-t mt-12">
+              <div className="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
+                <p>
+                    © {new Date().getFullYear()} <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> Soni. All rights reserved.
+                </p>
+                <div className="flex items-center gap-4 mt-4 md:mt-0">
+                    <Link href="#" aria-label="Github">
+                        <Github className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                    </Link>
+                    <Link href="#" aria-label="LinkedIn">
+                        <Linkedin className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                    </Link>
+                    <Link href="#" aria-label="Twitter">
+                        <Twitter className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                    </Link>
+                </div>
+              </div>
             </footer>
         </div>
     );
