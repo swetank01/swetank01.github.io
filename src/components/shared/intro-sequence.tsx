@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -7,10 +8,9 @@ import { Button } from '@/components/ui/button';
 import { DigitalRain } from './digital-rain';
 import { HeroSection } from '../sections/hero-section';
 import { GlitchText } from './glitch-text';
-import { YinYangIcon } from './yin-yang-icon';
 import { cn } from '@/lib/utils';
 
-type SequenceStep = 'BOOTING' | 'CHOICE' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'YIN_YANG' | 'EXITING_TO_CORPORATE';
+type SequenceStep = 'BOOTING' | 'CHOICE' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'EXITING_TO_CORPORATE';
 
 const bootMessages = [
   'Powering On...',
@@ -29,7 +29,6 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
   const [showRain, setShowRain] = useState(false);
   const [bootLog, setBootLog] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
-  const [isExiting, setIsExiting] = useState(false);
   const [isExitingToCorp, setIsExitingToCorp] = useState(false);
 
   const meetInputRef = useRef<HTMLInputElement>(null);
@@ -39,7 +38,6 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
     setShowRain(false);
     setBootLog([]);
     setProgress(0);
-    setIsExiting(false);
     let messageIndex = 0;
     const bootInterval = setInterval(() => {
       if (messageIndex < bootMessages.length) {
@@ -106,14 +104,6 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
     setStep('EXITING_TO_CORPORATE');
   };
 
-  const handleExit = () => {
-    setIsExiting(true);
-    setTimeout(() => {
-      setStep('YIN_YANG');
-      setShowRain(false);
-    }, 1500);
-  }
-
   const renderBooting = () => (
     <div className="w-full max-w-md p-4 text-primary font-code">
       {bootLog.map((msg, i) => (
@@ -162,12 +152,6 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
         <GlitchText text="Returning to assigned reality..." />
     </div>
   );
-
-  const renderYinYang = () => (
-    <div className="w-full h-full flex items-center justify-center fade-in cursor-pointer" onClick={onRestart}>
-      <YinYangIcon className="w-24 h-24 text-primary hover:text-white hover:rotate-180 transition-all duration-1000" />
-    </div>
-  );
   
   const renderMeetWho = () => (
     <Card className="w-full max-w-md bg-black/50 border-primary/20 p-4 text-primary animate-fade-in-up">
@@ -211,10 +195,7 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
         content = renderMeetWho();
         break;
       case 'ACCESS_GRANTED':
-        content = <HeroSection onExit={handleExit} />;
-        break;
-      case 'YIN_YANG':
-        content = renderYinYang();
+        content = <HeroSection onExit={onRestart} />;
         break;
       case 'EXITING_TO_CORPORATE':
         content = renderExitingToCorporate();
@@ -224,7 +205,7 @@ export function IntroSequence({ onRestart }: IntroSequenceProps) {
     }
     
     return (
-       <div className={isExiting ? 'animate-zoom-out-fade' : ''}>
+       <div>
         {content}
        </div>
     );

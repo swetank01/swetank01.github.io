@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -325,12 +326,6 @@ export function InteractiveTerminal({ onExit }: InteractiveTerminalProps) {
            await addGlitchLine('> sudo: permission granted.');
            await sleep(500);
         }
-        await addGlitchLine('> Shutting down system...');
-        await sleep(500);
-        await addGlitchLine('> Terminating all processes...');
-        await sleep(800);
-        await addGlitchLine('>> "The body cannot live without the mind."', 'text-yellow-400');
-        await sleep(1000);
         onExit();
         return;
       default:
