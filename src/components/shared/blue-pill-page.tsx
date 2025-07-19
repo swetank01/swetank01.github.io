@@ -1,13 +1,9 @@
 
 'use client';
 
-import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Linkedin, Github, Download, CheckCircle, Briefcase, Mail, Phone } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { cn } from '@/lib/utils';
-import { Badge } from '../ui/badge';
 
 const skills = [
     "Cloud Architecture (AWS, Azure)",
@@ -34,8 +30,6 @@ const projects = [
 ];
 
 export function BluePillPage({ onRestart }: { onRestart: () => void }) {
-    const [hoveredGlitch, setHoveredGlitch] = useState(false);
-
     return (
         <div className="w-full h-screen bg-gray-50 text-gray-700 font-sans-corporate animate-fade-in-up overflow-y-auto">
             <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -70,12 +64,12 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                                 <p>
                                     Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices. My professional identity is
                                     <span 
-                                        className={cn("font-mono p-1 rounded-sm mx-1 cursor-pointer", hoveredGlitch && "text-red-500 bg-black/10 animate-pulse")}
+                                        className="glitch-wrapper mx-1"
                                         onClick={onRestart}
-                                        onMouseEnter={() => setHoveredGlitch(true)}
-                                        onMouseLeave={() => setHoveredGlitch(false)}
                                     >
-                                        Sw3t@nK
+                                        <span className="glitch-text" data-text="Sw3t@nK">
+                                            Sw3t@nK
+                                        </span>
                                     </span>.
                                 </p>
                             </CardContent>
