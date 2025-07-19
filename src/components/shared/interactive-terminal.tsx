@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Circle, Volume2, VolumeX } from 'lucide-react';
 import { useSound } from '@/hooks/use-sound';
-import { generateMissionLog } from '@/ai/flows/generate-log-flow';
+import { GlitchText } from '@/components/shared/glitch-text';
 
 const asciiArt = `
   .d8888b. d88888b d888888b .d8888b.  .d88b.  d8b   db d88888D 
@@ -29,22 +29,15 @@ const initialCommands = [
 ];
 
 const projects = [
-  { title: "Project Cerberus", description: "A multi-headed security scanner that automates vulnerability detection across cloud environments. Integrates with Slack for real-time alerts." },
-  { title: "Nexus Pipeline", description: "A dynamic CI/CD pipeline generator for microservices. Users define a simple YAML, and Nexus creates complex Jenkinsfiles on the fly." },
-  { title: "Automated GitOps", description: "An ArgoCD-based GitOps framework for managing staging and production Kubernetes clusters, ensuring environment parity." },
+  { title: "Project Cerberus", description: "A multi-headed security scanner that automates vulnerability detection across cloud environments." },
+  { title: "Nexus Pipeline", description: "A dynamic CI/CD pipeline generator for microservices, creating complex Jenkinsfiles on the fly." },
+  { title: "Automated GitOps", description: "An ArgoCD-based framework for managing Kubernetes clusters, ensuring environment parity." },
 ];
 
 const skills = [
-    'Kubernetes',
-    'AWS',
-    'Terraform',
-    'Docker',
-    'CI/CD (Jenkins, GitHub Actions)',
-    'Python & Go',
-    'Ansible',
-    'Prometheus & Grafana',
-    'Linux & Networking',
-    'Security Engineering'
+    'Kubernetes', 'AWS', 'Terraform', 'Docker',
+    'CI/CD (Jenkins, GitHub Actions)', 'Python & Go', 'Ansible',
+    'Prometheus & Grafana', 'Linux & Networking', 'Security Engineering'
 ];
 
 const experience = [
@@ -52,6 +45,8 @@ const experience = [
     { title: 'DevOps Engineer', company: 'Stark Industries', duration: '2018-2021'},
     { title: 'Junior System Administrator', company: 'Wayne Enterprises', duration: '2016-2018'},
 ];
+
+const availableCommands = ['help', 'whoami', 'skills', 'experience', 'projects', 'contact', 'clear'];
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -64,10 +59,11 @@ const createBox = (title: string, contentLines: string[]): string[] => {
 }
 
 export function InteractiveTerminal() {
-  const [lines, setLines] = useState<{ text: string; prompt?: boolean, color?: string }[]>([]);
+  const [lines, setLines] = useState<{ text: string; prompt?: boolean; color?: string; isGlitch?: boolean }[]>([]);
   const [isAnimating, setIsAnimating] = useState(true);
   const [isCommandRunning, setIsCommandRunning] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [suggestion, setSuggestion] = useState('');
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { isSoundEnabled, toggleSound, playKeypressSound } = useSound();
@@ -128,43 +124,68 @@ export function InteractiveTerminal() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     playKeypressSound();
-    setInputValue(e.target.value);
+    const value = e.target.value.toLowerCase();
+    setInputValue(value);
+
+    if (value) {
+      const match = availableCommands.find(cmd => cmd.startsWith(value));
+      setSuggestion(match && match !== value ? match : '');
+    } else {
+      setSuggestion('');
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Tab' && suggestion) {
+      e.preventDefault();
+      setInputValue(suggestion);
+      setSuggestion('');
+    }
   };
 
   const runCommand = async (command: string) => {
     setIsCommandRunning(true);
+    setSuggestion('');
     let newLines = [...lines, { text: command, prompt: true }];
     setLines([...newLines]);
 
     const [cmd] = command.split(' ');
 
+    const addGlitchLine = (text: string, color?: string) => {
+      newLines.push({ text, color, isGlitch: true });
+    };
+    
+    const addLine = (text: string, color?: string) => {
+        newLines.push({ text, color });
+    };
+
     const commandProcess = async (title: string, data: string[], color?: string) => {
-        newLines.push({ text: `> Running script for '${cmd}'...` });
-        newLines.push({ text: `> Connecting to secure datastore...` });
-        setLines([...newLines]);
-        await sleep(300);
+        addGlitchLine(`> Running script for '${cmd}'...`);
+        setLines([...newLines]); await sleep(500);
 
-        newLines.push({ text: `> Decrypting records...` });
-        setLines([...newLines]);
+        addGlitchLine(`> Connecting to secure datastore...`);
+        setLines([...newLines]); await sleep(500);
 
+        addGlitchLine(`> Decrypting records...`);
+        setLines([...newLines]);
         const progressLineIndex = newLines.length;
-        newLines.push({ text: `[${' '.repeat(20)}] 0%`});
+        addLine(`[${' '.repeat(20)}] 0%`);
         for (let i = 0; i <= 20; i++) {
             await sleep(40);
-            const progress = `[${'█'.repeat(i)}${' '.repeat(20-i)}] ${i*5}%`;
-            newLines[progressLineIndex] = { text: progress };
+            newLines[progressLineIndex] = { text: `[${'█'.repeat(i)}${' '.repeat(20-i)}] ${i*5}%` };
             setLines([...newLines]);
         }
         await sleep(200);
 
-        newLines[progressLineIndex] = { text: `> Records decrypted successfully.` };
-        newLines.push({ text: "" }); // Spacer
+        newLines[progressLineIndex] = { text: `> Records decrypted successfully.`, isGlitch: true };
+        addLine(""); // Spacer
         setLines([...newLines]);
+        await sleep(500);
         
         const box = createBox(title, data);
-        box.forEach(line => newLines.push({ text: line, color }));
+        box.forEach(line => addGlitchLine(line, color));
 
-        newLines.push({ text: "" }); // Spacer
+        addLine(""); // Spacer
         setLines([...newLines]);
     }
     
@@ -175,44 +196,9 @@ export function InteractiveTerminal() {
     }
     
     const projectsProcess = async () => {
-        newLines.push({ text: `> Running script for 'projects'...` });
-        newLines.push({ text: `> Initializing AI log generation subroutine...` });
-        setLines([...newLines]);
-        await sleep(300);
-
-        newLines.push({ text: `> Generating mission logs:` });
-        setLines([...newLines]);
-
-        const projectLogs: string[] = [];
-
-        for (const project of projects) {
-          await sleep(150);
-          newLines.push({ text: `  - Analyzing project: ${project.title}` });
-          setLines([...newLines]);
-          
-          try {
-            const result = await generateMissionLog(project);
-            await sleep(100);
-            const logLine = `${project.title}: ${result.log}`;
-            projectLogs.push(logLine);
-            newLines.push({ text: `    LOG: ${result.log}` });
-            setLines([...newLines]);
-          } catch(e) {
-            const errorLine = `ERROR: Could not generate log for ${project.title}`;
-            projectLogs.push(errorLine);
-            newLines.push({ text: `    ${errorLine}` });
-            setLines([...newLines]);
-          }
-        }
-        
-        await sleep(200);
-        newLines.push({ text: `> Log generation complete.` });
-        setLines([...newLines]);
-        
-        const box = createBox("AI-Generated Mission Logs", projectLogs);
-        box.forEach(line => newLines.push({ text: line, color: 'text-green-400' }));
-        newLines.push({ text: "" }); // Spacer
-        setLines([...newLines]);
+        const title = 'Projects';
+        const formattedProjects = projects.map(p => `[${p.title}] - ${p.description}`);
+        await commandProcess(title, formattedProjects, 'text-green-400');
     }
 
     switch(cmd.toLowerCase()) {
@@ -221,11 +207,11 @@ export function InteractiveTerminal() {
             "whoami       - Display user information",
             "skills       - List core competencies",
             "experience   - Show professional experience",
-            "projects     - Generate AI mission logs for projects",
+            "projects     - View key projects",
             "contact      - Display contact information",
             "clear        - Clear the terminal screen",
         ]);
-        helpBox.forEach(line => newLines.push({ text: line, color: 'text-cyan-400' }));
+        helpBox.forEach(line => addGlitchLine(line, 'text-cyan-400'));
         setLines(newLines);
         break;
       case 'whoami':
@@ -234,7 +220,7 @@ export function InteractiveTerminal() {
             "role: Creative DevOps Engineer",
             "status: Ready to build the future.",
         ]);
-        whoamiBox.forEach(line => newLines.push({ text: line, color: 'text-yellow-400'}));
+        whoamiBox.forEach(line => addGlitchLine(line, 'text-yellow-400'));
         setLines(newLines);
         break;
       case 'skills':
@@ -252,7 +238,7 @@ export function InteractiveTerminal() {
           'LinkedIn: linkedin.com/in/[REDACTED]',
           'GitHub: github.com/[REDACTED]'
         ]);
-        contactBox.forEach(line => newLines.push({ text: line, color: 'text-orange-400' }));
+        contactBox.forEach(line => addGlitchLine(line, 'text-orange-400'));
         setLines(newLines);
         break;
       case 'clear':
@@ -261,7 +247,7 @@ export function InteractiveTerminal() {
         setIsCommandRunning(false);
         return; 
       default:
-        newLines.push({ text: `command not found: ${command}`, color: 'text-red-500' });
+        addGlitchLine(`command not found: ${command}`, 'text-red-500');
         setLines(newLines);
     }
     
@@ -300,24 +286,35 @@ export function InteractiveTerminal() {
         {lines.map((line, index) => (
           <div key={index} className="flex">
             {line.prompt && <span className="text-primary mr-2 flex-shrink-0">$</span>}
-            <p className={`whitespace-pre-wrap break-words ${line.color || ''}`}>{line.text}</p>
+            <p className={`whitespace-pre-wrap break-words ${line.color || ''}`}>
+                {line.isGlitch ? <GlitchText text={line.text} /> : line.text}
+            </p>
           </div>
         ))}
         {!isAnimating && (
-          <form onSubmit={handleFormSubmit} className="flex">
+          <form onSubmit={handleFormSubmit} className="flex relative">
             <label htmlFor="terminal-input" className="text-primary mr-2 flex-shrink-0">$</label>
-            <input
-              id="terminal-input"
-              ref={inputRef}
-              type="text"
-              value={inputValue}
-              onChange={handleInputChange}
-              autoComplete="off"
-              autoCapitalize="off"
-              autoCorrect="off"
-              className="bg-transparent border-none outline-none text-foreground w-full p-0"
-              disabled={isCommandRunning}
-            />
+            <div className="relative w-full">
+              <input
+                id="terminal-input"
+                ref={inputRef}
+                type="text"
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                autoComplete="off"
+                autoCapitalize="off"
+                autoCorrect="off"
+                className="bg-transparent border-none outline-none text-foreground w-full p-0"
+                disabled={isCommandRunning}
+              />
+              {suggestion && (
+                <div className="absolute top-0 left-0 text-muted-foreground pointer-events-none">
+                  <span className="text-transparent">{inputValue}</span>
+                  {suggestion.substring(inputValue.length)}
+                </div>
+              )}
+            </div>
           </form>
         )}
       </CardContent>
