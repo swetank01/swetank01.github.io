@@ -78,6 +78,22 @@ const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestar
     );
 };
 
+const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dataAiHint }: { isGlitching: boolean, src: string, alt: string, width: number, height: number, 'data-ai-hint': string }) => {
+    return (
+        <div className={cn('glitch-image-wrapper rounded-full mx-auto mb-6 shadow-lg ring-4 ring-white', { 'glitching': isGlitching })}>
+            <div className="glitch-image-inner" style={{ background: `url(${src})`, backgroundSize: 'cover' }}>
+                 <Image
+                    src={src}
+                    alt={alt}
+                    width={width}
+                    height={height}
+                    data-ai-hint={dataAiHint}
+                    className="rounded-full opacity-0" // Kept for layout and accessibility, but visually hidden
+                />
+            </div>
+        </div>
+    );
+};
 
 export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () => void }) {
     const [isGlitching, setIsGlitching] = useState(false);
@@ -143,13 +159,13 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
             <main className="container mx-auto px-6 py-12">
                 
                 <section id="about" className="text-center py-12 lg:py-16">
-                     <Image
+                     <GlitchImage
+                        isGlitching={isGlitching}
                         src="https://lh3.googleusercontent.com/a/ACg8ocLgAiwsma-rBKylapneIfEmb8GU5SaZMWExotCGafW-CoYvCmw=s576-c-no"
                         alt="Profile Picture"
                         width={128}
                         height={128}
                         data-ai-hint="professional portrait"
-                        className="rounded-full mx-auto mb-6 shadow-lg ring-4 ring-white"
                     />
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 max-w-3xl mx-auto">Pioneering Efficient and Scalable Cloud Solutions</h2>
                     <p className="text-lg text-slate-600 max-w-3xl mx-auto">

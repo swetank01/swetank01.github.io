@@ -197,6 +197,33 @@ html {
     90% { transform: translate(2px, -2px); }
     100% { transform: translate(-1px, 1px); }
   }
+  
+  @keyframes glitch-image {
+    0% {
+      clip-path: inset(9% 0 91% 0);
+      transform: translate(-3px, -1px);
+    }
+    20% {
+      clip-path: inset(70% 0 4% 0);
+      transform: translate(2px, 2px);
+    }
+    40% {
+      clip-path: inset(44% 0 46% 0);
+      transform: translate(-5px, 1px);
+    }
+    60% {
+      clip-path: inset(98% 0 2% 0);
+      transform: translate(4px, -3px);
+    }
+    80% {
+      clip-path: inset(23% 0 54% 0);
+      transform: translate(-2px, -4px);
+    }
+    100% {
+      clip-path: inset(55% 0 33% 0);
+      transform: translate(1px, 2px);
+    }
+  }
 
   .glitch-wrapper {
     position: relative;
@@ -206,10 +233,6 @@ html {
   .glitch-text {
     position: relative;
     transition: all 0.2s ease-in-out;
-  }
-
-  .glitch-wrapper.glitching .glitch-text {
-    /* Glitch styling is now handled by pseudo-elements */
   }
 
   .glitch-wrapper.glitching .glitch-text::before,
@@ -233,6 +256,36 @@ html {
     text-shadow: -2px 0 #22c55e, 2px 2px #eab308; /* Green and Amber shadows */
     animation: glitch-anim-1 1s infinite alternate, glitch-anim-2 0.5s infinite alternate-reverse;
   }
+
+  .glitch-image-wrapper {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+  }
+
+  .glitch-image-wrapper .glitch-image-inner {
+    position: relative;
+  }
+
+  .glitch-image-wrapper.glitching .glitch-image-inner::before,
+  .glitch-image-wrapper.glitching .glitch-image-inner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+  }
+
+  .glitch-image-wrapper.glitching .glitch-image-inner::before {
+    animation: glitch-image 0.8s infinite alternate-reverse;
+  }
+
+  .glitch-image-wrapper.glitching .glitch-image-inner::after {
+    animation: glitch-image 0.8s infinite alternate;
+  }
+
 
   /* Glitch screen to white */
   @keyframes glitch-screen-to-white-anim {
