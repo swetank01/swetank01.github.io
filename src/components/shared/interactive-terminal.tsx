@@ -189,7 +189,7 @@ export function InteractiveTerminal() {
           <Circle className="w-3 h-3 text-yellow-500 fill-current" />
           <Circle className="w-3 h-3 text-green-500 fill-current" />
         </div>
-        <p className="text-xs text-muted-foreground">/bin/bash</p>
+        <p className="text-xs text-muted-foreground">/bin/Sw3t@nK</p>
         <button onClick={toggleSound} className="text-muted-foreground hover:text-primary">
             {isSoundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
             <span className="sr-only">Toggle Sound</span>
