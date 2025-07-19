@@ -46,7 +46,6 @@ const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestar
         <span
             className={cn('glitch-wrapper', { 'glitching': isGlitching })}
             onClick={onRestart}
-            style={{ color: 'inherit', background: 'transparent', padding: 0 }}
         >
             <span className="glitch-text" data-text="$w3t@nK">
                 {text}
@@ -122,7 +121,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 {/* About Me Section */}
                 <section id="about" className="text-center max-w-3xl mx-auto mb-24">
                      <Image
-                        src="https://placehold.co/128x128.png"
+                        src="https://lh3.googleusercontent.com/a/ACg8ocLgAiwsma-rBKylapneIfEmb8GU5SaZMWExotCGafW-CoYvCmw=s576-c-no"
                         alt="Profile Picture"
                         width={128}
                         height={128}
