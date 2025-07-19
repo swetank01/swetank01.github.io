@@ -41,7 +41,7 @@ const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
         setIsGlitching(true);
         let count = 0;
         glitchIntervalRef.current = setInterval(() => {
-            setName(prev => (prev === 'Swetank' ? 'Sw3t@nK' : 'Swetank'));
+            setName(prev => (prev === 'Swetank' ? '$w3t@nK' : 'Swetank'));
             count++;
             if (count > 8) { // Glitch for about a second
                 stopGlitching();
@@ -75,7 +75,7 @@ const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
             className={cn('glitch-wrapper', { 'glitching': isGlitching })}
             onClick={onRestart}
         >
-            <span className="glitch-text" data-text="Sw3t@nK">
+            <span className="glitch-text" data-text="$w3t@nK">
                 {name}
             </span>
         </span>
