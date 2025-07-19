@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Linkedin, Github, Download, CheckCircle, Briefcase, Mail, Phone } from 'lucide-react';
@@ -28,6 +29,48 @@ const projects = [
         description: 'Led the adoption of ArgoCD to establish a GitOps workflow, ensuring environment parity between staging and production and enabling fully automated, auditable deployments.' 
     },
 ];
+
+const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
+    const [name, setName] = useState('Swetank');
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+    const startGlitch = () => {
+        if (intervalRef.current) return;
+        intervalRef.current = setInterval(() => {
+            setName(prev => prev === 'Swetank' ? 'Sw3t@nK' : 'Swetank');
+        }, 100);
+    };
+
+    const stopGlitch = () => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+        setName('Swetank');
+    };
+
+    useEffect(() => {
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
+    }, []);
+
+    return (
+        <span
+            className="glitch-wrapper mx-1"
+            onMouseEnter={startGlitch}
+            onMouseLeave={stopGlitch}
+            onClick={onRestart}
+        >
+            <span className="glitch-text" data-text="Sw3t@nK">
+                {name}
+            </span>
+        </span>
+    );
+};
+
 
 export function BluePillPage({ onRestart }: { onRestart: () => void }) {
     return (
@@ -63,14 +106,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                             <CardContent>
                                 <p>
                                     Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices. My professional identity is
-                                    <span 
-                                        className="glitch-wrapper mx-1"
-                                        onClick={onRestart}
-                                    >
-                                        <span className="glitch-text" data-text="Sw3t@nK">
-                                            Sw3t@nK
-                                        </span>
-                                    </span>.
+                                    <GlitchName onRestart={onRestart} />.
                                 </p>
                             </CardContent>
                         </Card>
