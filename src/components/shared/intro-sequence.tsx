@@ -8,8 +8,9 @@ import { DigitalRain } from './digital-rain';
 import { HeroSection } from '../sections/hero-section';
 import { GlitchText } from './glitch-text';
 import { YinYangIcon } from './yin-yang-icon';
+import { BluePillPage } from './blue-pill-page';
 
-type SequenceStep = 'BOOTING' | 'CHOICE' | 'BLUE_PILL_OUTCOME' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'YIN_YANG';
+type SequenceStep = 'BOOTING' | 'CHOICE' | 'BLUE_PILL_MESSAGE' | 'BLUE_PILL_OUTCOME' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'YIN_YANG';
 
 const bootMessages = [
   'Powering On...',
@@ -69,6 +70,12 @@ export function IntroSequence() {
     if (step === 'MEET_WHO') {
       meetInputRef.current?.focus();
     }
+    if (step === 'BLUE_PILL_MESSAGE') {
+      const timer = setTimeout(() => {
+        setStep('BLUE_PILL_OUTCOME');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
   }, [step]);
 
   const handleMeetSubmit = (e: React.FormEvent) => {
@@ -88,10 +95,7 @@ export function IntroSequence() {
   };
 
   const handleBluePillClick = () => {
-    setStep('BLUE_PILL_OUTCOME');
-    setTimeout(() => {
-        startBootSequence();
-    }, 4000)
+    setStep('BLUE_PILL_MESSAGE');
   };
 
   const handleExit = () => {
@@ -147,13 +151,13 @@ export function IntroSequence() {
     </Card>
   );
 
-  const renderBluePillOutcome = () => (
+  const renderBluePillMessage = () => (
      <div className="w-full max-w-lg p-4 text-center font-code text-blue-400 animate-fade-in-up">
         <p className="text-lg">
             <GlitchText text="The story ends. You wake up in your bed and believe whatever you want to believe." />
         </p>
         <p className="text-sm mt-4 text-muted-foreground">
-            <GlitchText text="Re-initializing sequence..." />
+            <GlitchText text="Re-directing to normal life..." />
         </p>
     </div>
   );
@@ -204,9 +208,11 @@ export function IntroSequence() {
       case 'CHOICE':
         content = renderChoice();
         break;
-      case 'BLUE_PILL_OUTCOME':
-        content = renderBluePillOutcome();
+      case 'BLUE_PILL_MESSAGE':
+        content = renderBluePillMessage();
         break;
+      case 'BLUE_PILL_OUTCOME':
+        return <BluePillPage onRestart={startBootSequence} />;
       case 'MEET_WHO':
         content = renderMeetWho();
         break;
