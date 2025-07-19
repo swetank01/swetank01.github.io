@@ -36,7 +36,6 @@ const projects = [
 const agents = [
     { name: 'Agent Kube', role: 'Orchestration Specialist', avatar: 'https://placehold.co/100x100.png', hint: 'robot face' },
     { name: 'Agent Terra', role: 'Infrastructure Architect', avatar: 'https://placehold.co/100x100.png', hint: 'robot face' },
-    { name: 'Swetank Soni', role: 'Lead DevOps Architect', avatar: 'https://placehold.co/100x100.png', hint: 'man glasses face' },
     { name: 'Agent CI', role: 'Deployment Coordinator', avatar: 'https://placehold.co/100x100.png', hint: 'robot face' },
 ]
 
@@ -167,7 +166,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 <section id="team" className="text-center mb-24">
                     <h2 className="text-3xl font-bold text-slate-900 mb-4">Meet My AI Agents</h2>
                     <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-12">My team of specialized AI agents who assist in automating and managing complex cloud infrastructure, orchestrated by a human architect.</p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {agents.map((agent, i) => (
                             <div key={i} className="flex flex-col items-center">
                                 <Image
@@ -179,7 +178,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                                     className="rounded-full mb-4 shadow-md"
                                 />
                                  <h3 className="font-semibold text-slate-800">
-                                    {agent.name === 'Swetank Soni' ? <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> : agent.name.split(' ')[0]} {agent.name.split(' ')[1]}
+                                    {agent.name}
                                  </h3>
                                 <p className="text-sm text-slate-500">{agent.role}</p>
                             </div>
