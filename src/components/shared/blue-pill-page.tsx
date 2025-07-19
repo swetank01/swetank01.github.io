@@ -3,8 +3,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { Briefcase, Users, CheckCircle, Mail, Phone, Download, Building, Bot, Github, Linkedin, Twitter, Cloud, Code, GitMerge, ShieldCheck, AreaChart, Server } from 'lucide-react';
+import { Card, CardHeader } from '../ui/card';
+import { Mail, Phone, Download, Github, Linkedin, Twitter, Cloud, Code, GitMerge, ShieldCheck, AreaChart, Server } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -79,7 +79,7 @@ const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestar
 };
 
 
-export function BluePillPage({ onRestart }: { onRestart: () => void }) {
+export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () => void }) {
     const [isGlitching, setIsGlitching] = useState(false);
     const glitchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -117,7 +117,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                     <div>
                         <h1 className="text-xl font-bold text-slate-900">
-                           <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> Soni
+                           <GlitchName onRestart={onEnterHackerverse} isGlitching={isGlitching} /> Soni
                         </h1>
                         <p className="text-sm text-slate-500">Senior DevOps Engineer</p>
                     </div>
@@ -140,10 +140,9 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 </div>
             </header>
 
-            <main className="container mx-auto px-6">
+            <main className="container mx-auto px-6 py-12">
                 
-                {/* About Me Section */}
-                <section id="about" className="text-center py-20 lg:py-28">
+                <section id="about" className="text-center py-12 lg:py-16">
                      <Image
                         src="https://lh3.googleusercontent.com/a/ACg8ocLgAiwsma-rBKylapneIfEmb8GU5SaZMWExotCGafW-CoYvCmw=s576-c-no"
                         alt="Profile Picture"
@@ -158,15 +157,14 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                     </p>
                 </section>
                 
-                {/* Core Competencies Section */}
-                <section id="competencies" className="py-20 lg:py-28 bg-slate-50/70 rounded-3xl">
-                    <div className="text-center max-w-3xl mx-auto">
+                <section id="competencies" className="py-12 lg:py-20 bg-slate-50/70 rounded-3xl my-12 lg:my-20">
+                    <div className="text-center max-w-3xl mx-auto px-6">
                         <h2 className="text-3xl font-bold text-slate-900 mb-4">Core Competencies</h2>
                         <p className="text-lg text-slate-600 mb-12">
                             A holistic approach to DevOps, combining strategic architecture with hands-on implementation to drive business value and technical excellence.
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-6">
                         {skills.map((skill, i) => (
                            <div key={i} className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                                 <skill.icon className="w-8 h-8 mb-4 text-blue-600" />
@@ -177,15 +175,14 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                     </div>
                 </section>
 
-                {/* Key Initiatives Section */}
-                <section id="initiatives" className="py-20 lg:py-28">
-                    <div className="text-center max-w-3xl mx-auto">
+                <section id="initiatives" className="py-12 lg:py-20">
+                    <div className="text-center max-w-3xl mx-auto px-6">
                         <h2 className="text-3xl font-bold text-slate-900 mb-4">Key Initiatives</h2>
                         <p className="text-lg text-slate-600 mb-12">
                             A selection of high-impact projects that delivered measurable improvements in security, efficiency, and scalability.
                         </p>
                     </div>
-                    <div className="space-y-8">
+                    <div className="space-y-8 px-6">
                        {projects.map((project, i) => (
                             <Card key={i} className="shadow-lg border-slate-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white p-4">
                                 <CardHeader>
@@ -197,33 +194,32 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                     </div>
                 </section>
 
-
-                {/* Team Section */}
-                <section id="team" className="text-center py-20 lg:py-28 bg-slate-100/70 rounded-3xl">
-                    <h2 className="text-3xl font-bold text-slate-900 mb-4">Meet My AI Agents</h2>
-                    <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-12">My team of specialized AI agents who assist in automating and managing complex cloud infrastructure, orchestrated by a human architect.</p>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {agents.map((agent, i) => (
-                            <div key={i} className="flex flex-col items-center">
-                                <Image
-                                    src={agent.avatar}
-                                    alt={agent.name}
-                                    width={100}
-                                    height={100}
-                                    data-ai-hint={agent.hint}
-                                    className="rounded-full mb-4 shadow-md"
-                                />
-                                 <h3 className="font-semibold text-slate-800">
-                                    {agent.name}
-                                 </h3>
-                                <p className="text-sm text-slate-500">{agent.role}</p>
-                            </div>
-                        ))}
-                    </div>
+                <section id="team" className="text-center py-12 lg:py-20 bg-slate-100/70 rounded-3xl my-12 lg:my-20">
+                   <div className="px-6">
+                        <h2 className="text-3xl font-bold text-slate-900 mb-4">Meet My AI Agents</h2>
+                        <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-12">My team of specialized AI agents who assist in automating and managing complex cloud infrastructure, orchestrated by a human architect.</p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {agents.map((agent, i) => (
+                                <div key={i} className="flex flex-col items-center">
+                                    <Image
+                                        src={agent.avatar}
+                                        alt={agent.name}
+                                        width={100}
+                                        height={100}
+                                        data-ai-hint={agent.hint}
+                                        className="rounded-full mb-4 shadow-md"
+                                    />
+                                    <h3 className="font-semibold text-slate-800">
+                                        {agent.name}
+                                    </h3>
+                                    <p className="text-sm text-slate-500">{agent.role}</p>
+                                </div>
+                            ))}
+                        </div>
+                   </div>
                 </section>
 
-                {/* Contact Section */}
-                <section id="contact" className="my-20 lg:my-28 bg-slate-800 text-white rounded-2xl p-12">
+                <section id="contact" className="my-12 lg:my-20 bg-slate-800 text-white rounded-2xl p-12 mx-6">
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div className="text-center md:text-left">
                            <h2 className="text-3xl font-bold mb-2">Ready to Innovate?</h2>
@@ -247,7 +243,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
             <footer className="bg-white border-t">
               <div className="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
                 <p>
-                    © {new Date().getFullYear()} <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> Soni. All rights reserved.
+                    © {new Date().getFullYear()} <GlitchName onRestart={onEnterHackerverse} isGlitching={isGlitching} /> Soni. All rights reserved.
                 </p>
                 <div className="flex items-center gap-4 mt-4 md:mt-0">
                     <Link href="#" aria-label="Github">

@@ -8,9 +8,8 @@ import { DigitalRain } from './digital-rain';
 import { HeroSection } from '../sections/hero-section';
 import { GlitchText } from './glitch-text';
 import { YinYangIcon } from './yin-yang-icon';
-import { BluePillPage } from './blue-pill-page';
 
-type SequenceStep = 'BOOTING' | 'CHOICE' | 'BLUE_PILL_MESSAGE' | 'BLUE_PILL_OUTCOME' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'YIN_YANG';
+type SequenceStep = 'BOOTING' | 'CHOICE' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'YIN_YANG';
 
 const bootMessages = [
   'Powering On...',
@@ -18,7 +17,11 @@ const bootMessages = [
   'Awaiting connection...',
 ];
 
-export function IntroSequence() {
+interface IntroSequenceProps {
+  onRestart: () => void;
+}
+
+export function IntroSequence({ onRestart }: IntroSequenceProps) {
   const [step, setStep] = useState<SequenceStep>('BOOTING');
   const [meetName, setMeetName] = useState('');
   const [error, setError] = useState('');
@@ -70,12 +73,6 @@ export function IntroSequence() {
     if (step === 'MEET_WHO') {
       meetInputRef.current?.focus();
     }
-    if (step === 'BLUE_PILL_MESSAGE') {
-      const timer = setTimeout(() => {
-        setStep('BLUE_PILL_OUTCOME');
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
   }, [step]);
 
   const handleMeetSubmit = (e: React.FormEvent) => {
@@ -95,17 +92,16 @@ export function IntroSequence() {
   };
 
   const handleBluePillClick = () => {
-    setStep('BLUE_PILL_MESSAGE');
+    // This now restarts the entire experience, taking user back to corporate page
+    onRestart();
   };
 
   const handleExit = () => {
     setIsExiting(true);
-    // After animation, go to Yin Yang screen.
     setTimeout(() => {
       setStep('YIN_YANG');
-      // Hide rain *after* the zoom animation completes
       setShowRain(false);
-    }, 1500); // This duration should match the zoom-out animation
+    }, 1500);
   }
 
   const renderBooting = () => (
@@ -150,20 +146,9 @@ export function IntroSequence() {
         </CardContent>
     </Card>
   );
-
-  const renderBluePillMessage = () => (
-     <div className="w-full max-w-lg p-4 text-center font-code text-blue-400 animate-fade-in-up">
-        <p className="text-lg">
-            <GlitchText text="The story ends. You wake up in your bed and believe whatever you want to believe." />
-        </p>
-        <p className="text-sm mt-4 text-muted-foreground">
-            <GlitchText text="Re-directing to normal life..." />
-        </p>
-    </div>
-  );
   
   const renderYinYang = () => (
-    <div className="w-full h-full flex items-center justify-center fade-in cursor-pointer" onClick={startBootSequence}>
+    <div className="w-full h-full flex items-center justify-center fade-in cursor-pointer" onClick={onRestart}>
       <YinYangIcon className="w-24 h-24 text-primary hover:text-white hover:rotate-180 transition-all duration-1000" />
     </div>
   );
@@ -198,8 +183,6 @@ export function IntroSequence() {
   );
 
   const renderContent = () => {
-    if (step === 'YIN_YANG') return renderYinYang();
-
     let content;
     switch(step) {
       case 'BOOTING':
@@ -208,16 +191,14 @@ export function IntroSequence() {
       case 'CHOICE':
         content = renderChoice();
         break;
-      case 'BLUE_PILL_MESSAGE':
-        content = renderBluePillMessage();
-        break;
-      case 'BLUE_PILL_OUTCOME':
-        return <BluePillPage onRestart={startBootSequence} />;
       case 'MEET_WHO':
         content = renderMeetWho();
         break;
       case 'ACCESS_GRANTED':
         content = <HeroSection onExit={handleExit} />;
+        break;
+      case 'YIN_YANG':
+        content = renderYinYang();
         break;
       default:
         content = null;

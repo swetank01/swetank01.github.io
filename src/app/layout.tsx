@@ -25,7 +25,6 @@ export default function RootLayout({
           {children}
         </SoundProvider>
         <Toaster />
-        <div className="scanlines" />
       </body>
     </html>
   );
