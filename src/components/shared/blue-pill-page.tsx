@@ -85,13 +85,3 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
         </div>
     );
 }
-
-// Add keyframes for the blinking cursor used by the glitch
-const style = document.createElement('style');
-style.innerHTML = `
-@keyframes blink-cursor {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-`;
-document.head.appendChild(style);
