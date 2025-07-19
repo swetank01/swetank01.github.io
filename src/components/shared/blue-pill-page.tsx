@@ -105,8 +105,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                             </CardHeader>
                             <CardContent>
                                 <p>
-                                    Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices. My professional identity is
-                                    <span className="mx-1"><GlitchName onRestart={onRestart} /></span>.
+                                    Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices.
                                 </p>
                             </CardContent>
                         </Card>
