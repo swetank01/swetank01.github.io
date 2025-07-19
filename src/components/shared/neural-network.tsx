@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from 'react';
 
 export function NeuralNetwork() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const mousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -21,30 +22,49 @@ export function NeuralNetwork() {
     let width = canvas.width / dpr;
     let height = canvas.height / dpr;
 
-    const nodes: { x: number; y: number; vx: number; vy: number; connections: number[] }[] = [];
+    const nodes: { x: number; y: number; originalX: number; originalY: number; vx: number; vy: number; }[] = [];
     const numNodes = 50;
     const connectionRadius = 100;
     const primaryColor = '#BFFF00'; // Electric Lime
 
     for (let i = 0; i < numNodes; i++) {
+      const x = Math.random() * width;
+      const y = Math.random() * height;
       nodes.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
+        x: x,
+        y: y,
+        originalX: x,
+        originalY: y,
         vx: (Math.random() - 0.5) * 0.5,
         vy: (Math.random() - 0.5) * 0.5,
-        connections: [],
       });
     }
+
+    const handleMouseMove = (event: MouseEvent) => {
+      mousePos.current = { x: event.clientX, y: event.clientY };
+    };
+    window.addEventListener('mousemove', handleMouseMove);
 
     const update = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       nodes.forEach(node => {
+        // Move node
         node.x += node.vx;
         node.y += node.vy;
 
+        // Bounce off walls
         if (node.x < 0 || node.x > width) node.vx *= -1;
         if (node.y < 0 || node.y > height) node.vy *= -1;
+
+        // Parallax effect
+        const dxMouse = node.x - mousePos.current.x;
+        const dyMouse = node.y - mousePos.current.y;
+        const distMouse = Math.sqrt(dxMouse*dxMouse + dyMouse*dyMouse);
+        
+        const parallaxForce = Math.max(0, 50 - distMouse) / 50;
+        node.x += dxMouse * 0.001 * parallaxForce;
+        node.y += dyMouse * 0.001 * parallaxForce;
       });
 
       for (let i = 0; i < numNodes; i++) {
@@ -89,6 +109,7 @@ export function NeuralNetwork() {
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
     };
 
   }, []);

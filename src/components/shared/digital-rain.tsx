@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 
-export function DigitalRain() {
+export function DigitalRain({ isMatrix = false, a11y = true }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -18,7 +18,6 @@ export function DigitalRain() {
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      // Recalculate columns on resize
       columns = Math.floor(width / fontSize);
       drops = [];
       for (let i = 0; i < columns; i++) {
@@ -41,10 +40,10 @@ export function DigitalRain() {
     let animationFrameId: number;
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(38, 38, 38, 0.05)';
+      ctx.fillStyle = isMatrix ? 'rgba(0, 0, 0, 0.05)' : 'rgba(38, 38, 38, 0.05)';
       ctx.fillRect(0, 0, width, height);
       
-      ctx.fillStyle = '#BFFF00'; // Electric Lime
+      ctx.fillStyle = isMatrix ? '#0F0' : '#BFFF00';
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
@@ -65,13 +64,13 @@ export function DigitalRain() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [isMatrix]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute top-0 left-0 w-full h-full z-0 opacity-20"
-      aria-hidden="true"
+      className={`absolute top-0 left-0 w-full h-full z-0 ${isMatrix ? '' : 'opacity-20'}`}
+      aria-hidden={a11y}
     />
   );
 }
