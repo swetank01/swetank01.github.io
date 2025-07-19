@@ -1,9 +1,11 @@
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Circle, Volume2, VolumeX } from 'lucide-react';
 import { useSound } from '@/hooks/use-sound';
+import { generateMissionLog } from '@/ai/flows/generate-log-flow';
 
 const initialCommands = [
   { cmd: 'system.boot()', delay: 50, typed: true, prompt: true },
@@ -16,9 +18,9 @@ const initialCommands = [
 ];
 
 const projects = [
-  'Project Cerberus - A multi-headed security scanner for cloud environments.',
-  'Nexus Pipeline - Dynamic CI/CD pipeline generator for microservices.',
-  'Automated GitOps - ArgoCD-based framework for managing Kubernetes clusters.',
+  { title: "Project Cerberus", description: "A multi-headed security scanner that automates vulnerability detection across cloud environments. Integrates with Slack for real-time alerts." },
+  { title: "Nexus Pipeline", description: "A dynamic CI/CD pipeline generator for microservices. Users define a simple YAML, and Nexus creates complex Jenkinsfiles on the fly." },
+  { title: "Automated GitOps", description: "An ArgoCD-based GitOps framework for managing staging and production Kubernetes clusters, ensuring environment parity." },
 ];
 
 const skills = [
@@ -113,11 +115,11 @@ export function InteractiveTerminal() {
   const runCommand = async (command: string) => {
     setIsCommandRunning(true);
     let newLines = [...lines, { text: command, prompt: true }];
-    setLines(newLines);
+    setLines([...newLines]);
 
     const [cmd] = command.split(' ');
 
-    const commandProcess = async (title: string, data: any[]) => {
+    const commandProcess = async (title: string, data: string[]) => {
         newLines.push({ text: `> Running script for '${cmd}'...` });
         newLines.push({ text: `> Connecting to secure datastore...` });
         setLines([...newLines]);
@@ -126,7 +128,6 @@ export function InteractiveTerminal() {
         newLines.push({ text: `> Decrypting records...` });
         setLines([...newLines]);
 
-        // Progress bar simulation
         const progressLineIndex = newLines.length;
         newLines.push({ text: `[${' '.repeat(20)}] 0%`});
         for (let i = 0; i <= 20; i++) {
@@ -145,24 +146,50 @@ export function InteractiveTerminal() {
         setLines([...newLines]);
     }
     
-    const experienceProcess = async (title: string, data: typeof experience) => {
-        await commandProcess('Professional Experience', []); // Run intro sequence without data
+    const experienceProcess = async () => {
+        const title = 'Professional Experience';
+        let formattedExperience = experience.map(e => `${e.title} @ ${e.company} (${e.duration})`);
+        await commandProcess(title, formattedExperience);
+    }
+    
+    const projectsProcess = async () => {
+        const title = 'Featured Projects';
+        newLines.push({ text: `> Running script for 'projects'...` });
+        newLines.push({ text: `> Initializing AI log generation subroutine...` });
+        setLines([...newLines]);
+        await sleep(300);
+
+        newLines.push({ text: `> Generating mission logs:` });
+        setLines([...newLines]);
+
+        for (const project of projects) {
+          await sleep(150);
+          newLines.push({ text: `  - Analyzing project: ${project.title}` });
+          setLines([...newLines]);
+          
+          try {
+            const result = await generateMissionLog(project);
+            await sleep(100);
+            newLines.push({ text: `    LOG: ${result.log}` });
+            setLines([...newLines]);
+          } catch(e) {
+            newLines.push({ text: `    ERROR: Could not generate log for ${project.title}` });
+            setLines([...newLines]);
+          }
+        }
         
-        let experienceLines: { text: string; prompt?: boolean }[] = [];
-        experience.forEach(e => experienceLines.push({ text: `  - ${e.title} @ ${e.company} (${e.duration})`}));
-        
-        // Replace empty data with formatted data
-        newLines.splice(newLines.length - 2, 1, ...experienceLines);
+        await sleep(200);
+        newLines.push({ text: `> Log generation complete.` });
         setLines([...newLines]);
     }
 
-    switch(cmd) {
+    switch(cmd.toLowerCase()) {
       case 'help':
         newLines.push({ text: 'Available commands:'});
         newLines.push({ text: '  whoami       - Display user information'});
         newLines.push({ text: '  skills       - List core competencies'});
         newLines.push({ text: '  experience   - Show professional experience'});
-        newLines.push({ text: '  projects     - List featured projects'});
+        newLines.push({ text: '  projects     - Generate AI mission logs for projects'});
         newLines.push({ text: '  contact      - Display contact information'});
         newLines.push({ text: '  clear        - Clear the terminal screen'});
         setLines(newLines);
@@ -177,10 +204,10 @@ export function InteractiveTerminal() {
         await commandProcess('Core Competencies', skills);
         break;
       case 'experience':
-        await experienceProcess('Professional Experience', experience);
+        await experienceProcess();
         break;
       case 'projects':
-        await commandProcess('Featured Projects', projects);
+        await projectsProcess();
         break;
       case 'contact':
         newLines.push({ text: 'Get in touch:' });
