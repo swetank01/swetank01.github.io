@@ -4,18 +4,42 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { Briefcase, Users, CheckCircle, Mail, Phone, Download, Building, Bot, Github, Linkedin, Twitter } from 'lucide-react';
+import { Briefcase, Users, CheckCircle, Mail, Phone, Download, Building, Bot, Github, Linkedin, Twitter, Cloud, Code, GitMerge, ShieldCheck, AreaChart, Server } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const skills = [
-    "Strategic Cloud Solutions (AWS, GCP, Azure)",
-    "Declarative Infrastructure (Terraform, Ansible)",
-    "Container Ecosystems (Docker, Kubernetes)",
-    "Automated Delivery Pipelines (CI/CD)",
-    "Proactive Observability & Monitoring",
-    "Automation & Scripting (Python, Go)"
+    { 
+        icon: Cloud,
+        title: "Strategic Cloud Solutions",
+        description: "Designing and managing scalable, secure infrastructures on AWS, GCP, and Azure."
+    },
+    { 
+        icon: Code,
+        title: "Declarative Infrastructure",
+        description: "Automating environment provisioning and management using Terraform and Ansible."
+    },
+    { 
+        icon: Server,
+        title: "Container Ecosystems",
+        description: "Orchestrating production-grade services with Docker and Kubernetes."
+    },
+    { 
+        icon: GitMerge,
+        title: "Automated Delivery Pipelines",
+        description: "Building robust CI/CD workflows to improve developer velocity and reliability."
+    },
+    { 
+        icon: AreaChart,
+        title: "Proactive Observability",
+        description: "Implementing comprehensive monitoring to ensure system health and performance."
+    },
+    { 
+        icon: ShieldCheck,
+        title: "Security & Compliance",
+        description: "Integrating security best practices throughout the entire development lifecycle."
+    }
 ];
 
 const projects = [
@@ -86,7 +110,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
 
     return (
         <div 
-            className="w-full h-screen bg-white text-slate-700 font-sans-corporate animate-fade-in-up overflow-y-auto"
+            className="w-full min-h-screen bg-white text-slate-800 font-sans-corporate animate-fade-in-up overflow-y-auto"
             onMouseMove={handleMouseMove}
         >
             <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
@@ -98,10 +122,10 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                         <p className="text-sm text-slate-500">Senior DevOps Engineer</p>
                     </div>
                     <nav className="flex items-center gap-4">
-                        <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5">
+                        <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 hidden sm:flex">
                             <Download className="mr-2 h-4 w-4" /> Download Resume
                         </Button>
-                        <div className="hidden md:flex items-center gap-4">
+                        <div className="flex items-center gap-4">
                             <Link href="#" aria-label="Github">
                                 <Github className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
                             </Link>
@@ -116,62 +140,66 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 </div>
             </header>
 
-            <main className="container mx-auto px-6 py-16">
+            <main className="container mx-auto px-6">
                 
                 {/* About Me Section */}
-                <section id="about" className="text-center max-w-3xl mx-auto mb-24">
+                <section id="about" className="text-center py-20 lg:py-28">
                      <Image
                         src="https://lh3.googleusercontent.com/a/ACg8ocLgAiwsma-rBKylapneIfEmb8GU5SaZMWExotCGafW-CoYvCmw=s576-c-no"
                         alt="Profile Picture"
                         width={128}
                         height={128}
                         data-ai-hint="professional portrait"
-                        className="rounded-full mx-auto mb-6 shadow-lg"
+                        className="rounded-full mx-auto mb-6 shadow-lg ring-4 ring-white"
                     />
-                    <h2 className="text-3xl font-bold text-slate-900 mb-4">Pioneering Efficient and Scalable Cloud Solutions</h2>
-                    <p className="text-lg text-slate-600">
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 max-w-3xl mx-auto">Pioneering Efficient and Scalable Cloud Solutions</h2>
+                    <p className="text-lg text-slate-600 max-w-3xl mx-auto">
                         Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices.
                     </p>
                 </section>
                 
-                {/* Core Competencies & Key Initiatives */}
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-24">
-                    {/* Core Competencies Section */}
-                    <div className="lg:col-span-2">
-                         <Card className="shadow-lg border-slate-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-slate-50/50">
-                            <CardHeader>
-                                <CardTitle className="flex items-center text-slate-800 text-xl"><Users className="mr-3 h-6 w-6 text-blue-500" /> Core Competencies</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ul className="space-y-3">
-                                    {skills.map((skill, i) => (
-                                        <li key={i} className="flex items-center text-sm">
-                                            <CheckCircle className="w-4 h-4 mr-2 text-green-500 flex-shrink-0" />
-                                            {skill}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </CardContent>
-                        </Card>
+                {/* Core Competencies Section */}
+                <section id="competencies" className="py-20 lg:py-28 bg-slate-50/70 rounded-3xl">
+                    <div className="text-center max-w-3xl mx-auto">
+                        <h2 className="text-3xl font-bold text-slate-900 mb-4">Core Competencies</h2>
+                        <p className="text-lg text-slate-600 mb-12">
+                            A holistic approach to DevOps, combining strategic architecture with hands-on implementation to drive business value and technical excellence.
+                        </p>
                     </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {skills.map((skill, i) => (
+                           <div key={i} className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                                <skill.icon className="w-8 h-8 mb-4 text-blue-600" />
+                                <h3 className="font-semibold text-lg text-slate-900 mb-1">{skill.title}</h3>
+                                <p className="text-slate-600 text-sm">{skill.description}</p>
+                           </div>
+                        ))}
+                    </div>
+                </section>
 
-                    <div className="lg:col-span-3">
-                        <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center"><Briefcase className="mr-3 h-6 w-6 text-blue-500" /> Key Initiatives</h2>
-                        <div className="space-y-6">
-                           {projects.map((project, i) => (
-                                <Card key={i} className="shadow-lg border-slate-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-slate-50/50">
-                                    <CardHeader>
-                                        <h3 className="font-semibold text-slate-800">{project.title}</h3>
-                                        <p className="text-sm text-slate-600">{project.description}</p>
-                                    </CardHeader>
-                                </Card>
-                            ))}
-                        </div>
+                {/* Key Initiatives Section */}
+                <section id="initiatives" className="py-20 lg:py-28">
+                    <div className="text-center max-w-3xl mx-auto">
+                        <h2 className="text-3xl font-bold text-slate-900 mb-4">Key Initiatives</h2>
+                        <p className="text-lg text-slate-600 mb-12">
+                            A selection of high-impact projects that delivered measurable improvements in security, efficiency, and scalability.
+                        </p>
                     </div>
-                </div>
+                    <div className="space-y-8">
+                       {projects.map((project, i) => (
+                            <Card key={i} className="shadow-lg border-slate-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white p-4">
+                                <CardHeader>
+                                    <h3 className="font-semibold text-slate-900 text-xl">{project.title}</h3>
+                                    <p className="text-slate-600">{project.description}</p>
+                                </CardHeader>
+                            </Card>
+                        ))}
+                    </div>
+                </section>
+
 
                 {/* Team Section */}
-                <section id="team" className="text-center mb-24 bg-slate-100/70 py-16 rounded-2xl">
+                <section id="team" className="text-center py-20 lg:py-28 bg-slate-100/70 rounded-3xl">
                     <h2 className="text-3xl font-bold text-slate-900 mb-4">Meet My AI Agents</h2>
                     <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-12">My team of specialized AI agents who assist in automating and managing complex cloud infrastructure, orchestrated by a human architect.</p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -195,7 +223,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 </section>
 
                 {/* Contact Section */}
-                <section id="contact" className="bg-slate-800 text-white rounded-2xl p-12">
+                <section id="contact" className="my-20 lg:my-28 bg-slate-800 text-white rounded-2xl p-12">
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div className="text-center md:text-left">
                            <h2 className="text-3xl font-bold mb-2">Ready to Innovate?</h2>
@@ -216,7 +244,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                 
             </main>
             
-            <footer className="bg-white border-t mt-12">
+            <footer className="bg-white border-t">
               <div className="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
                 <p>
                     © {new Date().getFullYear()} <GlitchName onRestart={onRestart} isGlitching={isGlitching} /> Soni. All rights reserved.
