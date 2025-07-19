@@ -89,7 +89,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
             <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
                 <div className="container mx-auto px-6 py-3 flex justify-between items-center">
                     <div>
-                        <h1 className="text-xl font-bold text-gray-900"><GlitchName onRestart={onRestart} /> Kumar</h1>
+                        <h1 className="text-xl font-bold text-gray-900"><GlitchName onRestart={onRestart} /> Soni</h1>
                         <p className="text-sm text-gray-500">Senior DevOps Engineer</p>
                     </div>
                     <nav className="flex items-center gap-2">
@@ -164,7 +164,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
                             <CardContent className="space-y-3">
                                 <div className="flex items-center text-sm">
                                     <Mail className="w-4 h-4 mr-2 text-gray-500" />
-                                    <span>s.kumar.devops@email.com</span>
+                                    <span>s.soni.devops@email.com</span>
                                 </div>
                                 <div className="flex items-center text-sm">
                                     <Phone className="w-4 h-4 mr-2 text-gray-500" />
@@ -177,7 +177,7 @@ export function BluePillPage({ onRestart }: { onRestart: () => void }) {
             </main>
             
             <footer className="text-center p-6 text-sm text-gray-500 border-t bg-gray-100 mt-12">
-                © {new Date().getFullYear()} <GlitchName onRestart={onRestart} /> Kumar. All rights reserved.
+                © {new Date().getFullYear()} <GlitchName onRestart={onRestart} /> Soni. All rights reserved.
             </footer>
         </div>
     );
