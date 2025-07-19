@@ -205,14 +205,18 @@ html {
   }
   .glitch-text {
     position: relative;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .glitch-wrapper.glitching .glitch-text {
     color: #ef4444; /* Red color for the glitch */
     background-color: #111827; /* Dark background */
     padding: 2px 4px;
     border-radius: 3px;
-    transition: all 0.2s ease-in-out;
   }
-  .glitch-wrapper:hover .glitch-text::before,
-  .glitch-wrapper:hover .glitch-text::after {
+
+  .glitch-wrapper.glitching .glitch-text::before,
+  .glitch-wrapper.glitching .glitch-text::after {
     content: attr(data-text);
     position: absolute;
     top: 0;
@@ -221,12 +225,12 @@ html {
     height: 100%;
     background-color: #111827;
   }
-  .glitch-wrapper:hover .glitch-text::before {
+  .glitch-wrapper.glitching .glitch-text::before {
     left: 2px;
     text-shadow: -2px 0 #0ea5e9; /* Blue shadow */
     animation: glitch-anim-1 1s infinite alternate-reverse, glitch-anim-2 0.5s infinite alternate;
   }
-  .glitch-wrapper:hover .glitch-text::after {
+  .glitch-wrapper.glitching .glitch-text::after {
     left: -2px;
     text-shadow: -2px 0 #22c55e, 2px 2px #eab308; /* Green and Amber shadows */
     animation: glitch-anim-1 1s infinite alternate, glitch-anim-2 0.5s infinite alternate-reverse;

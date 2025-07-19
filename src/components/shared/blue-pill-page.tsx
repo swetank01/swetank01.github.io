@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Linkedin, Github, Download, CheckCircle, Mail, Phone } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const skills = [
     "Cloud Architecture (AWS, Azure)",
@@ -32,10 +33,12 @@ const projects = [
 
 const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
     const [name, setName] = useState('Swetank');
+    const [isGlitching, setIsGlitching] = useState(false);
     const glitchIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const startGlitching = () => {
+        setIsGlitching(true);
         let count = 0;
         glitchIntervalRef.current = setInterval(() => {
             setName(prev => (prev === 'Swetank' ? 'Sw3t@nK' : 'Swetank'));
@@ -51,6 +54,7 @@ const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
             clearInterval(glitchIntervalRef.current);
             glitchIntervalRef.current = null;
         }
+        setIsGlitching(false);
         setName('Swetank');
         // Schedule the next glitch
         timeoutRef.current = setTimeout(startGlitching, 3000 + Math.random() * 2000);
@@ -68,7 +72,7 @@ const GlitchName = ({ onRestart }: { onRestart: () => void }) => {
 
     return (
         <span
-            className="glitch-wrapper"
+            className={cn('glitch-wrapper', { 'glitching': isGlitching })}
             onClick={onRestart}
         >
             <span className="glitch-text" data-text="Sw3t@nK">
