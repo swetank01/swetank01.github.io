@@ -209,10 +209,7 @@ html {
   }
 
   .glitch-wrapper.glitching .glitch-text {
-    color: #ef4444; /* Red color for the glitch */
-    background-color: #111827; /* Dark background */
-    padding: 2px 4px;
-    border-radius: 3px;
+    /* Glitch styling is now handled by pseudo-elements */
   }
 
   .glitch-wrapper.glitching .glitch-text::before,
@@ -223,7 +220,8 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #111827;
+    background: transparent;
+    color: inherit;
   }
   .glitch-wrapper.glitching .glitch-text::before {
     left: 2px;
