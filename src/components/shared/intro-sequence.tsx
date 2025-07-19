@@ -9,7 +9,7 @@ import { HeroSection } from '../sections/hero-section';
 import { GlitchText } from './glitch-text';
 import { YinYangIcon } from './yin-yang-icon';
 
-type SequenceStep = 'BOOTING' | 'CHOICE' | 'BLUE_PILL_OUTCOME' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'EXITING' | 'YIN_YANG';
+type SequenceStep = 'BOOTING' | 'CHOICE' | 'BLUE_PILL_OUTCOME' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'YIN_YANG';
 
 const bootMessages = [
   'Powering On...',
@@ -99,8 +99,9 @@ export function IntroSequence() {
     // After animation, go to Yin Yang screen.
     setTimeout(() => {
       setStep('YIN_YANG');
+      // Hide rain *after* the zoom animation completes
       setShowRain(false);
-    }, 1500);
+    }, 1500); // This duration should match the zoom-out animation
   }
 
   const renderBooting = () => (
@@ -162,8 +163,39 @@ export function IntroSequence() {
       <YinYangIcon className="w-24 h-24 text-primary hover:text-white hover:rotate-180 transition-all duration-1000" />
     </div>
   );
+  
+  const renderMeetWho = () => (
+    <Card className="w-full max-w-md bg-black/50 border-primary/20 p-4 text-primary animate-fade-in-up">
+      <CardContent className="p-2">
+        <form onSubmit={handleMeetSubmit}>
+          <label htmlFor="meet" className="block text-lg mb-4">
+            <GlitchText text="How deep does the rabbit-hole go? Who do you want to meet?" />
+          </label>
+          <Input
+            ref={meetInputRef}
+            id="meet"
+            type="text"
+            value={meetName}
+            onChange={(e) => setMeetName(e.target.value)}
+            className="bg-transparent border-primary/50 text-primary text-lg"
+            autoComplete="off"
+          />
+          <Button type="submit" variant="ghost" className="mt-4 w-full text-primary hover:bg-primary/10 hover:text-primary">
+            Authenticate
+          </Button>
+          {error && (
+            <p className="mt-4 text-red-500 text-center">
+              <GlitchText text={error} />
+            </p>
+          )}
+        </form>
+      </CardContent>
+    </Card>
+  );
 
   const renderContent = () => {
+    if (step === 'YIN_YANG') return renderYinYang();
+
     let content;
     switch(step) {
       case 'BOOTING':
@@ -176,40 +208,10 @@ export function IntroSequence() {
         content = renderBluePillOutcome();
         break;
       case 'MEET_WHO':
-        content = (
-          <Card className="w-full max-w-md bg-black/50 border-primary/20 p-4 text-primary animate-fade-in-up">
-            <CardContent className="p-2">
-              <form onSubmit={handleMeetSubmit}>
-                <label htmlFor="meet" className="block text-lg mb-4">
-                  <GlitchText text="How deep does the rabbit-hole go? Who do you want to meet?" />
-                </label>
-                <Input
-                  ref={meetInputRef}
-                  id="meet"
-                  type="text"
-                  value={meetName}
-                  onChange={(e) => setMeetName(e.target.value)}
-                  className="bg-transparent border-primary/50 text-primary text-lg"
-                  autoComplete="off"
-                />
-                <Button type="submit" variant="ghost" className="mt-4 w-full text-primary hover:bg-primary/10 hover:text-primary">
-                  Authenticate
-                </Button>
-                {error && (
-                  <p className="mt-4 text-red-500 text-center">
-                    <GlitchText text={error} />
-                  </p>
-                )}
-              </form>
-            </CardContent>
-          </Card>
-        );
+        content = renderMeetWho();
         break;
       case 'ACCESS_GRANTED':
         content = <HeroSection onExit={handleExit} />;
-        break;
-      case 'YIN_YANG':
-        content = renderYinYang();
         break;
       default:
         content = null;
@@ -224,7 +226,7 @@ export function IntroSequence() {
 
   return (
     <div className="w-full h-screen bg-black font-code">
-      {(showRain && !isExiting) && <DigitalRain isMatrix a11y={false} />}
+      {showRain && <DigitalRain isMatrix a11y={false} />}
       <div className="relative z-10 w-full h-full flex items-center justify-center">
         {renderContent()}
       </div>
