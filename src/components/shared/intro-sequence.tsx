@@ -7,8 +7,9 @@ import { Button } from '@/components/ui/button';
 import { DigitalRain } from './digital-rain';
 import { HeroSection } from '../sections/hero-section';
 import { GlitchText } from './glitch-text';
+import { YinYangIcon } from './yin-yang-icon';
 
-type SequenceStep = 'BOOTING' | 'CHOICE' | 'BLUE_PILL_OUTCOME' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'EXITING';
+type SequenceStep = 'BOOTING' | 'CHOICE' | 'BLUE_PILL_OUTCOME' | 'MEET_WHO' | 'ACCESS_GRANTED' | 'EXITING' | 'YIN_YANG';
 
 const bootMessages = [
   'Powering On...',
@@ -23,6 +24,7 @@ export function IntroSequence() {
   const [showRain, setShowRain] = useState(false);
   const [bootLog, setBootLog] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
+  const [isExiting, setIsExiting] = useState(false);
 
   const meetInputRef = useRef<HTMLInputElement>(null);
 
@@ -31,6 +33,7 @@ export function IntroSequence() {
     setShowRain(false);
     setBootLog([]);
     setProgress(0);
+    setIsExiting(false);
     let messageIndex = 0;
     const bootInterval = setInterval(() => {
       if (messageIndex < bootMessages.length) {
@@ -59,11 +62,8 @@ export function IntroSequence() {
   };
   
   useEffect(() => {
-    if (step === 'BOOTING') {
-      const cleanup = startBootSequence();
-      return cleanup;
-    }
-  }, [step]);
+    startBootSequence();
+  }, []);
 
   useEffect(() => {
     if (step === 'MEET_WHO') {
@@ -90,16 +90,17 @@ export function IntroSequence() {
   const handleBluePillClick = () => {
     setStep('BLUE_PILL_OUTCOME');
     setTimeout(() => {
-        setStep('BOOTING');
+        startBootSequence();
     }, 4000)
   };
 
   const handleExit = () => {
-    setStep('EXITING');
-    // After animation, reset to boot.
+    setIsExiting(true);
+    // After animation, go to Yin Yang screen.
     setTimeout(() => {
-      setStep('BOOTING');
-    }, 2000);
+      setStep('YIN_YANG');
+      setShowRain(false);
+    }, 1500);
   }
 
   const renderBooting = () => (
@@ -155,75 +156,75 @@ export function IntroSequence() {
         </p>
     </div>
   );
-
-  const renderExiting = () => (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="black-hole-circle" />
+  
+  const renderYinYang = () => (
+    <div className="w-full h-full flex items-center justify-center fade-in cursor-pointer" onClick={startBootSequence}>
+      <YinYangIcon className="w-24 h-24 text-primary hover:text-white hover:rotate-180 transition-all duration-1000" />
     </div>
   );
 
   const renderContent = () => {
-    const mainContent = (() => {
-      switch(step) {
-        case 'BOOTING':
-          return renderBooting();
-        case 'CHOICE':
-          return renderChoice();
-        case 'BLUE_PILL_OUTCOME':
-          return renderBluePillOutcome();
-        case 'MEET_WHO':
-          return (
-            <Card className="w-full max-w-md bg-black/50 border-primary/20 p-4 text-primary animate-fade-in-up">
-              <CardContent className="p-2">
-                <form onSubmit={handleMeetSubmit}>
-                  <label htmlFor="meet" className="block text-lg mb-4">
-                    <GlitchText text="How deep does the rabbit-hole go? Who do you want to meet?" />
-                  </label>
-                  <Input
-                    ref={meetInputRef}
-                    id="meet"
-                    type="text"
-                    value={meetName}
-                    onChange={(e) => setMeetName(e.target.value)}
-                    className="bg-transparent border-primary/50 text-primary text-lg"
-                    autoComplete="off"
-                  />
-                  <Button type="submit" variant="ghost" className="mt-4 w-full text-primary hover:bg-primary/10 hover:text-primary">
-                    Authenticate
-                  </Button>
-                  {error && (
-                    <p className="mt-4 text-red-500 text-center">
-                      <GlitchText text={error} />
-                    </p>
-                  )}
-                </form>
-              </CardContent>
-            </Card>
-          );
-        case 'ACCESS_GRANTED':
-          return <HeroSection onExit={handleExit} />;
-        default:
-          return null;
-      }
-    })();
-    
-    if (step === 'EXITING') {
-      return (
-        <>
-          <div className="w-full h-full black-hole-zoom-out">
-            {mainContent}
-          </div>
-          {renderExiting()}
-        </>
-      );
+    let content;
+    switch(step) {
+      case 'BOOTING':
+        content = renderBooting();
+        break;
+      case 'CHOICE':
+        content = renderChoice();
+        break;
+      case 'BLUE_PILL_OUTCOME':
+        content = renderBluePillOutcome();
+        break;
+      case 'MEET_WHO':
+        content = (
+          <Card className="w-full max-w-md bg-black/50 border-primary/20 p-4 text-primary animate-fade-in-up">
+            <CardContent className="p-2">
+              <form onSubmit={handleMeetSubmit}>
+                <label htmlFor="meet" className="block text-lg mb-4">
+                  <GlitchText text="How deep does the rabbit-hole go? Who do you want to meet?" />
+                </label>
+                <Input
+                  ref={meetInputRef}
+                  id="meet"
+                  type="text"
+                  value={meetName}
+                  onChange={(e) => setMeetName(e.target.value)}
+                  className="bg-transparent border-primary/50 text-primary text-lg"
+                  autoComplete="off"
+                />
+                <Button type="submit" variant="ghost" className="mt-4 w-full text-primary hover:bg-primary/10 hover:text-primary">
+                  Authenticate
+                </Button>
+                {error && (
+                  <p className="mt-4 text-red-500 text-center">
+                    <GlitchText text={error} />
+                  </p>
+                )}
+              </form>
+            </CardContent>
+          </Card>
+        );
+        break;
+      case 'ACCESS_GRANTED':
+        content = <HeroSection onExit={handleExit} />;
+        break;
+      case 'YIN_YANG':
+        content = renderYinYang();
+        break;
+      default:
+        content = null;
     }
-
-    return mainContent;
+    
+    return (
+       <div className={isExiting ? 'animate-zoom-out-fade' : ''}>
+        {content}
+       </div>
+    );
   }
 
   return (
     <div className="w-full h-screen bg-black font-code">
-      {showRain && <DigitalRain isMatrix a11y={false} />}
+      {(showRain && !isExiting) && <DigitalRain isMatrix a11y={false} />}
       <div className="relative z-10 w-full h-full flex items-center justify-center">
         {renderContent()}
       </div>
