@@ -58,9 +58,9 @@ const projects = [
 ];
 
 const agents = [
-    { name: 'Agent Kube', role: 'Orchestration Specialist', avatar: 'https://placehold.co/100x100.png', hint: 'robot face' },
-    { name: 'Agent Terra', role: 'Infrastructure Architect', avatar: 'https://placehold.co/100x100.png', hint: 'robot face' },
-    { name: 'Agent CI', role: 'Deployment Coordinator', avatar: 'https://placehold.co/100x100.png', hint: 'robot face' },
+    { name: 'Agent Kube', role: 'Orchestration Specialist', avatar: 'https://placehold.co/100x100.png', hint: 'professional woman portrait', glitchAvatar: 'https://placehold.co/100x100.png', glitchHint: 'robot face' },
+    { name: 'Agent Terra', role: 'Infrastructure Architect', avatar: 'https://placehold.co/100x100.png', hint: 'professional man portrait', glitchAvatar: 'https://placehold.co/100x100.png', glitchHint: 'robot circuits' },
+    { name: 'Agent CI', role: 'Deployment Coordinator', avatar: 'https://placehold.co/100x100.png', hint: 'professional person portrait', glitchAvatar: 'https://placehold.co/100x100.png', glitchHint: 'abstract lines' },
 ]
 
 const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestart: () => void }) => {
@@ -78,30 +78,33 @@ const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestar
     );
 };
 
-const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dataAiHint }: { isGlitching: boolean, src: string, alt: string, width: number, height: number, 'data-ai-hint': string }) => {
+const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dataAiHint, glitchSrc, 'data-glitch-ai-hint': dataGlitchAiHint }: { isGlitching: boolean, src: string, alt: string, width: number, height: number, 'data-ai-hint': string, glitchSrc?: string, 'data-glitch-ai-hint'?: string }) => {
     return (
-        <div className={cn('glitch-image-wrapper rounded-full mx-auto mb-6 shadow-lg ring-4 ring-white', { 'glitching': isGlitching })}>
-            <div className="glitch-image-inner" style={{ background: `url(${src})`, backgroundSize: 'cover' }}>
-                 <Image
-                    src={src}
-                    alt={alt}
-                    width={width}
-                    height={height}
-                    data-ai-hint={dataAiHint}
-                    className="rounded-full opacity-0" // Kept for layout and accessibility, but visually hidden
-                />
-            </div>
+        <div className={cn('glitch-image-wrapper relative rounded-full mx-auto mb-6 shadow-lg ring-4 ring-white', {'glitching': isGlitching, 'glitch-swap': !!glitchSrc })}>
+             {glitchSrc && (
+                <div className="glitch-image-inner-hidden" style={{ backgroundImage: `url(${glitchSrc})` }} />
+            )}
+            <div className="glitch-image-inner" style={{ backgroundImage: `url(${src})` }} />
+            <Image
+                src={src}
+                alt={alt}
+                width={width}
+                height={height}
+                data-ai-hint={dataAiHint}
+                {...(glitchSrc && { 'data-glitch-src': glitchSrc })}
+                {...(dataGlitchAiHint && { 'data-glitch-ai-hint': dataGlitchAiHint })}
+                className="rounded-full opacity-0" // Kept for layout and accessibility, but visually hidden
+            />
         </div>
     );
 };
+
 
 export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () => void }) {
     const [isGlitching, setIsGlitching] = useState(false);
     const glitchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     
     const triggerGlitch = () => {
-        if (isGlitching) return;
-        
         setIsGlitching(true);
 
         if (glitchTimeoutRef.current) clearTimeout(glitchTimeoutRef.current);
@@ -213,13 +216,15 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {agents.map((agent, i) => (
                                 <div key={i} className="flex flex-col items-center">
-                                    <Image
+                                    <GlitchImage
+                                        isGlitching={isGlitching}
                                         src={agent.avatar}
+                                        glitchSrc={agent.glitchAvatar}
                                         alt={agent.name}
                                         width={100}
                                         height={100}
                                         data-ai-hint={agent.hint}
-                                        className="rounded-full mb-4 shadow-md"
+                                        data-glitch-ai-hint={agent.glitchHint}
                                     />
                                     <h3 className="font-semibold text-slate-800">
                                         {agent.name}

@@ -263,27 +263,43 @@ html {
     overflow: hidden;
   }
 
-  .glitch-image-wrapper .glitch-image-inner {
-    position: relative;
-  }
-
-  .glitch-image-wrapper.glitching .glitch-image-inner::before,
-  .glitch-image-wrapper.glitching .glitch-image-inner::after {
-    content: '';
+  .glitch-image-wrapper .glitch-image-inner,
+  .glitch-image-wrapper .glitch-image-inner-hidden {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: inherit;
+    background-size: cover;
+    background-position: center;
   }
 
-  .glitch-image-wrapper.glitching .glitch-image-inner::before {
+  .glitch-image-wrapper.glitching .glitch-image-inner {
     animation: glitch-image 0.8s infinite alternate-reverse;
   }
 
-  .glitch-image-wrapper.glitching .glitch-image-inner::after {
-    animation: glitch-image 0.8s infinite alternate;
+  .glitch-image-wrapper.glitching .glitch-image-inner:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      animation: glitch-image 0.8s infinite alternate;
+  }
+
+  /* Hide top image to reveal bottom one during glitch */
+  .glitch-image-wrapper.glitching.glitch-swap .glitch-image-inner {
+    animation: glitch-image 0.8s infinite alternate-reverse, glitch-swap-opacity 0.8s infinite step-end;
+  }
+
+  @keyframes glitch-swap-opacity {
+    0% { opacity: 1; }
+    48% { opacity: 1; }
+    50% { opacity: 0; }
+    52% { opacity: 1; }
+    100% { opacity: 1; }
   }
 
 
