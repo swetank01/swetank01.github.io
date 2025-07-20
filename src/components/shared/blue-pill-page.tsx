@@ -150,7 +150,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                             <p className="text-sm text-[hsl(var(--text-corporate-muted))]">Senior DevOps Engineer</p>
                         </div>
                         <nav className="flex items-center gap-4">
-                            <Button size="sm" className="bg-black text-white rounded-full px-5 hidden sm:flex transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                            <Button variant="black" size="sm" className="rounded-full px-5 hidden sm:flex transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                                 <Download className="mr-2 h-4 w-4" /> Download Resume
                             </Button>
                             <div className="flex items-center gap-4">
