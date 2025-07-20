@@ -18,18 +18,6 @@ KK  KK  AA    AA  LL        00  SS     SS   HH   HH
 KK   KK AA    AA  LLLLLLLL  00  SSSSSSSS    HH   HH
 `;
 
-const initialCommands = [
-  { cmd: 'system.boot()', delay: 50, typed: true, prompt: true },
-  { cmd: '...', delay: 100 },
-  { cmd: 'Loading kernel modules...', delay: 100 },
-  { cmd: 'System online. Welcome, user.', delay: 200 },
-  { cmd: './connect -u Sw3t@nK', delay: 1000, typed: true, prompt: true },
-  { cmd: 'Authenticating with public key...', delay: 100 },
-  { cmd: 'Access Granted.', delay: 200 },
-  { cmd: asciiArt, delay: 100, color: 'text-primary' },
-  { cmd: 'Type `help` to see available commands.', delay: 200 },
-];
-
 const projects = [
   { id: "cerberus", title: "Project Cerberus", description: "A multi-headed security scanner that automates vulnerability detection across cloud environments." },
   { id: "nexus", title: "Nexus Pipeline", description: "A dynamic CI/CD pipeline generator for microservices, creating complex Jenkinsfiles on the fly." },
@@ -73,11 +61,50 @@ export function InteractiveTerminal({ onExit }: InteractiveTerminalProps) {
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [showMatrix, setShowMatrix] = useState(false);
+  const [initialCommands, setInitialCommands] = useState([
+    { cmd: 'system.boot()', delay: 50, typed: true, prompt: true },
+    { cmd: '...', delay: 100 },
+    { cmd: 'Loading kernel modules...', delay: 100 },
+    { cmd: 'System online. Welcome, user.', delay: 200 },
+    { cmd: './connect -u Sw3t@nK', delay: 1000, typed: true, prompt: true },
+    { cmd: 'Authenticating with public key...', delay: 100 },
+  ]);
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { isSoundEnabled, toggleSound, playKeypressSound } = useSound();
+  const commandsProcessed = useRef(false);
 
   useEffect(() => {
+    const fetchLocationAndInit = async () => {
+      let accessMessage = { cmd: 'Access Granted.', delay: 200 };
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.city && data.country_name) {
+            accessMessage.cmd = `Access Granted. Encrypted connection established from... ${data.city}, ${data.country_name}.`;
+          }
+        }
+      } catch (error) {
+        console.warn('Could not fetch geolocation data. Using default message.');
+      }
+      
+      setInitialCommands(prev => [
+        ...prev,
+        accessMessage,
+        { cmd: asciiArt, delay: 100, color: 'text-primary' },
+        { cmd: 'Type `help` to see available commands.', delay: 200 },
+      ]);
+    };
+    
+    fetchLocationAndInit();
+  }, []);
+
+  useEffect(() => {
+    if (commandsProcessed.current || initialCommands.length <= 6) {
+      return;
+    }
+    commandsProcessed.current = true;
     let timeoutId: NodeJS.Timeout;
     let lineIndex = 0;
 
@@ -123,7 +150,7 @@ export function InteractiveTerminal({ onExit }: InteractiveTerminalProps) {
     timeoutId = setTimeout(processCommand, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [playKeypressSound]);
+  }, [initialCommands, playKeypressSound]);
 
   useEffect(() => {
     if (terminalRef.current) {
