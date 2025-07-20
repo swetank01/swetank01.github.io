@@ -98,7 +98,6 @@ const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dat
 export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () => void }) {
     const [isGlitching, setIsGlitching] = useState(false);
     const glitchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     
     const triggerGlitch = () => {
         if (isGlitching) return;
@@ -111,23 +110,20 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
         }, 1000);
     };
 
-    const handleMouseMove = () => {
-        if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current);
-        const randomDelay = Math.random() * 400 + 100;
-        debounceTimeoutRef.current = setTimeout(triggerGlitch, randomDelay);
-    };
-
     useEffect(() => {
+        const intervalId = setInterval(() => {
+            triggerGlitch();
+        }, 2500);
+
         return () => {
+            clearInterval(intervalId);
             if (glitchTimeoutRef.current) clearTimeout(glitchTimeoutRef.current);
-            if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current);
         };
     }, []);
 
     return (
         <div 
             className="w-full min-h-screen bg-white text-slate-800 font-sans-corporate animate-fade-in-up"
-            onMouseMove={handleMouseMove}
         >
             <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
