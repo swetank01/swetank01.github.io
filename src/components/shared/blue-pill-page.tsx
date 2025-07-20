@@ -260,7 +260,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                                             </TooltipContent>
                                         </Tooltip>
                                         <h3 className="font-semibold text-[hsl(var(--text-corporate-primary))]">
-                                            <GlitchName isGlitching={isGlitching} name={agent.name} glitchName={agent.name.toUpperCase().replace(' ', '_')} />
+                                            {agent.name}
                                         </h3>
                                         <p className="text-sm text-[hsl(var(--text-corporate-muted))]">{agent.role}</p>
                                     </div>
