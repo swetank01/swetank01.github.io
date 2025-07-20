@@ -79,7 +79,7 @@ const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestar
     );
 };
 
-const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dataAiHint, glitchSrc, 'data-glitch-ai-hint': dataGlitchAiHint, onClick }: { isGlitching: boolean, src: string, alt: string, width: number, height: number, 'data-ai-hint': string, glitchSrc?: string, 'data-glitch-ai-hint'?: string, onClick?: () => void }) => {
+const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dataAiHint, glitchSrc, 'data-glitch-ai-hint': dataGlitchAiHint, onClick }: { isGlitching: boolean, src: string, alt: string, width: number, height: number, 'data-ai-hint': string, glitchSrc?: string, 'data-glitch-ai-hint'?: string, onClick?: (e: React.MouseEvent<HTMLDivElement>) => void }) => {
     return (
         <div onClick={onClick} className={cn('glitch-image-wrapper relative rounded-full mx-auto mb-6 shadow-lg ring-4 ring-white', {'glitching': isGlitching, 'glitch-swap': !!glitchSrc, 'cursor-pointer': !!onClick })}>
              {glitchSrc && (
@@ -161,7 +161,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                     
                     <section id="about" className="text-center py-12 lg:py-16">
                          <GlitchImage
-                            onClick={onEnterHackerverse}
+                            onClick={() => onEnterHackerverse()}
                             isGlitching={isGlitching}
                             src="https://lh3.googleusercontent.com/a/ACg8ocLgAiwsma-rBKylapneIfEmb8GU5SaZMWExotCGafW-CoYvCmw=s576-c-no"
                             glitchSrc="https://avatars.githubusercontent.com/u/57257799?v=4?s=400"
@@ -222,24 +222,26 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                                 {agents.map((agent, i) => (
                                     <div key={i} className="flex flex-col items-center">
                                         <Tooltip>
-                                            <TooltipTrigger>
-                                                <GlitchImage
-                                                    isGlitching={isGlitching}
-                                                    src={agent.avatar}
-                                                    glitchSrc={agent.glitchAvatar}
-                                                    alt={agent.name}
-                                                    width={100}
-                                                    height={100}
-                                                    data-ai-hint={agent.hint}
-                                                    data-glitch-ai-hint={agent.glitchHint}
-                                                />
+                                            <TooltipTrigger asChild>
+                                                <div onClick={(e) => e.preventDefault()}>
+                                                    <GlitchImage
+                                                        isGlitching={isGlitching}
+                                                        src={agent.avatar}
+                                                        glitchSrc={agent.glitchAvatar}
+                                                        alt={agent.name}
+                                                        width={100}
+                                                        height={100}
+                                                        data-ai-hint={agent.hint}
+                                                        data-glitch-ai-hint={agent.glitchHint}
+                                                    />
+                                                </div>
                                             </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>Functionality Under Construction</p>
+                                            <TooltipContent className="text-xs">
+                                                <p>Under Construction 🚧</p>
                                             </TooltipContent>
                                         </Tooltip>
                                         <h3 className="font-semibold text-slate-800">
-                                            {agent.name}
+                                            <GlitchName isGlitching={isGlitching} />
                                         </h3>
                                         <p className="text-sm text-slate-500">{agent.role}</p>
                                     </div>
