@@ -35,9 +35,7 @@ export default function Home() {
 
   if (appState === 'exiting') {
     return (
-        <div className={cn("w-full h-screen bg-black font-code text-primary flex items-center justify-center", {
-            "animate-glitch-screen-to-white": isExiting
-        })}>
+        <div className="w-full h-screen bg-black font-code text-primary flex items-center justify-center animate-zoom-out-fade">
             <div className="w-full max-w-md p-4 text-center">
                 <GlitchText text="Escaping Reality... redirecting back to the Matrix" />
             </div>

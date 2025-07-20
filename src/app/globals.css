@@ -325,33 +325,4 @@ html {
     52% { opacity: 1; }
     100% { opacity: 1; }
   }
-
-
-  /* Glitch screen to white */
-  @keyframes glitch-screen-to-white-anim {
-    0% { background-color: #000; }
-    20% { background-color: #000; }
-    21% { background-color: #FFF; transform: translate(2px, 2px); }
-    22% { background-color: #000; transform: translate(-2px, -2px); }
-    50% { background-color: #000; }
-    51% { background-color: #FFF; transform: translate(-3px, 1px); }
-    52% { background-color: #000; transform: translate(3px, -1px); }
-    80% { background-color: #000; }
-    81% { background-color: #FFF; transform: translate(1px, -3px); }
-    82% { background-color: #000; transform: translate(-1px, 3px); }
-    95% { background-color: #FFF; }
-    100% { background-color: #FFF; }
-  }
-
-  .animate-glitch-screen-to-white {
-    animation: glitch-screen-to-white-anim 1.5s ease-in-out forwards;
-  }
-  .animate-glitch-screen-to-white > * {
-    animation: fade-out 1s ease-out forwards;
-  }
-
-  @keyframes fade-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
 }
