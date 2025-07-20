@@ -161,12 +161,12 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                      <GlitchImage
                         isGlitching={isGlitching}
                         src="https://lh3.googleusercontent.com/a/ACg8ocLgAiwsma-rBKylapneIfEmb8GU5SaZMWExotCGafW-CoYvCmw=s576-c-no"
-                        glitchSrc="https://placehold.co/256x256.png"
+                        glitchSrc="https://avatars.githubusercontent.com/u/57257799?v=4?s=400"
                         alt="Profile Picture"
                         width={256}
                         height={256}
                         data-ai-hint="professional portrait"
-                        data-glitch-ai-hint="anonymous hacker"
+                        data-glitch-ai-hint="github avatar"
                     />
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 max-w-3xl mx-auto">Pioneering Efficient and Scalable Cloud Solutions</h2>
                     <p className="text-lg text-slate-600 max-w-3xl mx-auto">
