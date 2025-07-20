@@ -330,4 +330,44 @@ html {
     from { opacity: 1; }
     to { opacity: 0; }
   }
+
+  /* Glossy border effect */
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes glossy-border-spin {
+    to {
+      --angle: 360deg;
+    }
+  }
+
+  .glossy-border {
+    position: relative;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .glossy-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: -2px; /* same as border-width */
+    border-radius: inherit;
+    background: conic-gradient(
+      from var(--angle),
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0) 25%,
+      rgba(255, 255, 255, 0) 75%,
+      rgba(255, 255, 255, 0.5) 100%
+    );
+    animation: glossy-border-spin 4s linear infinite;
+    z-index: -1;
+  }
+
 }

@@ -137,7 +137,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                         <p className="text-sm text-slate-500">Senior DevOps Engineer</p>
                     </div>
                     <nav className="flex items-center gap-4">
-                        <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 hidden sm:flex">
+                        <Button size="sm" className="bg-black text-white rounded-full px-5 hidden sm:flex glossy-border">
                             <Download className="mr-2 h-4 w-4" /> Download Resume
                         </Button>
                         <div className="flex items-center gap-4">
@@ -238,7 +238,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                    </div>
                 </section>
 
-                <section id="contact" className="my-12 lg:my-20 bg-slate-800 text-white rounded-2xl p-12 mx-6">
+                <section id="contact" className="my-12 lg:my-20 bg-black text-white rounded-2xl p-12 mx-6 glossy-border">
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div className="text-center md:text-left">
                            <h2 className="text-3xl font-bold mb-2">Ready to Innovate?</h2>
