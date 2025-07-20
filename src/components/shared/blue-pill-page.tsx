@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { YinYangIcon } from './yin-yang-icon';
 
 const skills = [
     { 
@@ -79,9 +80,9 @@ const GlitchName = ({ isGlitching, name, glitchName, onRestart }: { isGlitching:
     );
 };
 
-const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dataAiHint, glitchSrc, 'data-glitch-ai-hint': dataGlitchAiHint, onClick }: { isGlitching: boolean, src: string, alt: string, width: number, height: number, 'data-ai-hint': string, glitchSrc?: string, 'data-glitch-ai-hint'?: string, onClick?: (e: React.MouseEvent<HTMLDivElement>) => void }) => {
+const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dataAiHint, glitchSrc, 'data-glitch-ai-hint': dataGlitchAiHint, onClick, className }: { isGlitching: boolean, src: string, alt: string, width: number, height: number, 'data-ai-hint': string, glitchSrc?: string, 'data-glitch-ai-hint'?: string, onClick?: (e: React.MouseEvent<HTMLDivElement>) => void, className?: string }) => {
     return (
-        <div onClick={onClick} className={cn('glitch-image-wrapper relative rounded-full mx-auto mb-6 shadow-lg ring-4 ring-white', {'glitching': isGlitching, 'glitch-swap': !!glitchSrc, 'cursor-pointer': !!onClick })}>
+        <div onClick={onClick} className={cn('glitch-image-wrapper relative rounded-full mx-auto shadow-lg ring-4 ring-white', {'glitching': isGlitching, 'glitch-swap': !!glitchSrc }, className)}>
              {glitchSrc && (
                 <div className="glitch-image-inner-hidden" style={{ backgroundImage: `url(${glitchSrc})` }} />
             )}
@@ -103,6 +104,7 @@ const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dat
 
 export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () => void }) {
     const [isGlitching, setIsGlitching] = useState(false);
+    const [theme, setTheme] = useState<'light' | 'dark'>('light');
     const glitchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     
     const triggerGlitch = () => {
@@ -125,18 +127,27 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
         };
     }, []);
 
+    const toggleTheme = () => {
+        setTheme(currentTheme => (currentTheme === 'light' ? 'dark' : 'light'));
+    };
+
     return (
         <TooltipProvider>
             <div 
-                className="w-full min-h-screen bg-white text-slate-800 font-sans-corporate"
+                className={cn(
+                    "w-full min-h-screen font-sans-corporate transition-colors duration-500",
+                    "bg-[hsl(var(--bg-corporate))]",
+                    "text-[hsl(var(--text-corporate-secondary))]",
+                    theme === 'dark' && 'corporate-dark'
+                )}
             >
-                <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
+                <header className="sticky top-0 z-50 bg-[hsl(var(--bg-corporate-header))] backdrop-blur-md border-b border-[hsl(var(--border-corporate))] shadow-sm">
                     <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                         <div>
-                            <h1 className="text-xl font-bold text-slate-900">
+                            <h1 className="text-xl font-bold text-[hsl(var(--text-corporate-primary))]">
                                <GlitchName onRestart={onEnterHackerverse} isGlitching={isGlitching} name="Swetank" glitchName="$w3t@nK" /> Soni
                             </h1>
-                            <p className="text-sm text-slate-500">Senior DevOps Engineer</p>
+                            <p className="text-sm text-[hsl(var(--text-corporate-muted))]">Senior DevOps Engineer</p>
                         </div>
                         <nav className="flex items-center gap-4">
                             <Button size="sm" className="bg-black text-white rounded-full px-5 hidden sm:flex transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
@@ -144,13 +155,13 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                             </Button>
                             <div className="flex items-center gap-4">
                                 <Link href="#" aria-label="Github">
-                                    <Github className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                                    <Github className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                                 </Link>
                                 <Link href="#" aria-label="LinkedIn">
-                                    <Linkedin className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                                    <Linkedin className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                                 </Link>
                                 <Link href="#" aria-label="Twitter">
-                                    <Twitter className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                                    <Twitter className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                                 </Link>
                             </div>
                         </nav>
@@ -161,7 +172,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                     
                     <section id="about" className="text-center py-12 lg:py-16">
                          <GlitchImage
-                            onClick={() => onEnterHackerverse()}
+                            onClick={onEnterHackerverse}
                             isGlitching={isGlitching}
                             src="https://lh3.googleusercontent.com/a/ACg8ocLgAiwsma-rBKylapneIfEmb8GU5SaZMWExotCGafW-CoYvCmw=s576-c-no"
                             glitchSrc="https://avatars.githubusercontent.com/u/57257799?v=4?s=400"
@@ -170,26 +181,27 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                             height={256}
                             data-ai-hint="professional portrait"
                             data-glitch-ai-hint="github avatar"
+                            className="mb-6 cursor-pointer"
                         />
-                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 max-w-3xl mx-auto">Pioneering Efficient and Scalable Cloud Solutions</h2>
-                        <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                        <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--text-corporate-primary))] mb-4 max-w-3xl mx-auto">Pioneering Efficient and Scalable Cloud Solutions</h2>
+                        <p className="text-lg text-[hsl(var(--text-corporate-subtle))] max-w-3xl mx-auto">
                             Results-driven Senior DevOps Engineer with over 8 years of experience in designing, implementing, and managing scalable, secure, and highly available cloud infrastructures. Proven ability to streamline development lifecycles and enhance operational efficiency through automation and best practices.
                         </p>
                     </section>
                     
-                    <section id="competencies" className="py-12 lg:py-20 bg-slate-50/70 rounded-3xl my-12 lg:my-20">
+                    <section id="competencies" className="py-12 lg:py-20 bg-[hsl(var(--bg-corporate-section))] rounded-3xl my-12 lg:my-20">
                         <div className="text-center max-w-3xl mx-auto px-6">
-                            <h2 className="text-3xl font-bold text-slate-900 mb-4">Core Competencies</h2>
-                            <p className="text-lg text-slate-600 mb-12">
+                            <h2 className="text-3xl font-bold text-[hsl(var(--text-corporate-primary))] mb-4">Core Competencies</h2>
+                            <p className="text-lg text-[hsl(var(--text-corporate-subtle))] mb-12">
                                 A holistic approach to DevOps, combining strategic architecture with hands-on implementation to drive business value and technical excellence.
                             </p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-6">
                             {skills.map((skill, i) => (
-                               <div key={i} className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                               <div key={i} className="bg-[hsl(var(--bg-corporate-card))] p-6 rounded-xl border border-[hsl(var(--border-corporate))] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                                     <skill.icon className="w-8 h-8 mb-4 text-blue-600" />
-                                    <h3 className="font-semibold text-lg text-slate-900 mb-1">{skill.title}</h3>
-                                    <p className="text-slate-600 text-sm">{skill.description}</p>
+                                    <h3 className="font-semibold text-lg text-[hsl(var(--text-corporate-primary))] mb-1">{skill.title}</h3>
+                                    <p className="text-[hsl(var(--text-corporate-subtle))] text-sm">{skill.description}</p>
                                </div>
                             ))}
                         </div>
@@ -197,27 +209,27 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
 
                     <section id="initiatives" className="py-12 lg:py-20">
                         <div className="text-center max-w-3xl mx-auto px-6">
-                            <h2 className="text-3xl font-bold text-slate-900 mb-4">Key Initiatives</h2>
-                            <p className="text-lg text-slate-600 mb-12">
+                            <h2 className="text-3xl font-bold text-[hsl(var(--text-corporate-primary))] mb-4">Key Initiatives</h2>
+                            <p className="text-lg text-[hsl(var(--text-corporate-subtle))] mb-12">
                                 A selection of high-impact projects that delivered measurable improvements in security, efficiency, and scalability.
                             </p>
                         </div>
                         <div className="space-y-8 px-6">
                            {projects.map((project, i) => (
-                                <Card key={i} className="shadow-lg border-slate-200/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white p-4">
+                                <Card key={i} className="shadow-lg border-[hsl(var(--border-corporate))] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-[hsl(var(--bg-corporate-card))] p-4">
                                     <CardHeader>
-                                        <h3 className="font-semibold text-slate-900 text-xl">{project.title}</h3>
-                                        <p className="text-slate-600">{project.description}</p>
+                                        <h3 className="font-semibold text-[hsl(var(--text-corporate-primary))] text-xl">{project.title}</h3>
+                                        <p className="text-[hsl(var(--text-corporate-subtle))]">{project.description}</p>
                                     </CardHeader>
                                 </Card>
                             ))}
                         </div>
                     </section>
 
-                    <section id="team" className="text-center py-12 lg:py-20 bg-slate-100/70 rounded-3xl my-12 lg:my-20">
+                    <section id="team" className="text-center py-12 lg:py-20 bg-[hsl(var(--bg-corporate-section))] rounded-3xl my-12 lg:my-20">
                        <div className="px-6">
-                            <h2 className="text-3xl font-bold text-slate-900 mb-4">Meet My AI Agents</h2>
-                            <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-12">My team of specialized AI agents who assist in automating and managing complex cloud infrastructure, orchestrated by a human architect.</p>
+                            <h2 className="text-3xl font-bold text-[hsl(var(--text-corporate-primary))] mb-4">Meet My AI Agents</h2>
+                            <p className="text-lg text-[hsl(var(--text-corporate-subtle))] max-w-2xl mx-auto mb-12">My team of specialized AI agents who assist in automating and managing complex cloud infrastructure, orchestrated by a human architect.</p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 {agents.map((agent, i) => (
                                     <div key={i} className="flex flex-col items-center">
@@ -233,6 +245,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                                                         height={100}
                                                         data-ai-hint={agent.hint}
                                                         data-glitch-ai-hint={agent.glitchHint}
+                                                        className="mb-4 cursor-pointer"
                                                     />
                                                 </div>
                                             </TooltipTrigger>
@@ -240,10 +253,10 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                                                 <p>Under Construction 🚧</p>
                                             </TooltipContent>
                                         </Tooltip>
-                                        <h3 className="font-semibold text-slate-800">
+                                        <h3 className="font-semibold text-[hsl(var(--text-corporate-primary))]">
                                             <GlitchName isGlitching={isGlitching} name={agent.name} glitchName={agent.name.toUpperCase().replace(' ', '_')} />
                                         </h3>
-                                        <p className="text-sm text-slate-500">{agent.role}</p>
+                                        <p className="text-sm text-[hsl(var(--text-corporate-muted))]">{agent.role}</p>
                                     </div>
                                 ))}
                             </div>
@@ -271,25 +284,32 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                     
                 </main>
                 
-                <footer className="bg-white border-t">
-                  <div className="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
+                <footer className="bg-[hsl(var(--bg-corporate-header))] border-t border-[hsl(var(--border-corporate))]">
+                  <div className="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-[hsl(var(--text-corporate-muted))]">
                     <p>
                         © {new Date().getFullYear()} <GlitchName isGlitching={isGlitching} name="Swetank" glitchName="$w3t@nK" /> Soni. All rights reserved.
                     </p>
                     <div className="flex items-center gap-4 mt-4 md:mt-0">
                         <Link href="#" aria-label="Github">
-                            <Github className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                            <Github className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                         </Link>
                         <Link href="#" aria-label="LinkedIn">
-                            <Linkedin className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                            <Linkedin className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                         </Link>
                         <Link href="#" aria-label="Twitter">
-                            <Twitter className="h-5 w-5 text-slate-500 hover:text-blue-600 transition-colors" />
+                            <Twitter className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                         </Link>
                     </div>
                   </div>
                 </footer>
             </div>
+            <button
+                onClick={toggleTheme}
+                className="fixed bottom-5 right-5 z-50 w-12 h-12 rounded-full bg-[hsl(var(--bg-corporate-card))] border border-[hsl(var(--border-corporate))] flex items-center justify-center text-[hsl(var(--text-corporate-primary))] shadow-lg hover:scale-110 transition-transform"
+                aria-label="Toggle theme"
+            >
+                <YinYangIcon className="w-6 h-6" />
+            </button>
         </TooltipProvider>
     );
 }

@@ -24,6 +24,18 @@
     --input: 217 33% 17%;
     --ring: 250 84% 60%;
     --radius: 0.5rem;
+
+    /* Corporate Theme Variables */
+    --bg-corporate: 240 100% 100%;
+    --text-corporate-primary: 222 47% 11%; /* slate-900 */
+    --text-corporate-secondary: 224 71% 4%; /* slate-800 */
+    --text-corporate-muted: 223 7% 49%; /* slate-500 */
+    --text-corporate-subtle: 224 32% 41%; /* slate-600 */
+    --bg-corporate-header: 240 100% 100% / 0.8;
+    --border-corporate: 222 23% 90%; /* slate-200 */
+    --bg-corporate-section: 220 13% 96% / 0.7; /* slate-50/70 */
+    --bg-corporate-card: 240 100% 100%;
+    --icon-corporate-primary: 38 92% 50%;
   }
  
   .dark {
@@ -46,6 +58,18 @@
     --border: 226 43% 11%;
     --input: 226 43% 11%;
     --ring: 250 84% 60%;
+  }
+
+  .corporate-dark {
+    --bg-corporate: 222 47% 11%; /* slate-900 */
+    --text-corporate-primary: 210 40% 98%; /* slate-50 */
+    --text-corporate-secondary: 215 20% 65%; /* slate-400 */
+    --text-corporate-muted: 217 19% 35%; /* slate-600 */
+    --text-corporate-subtle: 215 20% 65%; /* slate-400 */
+    --bg-corporate-header: 222 47% 11% / 0.8;
+    --border-corporate: 217 19% 27%; /* slate-700 */
+    --bg-corporate-section: 222 47% 11% / 0.7; /* slate-900/70 */
+    --bg-corporate-card: 222 47% 15%; /* slate-800 */
   }
 }
 
