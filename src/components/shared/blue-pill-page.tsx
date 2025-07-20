@@ -126,7 +126,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
 
     return (
         <div 
-            className="w-full min-h-screen bg-white text-slate-800 font-sans-corporate animate-fade-in-up overflow-y-auto"
+            className="w-full min-h-screen bg-white text-slate-800 font-sans-corporate animate-fade-in-up"
             onMouseMove={handleMouseMove}
         >
             <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
