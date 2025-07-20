@@ -61,15 +61,15 @@
   }
 
   .corporate-dark {
-    --bg-corporate: 222 47% 11%; /* slate-900 */
+    --bg-corporate: 0 0% 0%; /* pitch-black */
     --text-corporate-primary: 210 40% 98%; /* slate-50 */
     --text-corporate-secondary: 215 20% 65%; /* slate-400 */
     --text-corporate-muted: 217 19% 35%; /* slate-600 */
     --text-corporate-subtle: 215 20% 65%; /* slate-400 */
-    --bg-corporate-header: 222 47% 11% / 0.8;
-    --border-corporate: 217 19% 27%; /* slate-700 */
-    --bg-corporate-section: 222 47% 11% / 0.7; /* slate-900/70 */
-    --bg-corporate-card: 222 47% 15%; /* slate-800 */
+    --bg-corporate-header: 0 0% 5% / 0.8; /* very-dark-gray */
+    --border-corporate: 217 19% 12%; /* darker-slate */
+    --bg-corporate-section: 0 0% 5% / 0.7; /* very-dark-gray */
+    --bg-corporate-card: 0 0% 8%; /* dark-gray */
   }
 }
 
@@ -355,3 +355,5 @@ html {
     to { opacity: 0; }
   }
 }
+
+    
