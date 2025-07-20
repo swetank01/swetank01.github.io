@@ -4,12 +4,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardHeader } from '../ui/card';
-import { Mail, Phone, Download, Github, Linkedin, Twitter, Cloud, Code, GitMerge, ShieldCheck, AreaChart, Server } from 'lucide-react';
+import { Mail, Phone, Download, Github, Linkedin, Twitter, Cloud, Code, GitMerge, ShieldCheck, AreaChart, Server, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { YinYangIcon } from './yin-yang-icon';
 
 const skills = [
     { 
@@ -153,6 +152,13 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                             <Button variant="black" size="sm" className="rounded-full px-5 hidden sm:flex transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                                 <Download className="mr-2 h-4 w-4" /> Download Resume
                             </Button>
+                             <button
+                                onClick={toggleTheme}
+                                className="p-2 rounded-full bg-transparent hover:bg-black/10 dark:hover:bg-white/10"
+                                aria-label="Toggle theme"
+                            >
+                                {theme === 'light' ? <Moon className="h-5 w-5 text-[hsl(var(--text-corporate-primary))]" /> : <Sun className="h-5 w-5 text-[hsl(var(--text-corporate-primary))]" />}
+                            </button>
                             <div className="flex items-center gap-4">
                                 <Link href="#" aria-label="Github">
                                     <Github className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
@@ -303,13 +309,6 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                   </div>
                 </footer>
             </div>
-            <button
-                onClick={toggleTheme}
-                className="fixed bottom-5 right-5 z-50 w-12 h-12 rounded-full bg-[hsl(var(--bg-corporate-card))] border border-[hsl(var(--border-corporate))] flex items-center justify-center text-[hsl(var(--text-corporate-primary))] shadow-lg hover:scale-110 transition-transform"
-                aria-label="Toggle theme"
-            >
-                <YinYangIcon className="w-6 h-6" />
-            </button>
         </TooltipProvider>
     );
 }
