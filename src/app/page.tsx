@@ -5,7 +5,8 @@ import { useState, useEffect } from 'react';
 import { IntroSequence } from '@/components/shared/intro-sequence';
 import { BluePillPage } from '@/components/shared/blue-pill-page';
 import { GlitchText } from '@/components/shared/glitch-text';
-import { cn } from '@/lib/utils';
+import { MainLayout } from '@/components/layout/main-layout';
+import { HeroSection } from '@/components/sections/hero-section';
 
 type AppState = 'corporate' | 'hackerverse' | 'exiting';
 
@@ -30,7 +31,11 @@ export default function Home() {
   }
   
   if (appState === 'hackerverse') {
-      return <IntroSequence onRestart={restartExperience} />;
+      return (
+        <MainLayout>
+          <HeroSection onExit={restartExperience} />
+        </MainLayout>
+      );
   }
 
   if (appState === 'exiting') {
