@@ -126,7 +126,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
 
     return (
         <div 
-            className="w-full min-h-screen bg-white text-slate-800 font-sans-corporate animate-fade-in-up"
+            className="w-full min-h-screen bg-white text-slate-800 font-sans-corporate"
         >
             <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -161,10 +161,12 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                      <GlitchImage
                         isGlitching={isGlitching}
                         src="https://lh3.googleusercontent.com/a/ACg8ocLgAiwsma-rBKylapneIfEmb8GU5SaZMWExotCGafW-CoYvCmw=s576-c-no"
+                        glitchSrc="https://placehold.co/256x256.png"
                         alt="Profile Picture"
-                        width={128}
-                        height={128}
+                        width={256}
+                        height={256}
                         data-ai-hint="professional portrait"
+                        data-glitch-ai-hint="anonymous hacker"
                     />
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 max-w-3xl mx-auto">Pioneering Efficient and Scalable Cloud Solutions</h2>
                     <p className="text-lg text-slate-600 max-w-3xl mx-auto">
