@@ -9,12 +9,13 @@ import { GlitchText } from '@/components/shared/glitch-text';
 import { DigitalRain } from '@/components/shared/digital-rain';
 
 const asciiArt = `
-██╗  ██╗ █████╗ ██╗      ██████╗ ██╗  ██╗
-██║ ██╔╝██╔══██╗██║      ██╔══██╗██║  ██║
-█████═╝ ███████║██║      ███████║██╗  ██║
-██╔═██╗ ██╔══██║██║      ██╔═══██╝██║  ██║
-██║  ██╗██║  ██║███████╗  ██████╔╝ ███████║
-╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝  ╚═════╝  ╚══════╝
+KK   KK  AAAAAAAA  LL      SSSSSSS  HH   HH
+KK  KK  AA    AA  LL     SS     SS  HH   HH
+KK KK   AA    AA  LL     SS         HH   HH
+KKKK    AAAAAAAA  LL      SSSSSSS   HHHHHHH
+KK KK   AA    AA  LL           SS   HH   HH
+KK  KK  AA    AA  LL     SS    SS   HH   HH
+KK   KK AA    AA  LLLLLLLL SSSSSSS  HH   HH
 `;
 
 const initialCommands = [
