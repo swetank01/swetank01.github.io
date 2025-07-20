@@ -1,0 +1,89 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { Menu, TerminalSquare, Volume2, VolumeX } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { useSound } from '@/hooks/use-sound';
+
+// This component is no longer rendered on the main page but is kept for potential future use.
+const navLinks = [
+  { href: '#skills', label: 'Skills' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#infra', label: 'Infrastructure' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#contact', label: 'Contact' },
+];
+
+export function Header() {
+  const isMobile = useIsMobile();
+  const [isSheetOpen, setSheetOpen] = useState(false);
+  const { isSoundEnabled, toggleSound } = useSound();
+
+  const closeSheet = () => setSheetOpen(false);
+
+  const SoundToggle = () => (
+    <div className="flex items-center gap-2">
+      <Label htmlFor="sound-toggle" className="text-muted-foreground">
+        {isSoundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+      </Label>
+      <Switch id="sound-toggle" checked={isSoundEnabled} onCheckedChange={toggleSound} />
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+            <TerminalSquare className="h-6 w-6 text-primary" />
+            <span className="font-headline">Sw3t@nK</span>
+          </Link>
+          <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <nav className="flex flex-col gap-6 mt-8">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-lg font-medium hover:text-primary transition-colors"
+                    onClick={closeSheet}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+              <div className="absolute bottom-4 right-4">
+                <SoundToggle />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </header>
+    );
+  }
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 items-center">
+        <Link href="/" className="flex items-center gap-2 font-bold text-lg mr-6">
+          <TerminalSquare className="h-6 w-6 text-primary" />
+          <span className="font-headline">Sw3t@nK</span>
+        </Link>
+        <div className="ml-auto">
+          <SoundToggle />
+        </div>
+      </div>
+    </header>
+  );
+}

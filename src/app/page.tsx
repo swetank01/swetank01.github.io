@@ -1,0 +1,44 @@
+
+'use client';
+
+import { useState, useEffect } from 'react';
+import { IntroSequence } from '@/components/shared/intro-sequence';
+import { BluePillPage } from '@/components/shared/blue-pill-page';
+import { GlitchText } from '@/components/shared/glitch-text';
+
+type AppState = 'corporate' | 'hackerverse' | 'exiting';
+
+export default function Home() {
+  const [appState, setAppState] = useState<AppState>('corporate');
+
+  const enterHackerverse = () => {
+    setAppState('hackerverse');
+  };
+
+  const restartExperience = () => {
+    setAppState('exiting');
+    setTimeout(() => {
+        setAppState('corporate');
+    }, 2500)
+  }
+
+  if (appState === 'corporate') {
+    return <BluePillPage onEnterHackerverse={enterHackerverse} />;
+  }
+  
+  if (appState === 'hackerverse') {
+      return <IntroSequence onRestart={restartExperience} />;
+  }
+
+  if (appState === 'exiting') {
+    return (
+        <div className="w-full h-screen bg-black font-code text-primary flex items-center justify-center">
+            <div className="w-full max-w-md p-4 text-center">
+                <GlitchText text="Escaping Reality... redirecting back to the Matrix" />
+            </div>
+        </div>
+    );
+  }
+
+  return null;
+}
