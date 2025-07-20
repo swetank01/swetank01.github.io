@@ -278,11 +278,11 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                             <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-end">
                                  <div className="flex items-center text-sm justify-center">
                                     <Mail className="w-4 h-4 mr-2 text-slate-400" />
-                                    <span>s.soni.devops@email.com</span>
+                                    <span>swetankdevops@gmail.com</span>
                                 </div>
                                 <div className="flex items-center text-sm justify-center">
                                     <Phone className="w-4 h-4 mr-2 text-slate-400" />
-                                    <span>(555) 123-4567</span>
+                                    <span>9587610112</span>
                                 </div>
                             </div>
                          </div>
