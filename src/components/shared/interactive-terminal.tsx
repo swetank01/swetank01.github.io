@@ -9,12 +9,12 @@ import { GlitchText } from '@/components/shared/glitch-text';
 import { DigitalRain } from '@/components/shared/digital-rain';
 
 const asciiArt = `
-  .d8888b. d88888b d888888b .d8888b.  .d88b.  d8b   db d88888D 
- d8'  \`8P 88'       \`88'   d8'  \`8P .8P  Y8. 888o  88 YP  88'  
- 88.      88ooooo    88    88.      88    88 88V8o 88    88    
- 88b      88~~~~~    88    88b      88    88 88 V8o88    88    
- \`8b d8'  88.       .88.   \`8b d8' \`8b  d8' 88  V888    88    
-  \`Y88P'  Y88888P Y888888P \`Y88P'  \`Y88P'  VP   V8P    YP    
+   _  __    _      _     
+  | |/ /   | |    (_)    
+  | ' /  __| | ___ _ ___ 
+  |  <  / _\` |/ __| / __|
+  | . \\| (_| | (__| \\__ \\
+  |_|\\_\\\\__,_|\\___|_|___/
 `;
 
 const initialCommands = [
