@@ -78,9 +78,9 @@ const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestar
     );
 };
 
-const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dataAiHint, glitchSrc, 'data-glitch-ai-hint': dataGlitchAiHint }: { isGlitching: boolean, src: string, alt: string, width: number, height: number, 'data-ai-hint': string, glitchSrc?: string, 'data-glitch-ai-hint'?: string }) => {
+const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dataAiHint, glitchSrc, 'data-glitch-ai-hint': dataGlitchAiHint, onClick }: { isGlitching: boolean, src: string, alt: string, width: number, height: number, 'data-ai-hint': string, glitchSrc?: string, 'data-glitch-ai-hint'?: string, onClick?: () => void }) => {
     return (
-        <div className={cn('glitch-image-wrapper relative rounded-full mx-auto mb-6 shadow-lg ring-4 ring-white', {'glitching': isGlitching, 'glitch-swap': !!glitchSrc })}>
+        <div onClick={onClick} className={cn('glitch-image-wrapper relative rounded-full mx-auto mb-6 shadow-lg ring-4 ring-white cursor-pointer', {'glitching': isGlitching, 'glitch-swap': !!glitchSrc })}>
              {glitchSrc && (
                 <div className="glitch-image-inner-hidden" style={{ backgroundImage: `url(${glitchSrc})` }} />
             )}
@@ -159,6 +159,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                 
                 <section id="about" className="text-center py-12 lg:py-16">
                      <GlitchImage
+                        onClick={onEnterHackerverse}
                         isGlitching={isGlitching}
                         src="https://lh3.googleusercontent.com/a/ACg8ocLgAiwsma-rBKylapneIfEmb8GU5SaZMWExotCGafW-CoYvCmw=s576-c-no"
                         glitchSrc="https://avatars.githubusercontent.com/u/57257799?v=4?s=400"
