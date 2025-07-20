@@ -64,15 +64,15 @@ const agents = [
     { name: 'Agent CI', role: 'Deployment Coordinator', avatar: 'https://placehold.co/100x100.png', hint: 'professional person portrait', glitchAvatar: 'https://placehold.co/100x100.png', glitchHint: 'abstract lines' },
 ]
 
-const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestart?: () => void }) => {
-    const text = isGlitching ? '$w3t@nK' : 'Swetank';
+const GlitchName = ({ isGlitching, name, glitchName, onRestart }: { isGlitching: boolean, name: string, glitchName: string, onRestart?: () => void }) => {
+    const text = isGlitching ? glitchName : name;
 
     return (
         <span
             className={cn('glitch-wrapper', { 'glitching': isGlitching, 'cursor-pointer': !!onRestart })}
             onClick={onRestart}
         >
-            <span className="glitch-text" data-text="$w3t@nK">
+            <span className="glitch-text" data-text={glitchName}>
                 {text}
             </span>
         </span>
@@ -134,7 +134,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                     <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                         <div>
                             <h1 className="text-xl font-bold text-slate-900">
-                               <GlitchName onRestart={onEnterHackerverse} isGlitching={isGlitching} /> Soni
+                               <GlitchName onRestart={onEnterHackerverse} isGlitching={isGlitching} name="Swetank" glitchName="$w3t@nK" /> Soni
                             </h1>
                             <p className="text-sm text-slate-500">Senior DevOps Engineer</p>
                         </div>
@@ -241,7 +241,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                                             </TooltipContent>
                                         </Tooltip>
                                         <h3 className="font-semibold text-slate-800">
-                                            <GlitchName isGlitching={isGlitching} />
+                                            <GlitchName isGlitching={isGlitching} name={agent.name} glitchName={agent.name.toUpperCase().replace(' ', '_')} />
                                         </h3>
                                         <p className="text-sm text-slate-500">{agent.role}</p>
                                     </div>
@@ -274,7 +274,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                 <footer className="bg-white border-t">
                   <div className="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
                     <p>
-                        © {new Date().getFullYear()} <GlitchName isGlitching={isGlitching} /> Soni. All rights reserved.
+                        © {new Date().getFullYear()} <GlitchName isGlitching={isGlitching} name="Swetank" glitchName="$w3t@nK" /> Soni. All rights reserved.
                     </p>
                     <div className="flex items-center gap-4 mt-4 md:mt-0">
                         <Link href="#" aria-label="Github">
