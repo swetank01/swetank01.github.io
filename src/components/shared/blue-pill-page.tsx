@@ -64,12 +64,12 @@ const agents = [
     { name: 'Agent CI', role: 'Deployment Coordinator', avatar: 'https://placehold.co/100x100.png', hint: 'professional person portrait', glitchAvatar: 'https://placehold.co/100x100.png', glitchHint: 'abstract lines' },
 ]
 
-const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestart: () => void }) => {
+const GlitchName = ({ isGlitching, onRestart }: { isGlitching: boolean, onRestart?: () => void }) => {
     const text = isGlitching ? '$w3t@nK' : 'Swetank';
 
     return (
         <span
-            className={cn('glitch-wrapper', { 'glitching': isGlitching })}
+            className={cn('glitch-wrapper', { 'glitching': isGlitching, 'cursor-pointer': !!onRestart })}
             onClick={onRestart}
         >
             <span className="glitch-text" data-text="$w3t@nK">
@@ -272,7 +272,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                 <footer className="bg-white border-t">
                   <div className="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
                     <p>
-                        © {new Date().getFullYear()} <GlitchName onRestart={onEnterHackerverse} isGlitching={isGlitching} /> Soni. All rights reserved.
+                        © {new Date().getFullYear()} <GlitchName isGlitching={isGlitching} /> Soni. All rights reserved.
                     </p>
                     <div className="flex items-center gap-4 mt-4 md:mt-0">
                         <Link href="#" aria-label="Github">
@@ -290,5 +290,4 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
             </div>
         </TooltipProvider>
     );
-
-    
+}
