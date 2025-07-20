@@ -1,5 +1,6 @@
 import { Github, Linkedin, Twitter } from 'lucide-react';
 import Link from 'next/link';
+import { siteConfig } from '@/config/site';
 
 export function Footer() {
   return (
@@ -9,13 +10,13 @@ export function Footer() {
           © {new Date().getFullYear()} Sw3t@nK. All rights reserved.
         </p>
         <div className="flex items-center gap-4">
-          <Link href="#" aria-label="Github">
+          <Link href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" aria-label="Github">
             <Github className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors" />
           </Link>
-          <Link href="#" aria-label="LinkedIn">
+          <Link href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
             <Linkedin className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors" />
           </Link>
-          <Link href="#" aria-label="Twitter">
+          <Link href={siteConfig.links.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
             <Twitter className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors" />
           </Link>
         </div>

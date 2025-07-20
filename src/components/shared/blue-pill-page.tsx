@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { siteConfig } from '@/config/site';
 
 const skills = [
     { 
@@ -160,13 +161,13 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                                 {theme === 'light' ? <Moon className="h-5 w-5 text-[hsl(var(--text-corporate-primary))]" /> : <Sun className="h-5 w-5 text-[hsl(var(--text-corporate-primary))]" />}
                             </button>
                             <div className="flex items-center gap-4">
-                                <Link href="#" aria-label="Github">
+                                <Link href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" aria-label="Github">
                                     <Github className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                                 </Link>
-                                <Link href="#" aria-label="LinkedIn">
+                                <Link href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                                     <Linkedin className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                                 </Link>
-                                <Link href="#" aria-label="Twitter">
+                                <Link href={siteConfig.links.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                                     <Twitter className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                                 </Link>
                             </div>
@@ -296,13 +297,13 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                         © {new Date().getFullYear()} <GlitchName isGlitching={isGlitching} name="Swetank" glitchName="$w3t@nK" /> Soni. All rights reserved.
                     </p>
                     <div className="flex items-center gap-4 mt-4 md:mt-0">
-                        <Link href="#" aria-label="Github">
+                        <Link href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" aria-label="Github">
                             <Github className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                         </Link>
-                        <Link href="#" aria-label="LinkedIn">
+                        <Link href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                             <Linkedin className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                         </Link>
-                        <Link href="#" aria-label="Twitter">
+                        <Link href={siteConfig.links.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                             <Twitter className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
                         </Link>
                     </div>
