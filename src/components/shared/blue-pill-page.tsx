@@ -104,7 +104,7 @@ const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dat
 
 export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () => void }) {
     const [isGlitching, setIsGlitching] = useState(false);
-    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+    const [theme, setTheme] = useState<'light' | 'dark'>('dark');
     const glitchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     
     const triggerGlitch = () => {
