@@ -114,5 +114,5 @@ export function NeuralNetwork() {
 
   }, []);
 
-  return <canvas ref={canvasRef} className="w-full h-full" />;
+  return <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full z-[-1]" />;
 }

@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { siteConfig } from '@/config/site';
+import { NeuralNetwork } from './neural-network';
 
 const skills = [
     { 
@@ -104,7 +105,7 @@ const GlitchImage = ({ isGlitching, src, alt, width, height, 'data-ai-hint': dat
 
 export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () => void }) {
     const [isGlitching, setIsGlitching] = useState(false);
-    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+    const [theme, setTheme] = useState<'light' | 'dark'>('dark');
     const glitchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     
     const triggerGlitch = () => {
@@ -135,12 +136,15 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
         <TooltipProvider>
             <div 
                 className={cn(
-                    "w-full min-h-screen font-sans-corporate transition-colors duration-500",
-                    "bg-[hsl(var(--bg-corporate))]",
+                    "w-full min-h-screen font-sans-corporate transition-colors duration-500 relative",
+                    "bg-transparent",
                     "text-[hsl(var(--text-corporate-secondary))]",
                     theme === 'dark' && 'corporate-dark'
                 )}
             >
+                <NeuralNetwork />
+                <div className="relative z-10">
+
                 <header className="sticky top-0 z-50 bg-[hsl(var(--bg-corporate-header))] backdrop-blur-md border-b border-[hsl(var(--border-corporate))] shadow-sm">
                     <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                         <div>
@@ -158,7 +162,7 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                                 className="p-2 rounded-full bg-transparent hover:bg-black/10 dark:hover:bg-white/10"
                                 aria-label="Toggle theme"
                             >
-                                {theme === 'light' ? <Moon className="h-5 w-5 text-[hsl(var(--text-corporate-primary))]" /> : <Sun className="h-5 w-5 text-[hsl(var(--text-corporate-primary))]" />}
+                                {theme === 'light' ? <Moon className="h-5 w-5 text-black" /> : <Sun className="h-5 w-5 text-white" />}
                             </button>
                             <div className="flex items-center gap-4">
                                 <Link href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" aria-label="Github">
@@ -298,17 +302,18 @@ export function BluePillPage({ onEnterHackerverse }: { onEnterHackerverse: () =>
                     </p>
                     <div className="flex items-center gap-4 mt-4 md:mt-0">
                         <Link href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" aria-label="Github">
-                            <Github className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
+                            <Github className="h-5 w-5 text-black hover:text-blue-600 transition-colors" />
                         </Link>
                         <Link href={siteConfig.links.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                            <Linkedin className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
+                            <Linkedin className="h-5 w-5 text-black hover:text-blue-600 transition-colors" />
                         </Link>
                         <Link href={siteConfig.links.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                            <Twitter className="h-5 w-5 text-[hsl(var(--text-corporate-muted))] hover:text-blue-600 transition-colors" />
+                            <Twitter className="h-5 w-5 text-black hover:text-blue-600 transition-colors" />
                         </Link>
                     </div>
                   </div>
                 </footer>
+                </div>
             </div>
         </TooltipProvider>
     );
